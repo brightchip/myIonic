@@ -1,0 +1,231 @@
+page-lesson {
+
+  ion-content{
+
+    .lesson-head ion-segment{
+      color: #30d05f;
+      background-color: #0a86d4;
+      //text-color:   #30d05f;
+      ion-segment-button  {
+        color: #30d05f;
+        text-color:   #30d05f;
+      }
+    }
+
+    .lesson-content{
+      ion-list{
+
+        video{
+          width: 100%;
+          height: auto;
+          .videoPlayer{
+            width: 100%;
+            height: auto;
+          }
+        }
+
+        .comments{
+          width: 100%;
+          margin-bottom: 5px;
+
+          .bt-reply{
+            color: color($colors, badge);
+          }
+
+          .loading-comment{
+            width: auto;
+            text-align: center;
+            float: right;
+            display: flex;
+            flex-direction: row;
+            margin-right: 10px;
+            margin-top: -10px;
+            //padding-top: 0%;
+            //background-color: #1b94e0;
+
+            ion-spinner * {
+              width: 28px;
+              height: 28px;
+              stroke: #444;
+              //background-color: #2ec95c;
+              margin-left: auto;
+              margin-right: auto;
+              fill: #222;
+            }
+          }
+
+
+          .comment-post{
+
+            margin-right: 10px;
+            margin-top: -10px;
+
+            .card-post-comment{
+              overflow: scroll;
+              textAreaComment{
+                overflow: scroll;
+              }
+            }
+
+            .button-comment{
+              width: auto;
+              font-size: 15px;
+              float: right;
+              height: auto;
+            }
+
+          }
+
+
+          .comment-content{
+            display: flex;
+            flex-direction: row;
+            padding-bottom: 20px;
+            //overflow: visible;
+
+            .head-comment-avatar{
+              //background-color: #1b94e0;
+              ion-thumbnail img{
+                width:80px;
+                height:80px;
+              }
+            }
+
+            .head-comment-content{
+
+              h2{
+                font-size: 17px;
+                color: color($colors, primary);
+              }
+              h2  span{
+                margin-left: 20px;
+                font-size: 12px;
+                color: color($colors, badge);
+              }
+
+              .line-break{
+                height: auto;
+                //overflow: inherit ;
+                //text-overflow: inherit ;
+                //background-color: #1c99e8;
+                //white-space: normal;
+                max-width:60vw;
+              }
+
+              .sub-comments{
+                display: flex;
+                flex-direction: row;
+                margin-bottom: 5px;
+              }
+
+              ion-thumbnail img{
+                width:50px;
+                height:50px;
+              }
+            }
+
+          }
+
+
+        }
+
+        //.vocabulary {
+
+        div {
+          .vacabulary-main {
+            display: flex;
+            flex-direction: row;
+            ion-col {
+              background-color: #8f8f8f;
+              button {
+                color: #0a86d4;
+                background-color: #F4D03F;
+                //margin-top:100%;
+                text-align: center;
+                //margin-left: auto;
+                //margin-right: auto;
+                height: 100%;
+                ion-icon {
+                  text-align: center;
+                  font-size: 40px;
+                }
+              }
+              //
+              //backArrow{
+              //  visibility: hidden;
+              //}
+
+            }
+
+            ion-col .vocabulary-card {
+              margin-left: auto;
+              margin-right: auto;
+              width: 100%;
+              height: auto;
+              background-color: #0a86d4;
+
+              ion-card-header {
+                //width:50%;
+                text-align: center;
+                span {
+                  color: #9eeeb6;
+                }
+              }
+
+              ion-card-content {
+                text-align: center;
+              }
+
+            }
+          }
+
+          .avatar {
+            //width:100%;
+            margin-top: 10%;
+            margin-bottom: 10%;
+            //height: 20vh;
+            //background-color: #F4D03F;
+          }
+
+          .voice-recorder {
+            display: flex;
+            //flex-direction: row;
+            margin-left: auto;
+            margin-right: auto;
+            width: 100%;
+
+            //background-color: #F4D03F;
+
+          }
+
+          .voice-recorder div {
+            //flex: 1;
+            margin-left: auto;
+            margin-right: auto;
+            button {
+              border-radius: 60px;
+              width: 100px;
+              height: 60px;
+              margin-left: auto;
+              margin-right: auto;
+            }
+
+            .bt-recorder ion-icon {
+
+              font-size: 60px;
+            }
+
+          }
+        }
+      }
+
+    }
+
+  }
+
+}
+
+page-lesson  img{
+  max-width: 140px;
+  border-radius: 50%;
+}

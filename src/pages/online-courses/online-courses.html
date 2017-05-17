@@ -1,0 +1,48 @@
+<ion-header>
+  <ion-navbar>
+    <ion-navbar primary>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>在线课程</ion-title>
+    </ion-navbar>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+<div  >
+  <ion-segment  [(ngModel)]="course" >
+    <ion-segment-button value="student">
+      学生课程
+    </ion-segment-button>
+    <ion-segment-button value="parent">
+      父母课程
+    </ion-segment-button>
+  </ion-segment>
+</div>
+
+
+<div   [ngSwitch]="course">
+  <ion-list *ngSwitchCase="'student'">
+    <ion-item detail-push class="student-course"  *ngFor="let promo of studentCourses" (click)="gotoCourse(promo)">
+      <ion-thumbnail item-left>
+        <img *ngIf="promo" src="{{promo.logo}}" >
+      </ion-thumbnail>
+      <!--<h2 >    {{promo.title}}</h2>-->
+      <!--<p>课时:{{promo.courseTimeSpan}}</p>-->
+      EREEE
+      <p>
+        {{promo.content}}
+      </p>
+    </ion-item>
+  </ion-list>
+
+
+  <ion-list *ngSwitchCase="'parent'">
+    <ion-item>
+      - - - - -
+    </ion-item>
+  </ion-list>
+</div>
+</ion-content>
+

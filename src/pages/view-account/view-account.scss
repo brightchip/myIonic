@@ -1,0 +1,41 @@
+
+page-view-account {
+  .userinfo{
+    //padding-left: 0;
+  }
+  h1{
+    width: 100%;
+    text-align: center;
+  }
+  h2 ion-icon{
+    margin-right: 10px;
+  }
+
+  .profile {
+    width:100%;
+    height: 200px;
+    background-color: #0a86d4;
+    img{
+      width:100%;
+      height: 100%;
+    }
+  }
+
+
+  .call{
+    float: left;
+    width: 100px;
+    height: 50px;
+  }
+
+  ion-footer{
+    .sendmsg{
+      float: right;
+      width: 100px;
+      height: 50px;
+    }
+  }
+
+
+
+}

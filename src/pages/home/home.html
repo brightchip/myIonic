@@ -1,0 +1,100 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>主页</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<!--//news guide-->
+<ion-content  class="home">
+
+  <div class="home-header">
+    <ion-slides #slides auto-height="false" autoplay="2000" speed="1000" loop="true" (ionSlideAutoplayStop)="slideChanged($event)"  pager>
+      <ion-slide *ngFor="let promo of MyHomeData">
+        <img *ngIf="promo"  src="{{promo.img}}"  >
+      </ion-slide>
+    </ion-slides>
+    <button ion-button class="bt-checckin" disabled={{checkedin}}  (click)="checkin()">
+      {{checkingText}}
+    </button>
+  </div>
+
+  <!--Home Main menu-->
+  <div  class="home-cards">
+    <!--//logos-->
+   <!--<ion-card  *ngFor="let _logo of MyLogos">-->
+     <!--<img *ngIf="_logo"  src="{{_logo.logo}}"  >-->
+     <!--<ion-card-content>-->
+       <!--<ion-card-title>-->
+         <!--<ion-label *ngIf="_logo">{{ _logo.title}}</ion-label>-->
+       <!--</ion-card-title>-->
+     <!--</ion-card-content>-->
+    <!--</ion-card>-->
+     <div class="gallery" *ngFor="let _logo of MyLogos" (click)="gotoCardsPage(_logo.page_id)">
+         <img *ngIf="_logo"  src="{{_logo.logo}}" src="img_mountains.jpg" >
+       <div class="desc" *ngIf="_logo">{{ _logo.title}}</div>
+     </div>
+  </div>
+
+  <hr class="style-four">
+  <!--IU consultants-->
+  <ion-item no-lines >
+    <ion-label color="dark" >IU  consultants</ion-label>
+    <button item-right  ion-button icon-left clear small (click)="showMore()">
+      <ion-icon name="more" ></ion-icon>
+      <div>more</div>
+    </button>
+  </ion-item>
+
+  <div  class="consultants">
+    <div class="gallery" *ngFor="let _consultant of MyIU" (click)="goinfoPage(_consultant.page_id)">
+      <img *ngIf="_consultant"  src="{{_consultant.logo}}">
+      <div class="desc"  *ngIf="_consultant">{{ _consultant.title}}</div>
+    </div>
+  </div>
+
+  <hr class="style-four">
+  <!--courses recommends-->
+
+  <ion-item no-lines>
+    <ion-label >Courses recommending</ion-label>
+  </ion-item>
+
+  <div padding  class="course-recommend">
+  <ion-card  class="rcourses" *ngFor="let _recommedCourse of MyRecommedCourses" >
+    <!--<ion-item>-->
+      <!--<ion-avatar item-left>-->
+        <!--<img *ngIf="_recommedCourse" src="{{_recommedCourse.logo}}">-->
+      <!--</ion-avatar>-->
+      <!--<h2>Marty McFly</h2>-->
+      <!--<p>November 5, 1955</p>-->
+    <!--</ion-item>-->
+
+    <img *ngIf="_recommedCourse" src="{{_recommedCourse.course_img}}" (click)="gotoCourse(_recommedCourse)">
+
+    <ion-card-content no-padding>
+      <h2>{{_recommedCourse.title}}</h2>
+      <p>{{_recommedCourse.course_content}}</p>
+    </ion-card-content>
+
+    <!--<ion-row>-->
+      <!--<ion-col>-->
+        <!--<button ion-button icon-left clear small (click)="thumbUp(_recommedCourse)">-->
+          <!--<ion-icon name="thumbs-up"></ion-icon>-->
+          <!--<div>{{_recommedCourse.likes}}</div>-->
+        <!--</button>-->
+      <!--</ion-col>-->
+      <!--<ion-col>-->
+        <!--<button ion-button icon-left clear small (click)="showComments(_recommedCourse)">-->
+          <!--<ion-icon name="text"></ion-icon>-->
+          <!--<div>{{_recommedCourse.comments}}</div>-->
+        <!--</button>-->
+      <!--</ion-col>-->
+    <!--</ion-row>-->
+
+  </ion-card>
+  </div>
+
+</ion-content>

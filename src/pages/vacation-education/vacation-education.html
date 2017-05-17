@@ -1,0 +1,40 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Vacation education</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+
+  <div class="education-vacation-header"  no-padding>
+      <ion-slides #slides auto-height="false" autoplay="2000" speed="1000" loop="true" (ionSlideAutoplayStop)="slideChanged($event)"  >
+      <ion-slide *ngFor="let _educationVacation of MyEducationVacation.img">
+        <img *ngIf="_educationVacation"  src="{{_educationVacation}}" >
+      </ion-slide>
+    </ion-slides>
+  </div>
+
+  <div  class="intro-video">
+    <video controls="controls" preload="metadata"  class="videoPlayer">
+      <source src="{{MyEducationVacation.introVideo}}" type="video/mp4"/>
+    </video>
+  </div>
+
+  <p>
+    {{MyEducationVacation.content}}
+  </p>
+
+  <!--<ion-content class="education-vacation-classes" class="no-scroll">-->
+    <ion-item margin detail-push *ngFor="let _vacaClass of VacaClasses" class="education-vacation-classes" (click)="gotoClasses(_vacaClass.id)">
+      <img src="{{_vacaClass.img}}"/>
+      <div class="card-title">{{_vacaClass.title}}</div>
+      <div class="card-subtitle">{{_vacaClass.subtitle}}</div>
+    </ion-item>
+  <!--</ion-content>-->
+
+
+</ion-content>
+

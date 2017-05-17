@@ -1,0 +1,12 @@
+page-student {
+    ion-content{
+      background-color: #30d05f;
+
+      .student-course{
+        display: flex;
+        flex-direction: row;
+      }
+
+    }
+
+}

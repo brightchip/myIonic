@@ -1,0 +1,11 @@
+<ion-content>
+    <ion-item detail-push class="student-course"  *ngFor="let promo of studentCourses" (click)="gotoCourse(promo)">
+      <ion-thumbnail item-left>
+        <img *ngIf="promo" src="{{promo.logo}}" >
+      </ion-thumbnail>
+      <!--<h2 >    {{promo.title}}</h2>-->
+      <!--<p>课时:{{promo.courseTimeSpan}}</p>-->
+      <p >{{promo.content}}</p>
+    </ion-item>
+</ion-content>
+

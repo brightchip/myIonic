@@ -1,0 +1,17 @@
+<ion-header>
+  <ion-navbar>
+    <!--<button ion-button back>-->
+      <!--&lt;!&ndash;<ion-icon name="back"></ion-icon>&ndash;&gt;-->
+    <!--</button>-->
+    <ion-title>
+      {{title}}
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-item *ngFor="let lesson of this.myLessonList" (click)="gotoLesson(lesson)">
+    {{lesson.lessonName}}
+  </ion-item>
+</ion-content>
+

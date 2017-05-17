@@ -1,0 +1,50 @@
+page-senglish {
+
+  .main-content {
+    .book {
+      //display: flex;
+      //flex-direction: row;
+      //flex: auto;
+      height: 20%;
+      //background-color:#000000;
+
+       h2{
+        text-align: center;
+        //backgroud-color:#0a86d4;
+      }
+      .book-note{
+
+      }
+    }
+
+    .book-link {
+      height: 10%;
+      padding-top: 0px;
+      //background-color:#0a86d4;
+      p{
+        font-size: 0.8em;
+      }
+    }
+
+    .book-link .item1{
+      background :color($colors, link1);
+      height: 3px;
+    }
+
+    .book-link .item2{
+      height: 3px;
+      background :color($colors, link2)
+
+    }
+
+    .intro-video{
+      width: 100%;
+      height: auto;
+      .videoPlayer{
+        width: 100%;
+        height: auto;
+      }
+    }
+
+  }
+}

@@ -1,0 +1,74 @@
+<ion-header>
+	<ion-navbar>
+		<button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+		<ion-title>Signup</ion-title>
+	</ion-navbar>
+</ion-header>
+
+<ion-content class="login-page">
+
+	<div class="logo">
+		<img src="assets/img/appicon.svg" alt="Ionic Logo">
+	</div>
+
+	<form #signupForm="ngForm" novalidate>
+		<ion-list no-lines>
+
+      <ion-item>
+        <ion-input color="primary" [(ngModel)]="signup.tel" name="tel" type="tel" #tel="ngModel" required type="tel" placeholder="Tel Input">
+        </ion-input>
+      </ion-item>
+      <p ion-text [hidden]="tel.valid || submitted == false" color="danger" padding-left>
+        Tel is required
+      </p>
+
+      <ion-item>
+				<ion-input color="primary" placeholder="User name" [(ngModel)]="signup.username" name="username" type="text" #username="ngModel" required>
+				</ion-input>
+			</ion-item>
+			<p ion-text [hidden]="username.valid || submitted == false" color="danger" padding-left>
+				Username is required
+			</p>
+
+			<ion-item>
+				<ion-input color="primary" placeholder="Password" [(ngModel)]="signup.password" name="password" type="password" #password="ngModel" required>
+				</ion-input>
+			</ion-item>
+			<p ion-text [hidden]="password.valid || submitted == false" color="danger" padding-left>
+				Password is required
+			</p>
+
+      <ion-item>
+        <ion-input color="primary" placeholder="Re Password" [(ngModel)]="signup.repassword" name="repassword" type="password" #repassword="ngModel" required >
+        </ion-input>
+      </ion-item>
+      <p ion-text [hidden]="(signup.password===signup.repassword  && password.valid) || submitted == false" color="danger" padding-left>
+        Passwords  mismatch
+      </p>
+
+      <ion-item>
+        <ion-input placeholder="Captcha" [(ngModel)]="signup.captcha" name="captcha" type="text"  #captcha="ngModel" required>
+        </ion-input>
+
+        <button ion-button outline item-right icon-right ion-button (click)="sendSMS()">
+          Send SMS
+        </button>
+
+      </ion-item>
+      <p  ion-text [hidden]="signup.captchaMismatch || submitted == false" color="danger" padding-left>
+        Captcha Wrong
+      </p>
+
+
+		</ion-list>
+
+		<div padding>
+			<button  ion-button (click)="onSignup(signupForm)" type="submit" block>Create</button>
+		</div>
+	</form>
+
+  <p  color="danger"> {{errorMsg}}</p>
+
+</ion-content>

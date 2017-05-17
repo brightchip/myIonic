@@ -1,0 +1,43 @@
+<ion-header>
+    <ion-title>Entry</ion-title>
+</ion-header>
+
+
+<ion-content  padding  >
+    <!--<h2>IonReddit App</h2>-->
+  <!-- Float the icon left -->
+
+  <ion-grid>
+
+    <ion-row align-items-center align-self-stretch>
+      <ion-col col-6>
+        <button ion-button color="secondary" ion-button icon-left  ion-button (click)="onSignup(MyUserType.teacher)" >
+          <ion-icon name="home"></ion-icon>
+          Teacher
+        </button>
+      </ion-col>
+
+      <ion-col col-6>
+        <button ion-button color="secondary" ion-button icon-right ion-button (click)="onSignup(MyUserType.student)" >
+          Student
+          <ion-icon name="home"></ion-icon>
+        </button>
+      </ion-col>
+    </ion-row>
+
+  </ion-grid>
+
+<!--<div class="main" >-->
+  <!--<button ion-button color="secondary" ion-button icon-left >-->
+    <!--<ion-icon name="home"></ion-icon>-->
+    <!--Left Icon-->
+  <!--</button>-->
+
+  <!--&lt;!&ndash; Float the icon right &ndash;&gt;-->
+  <!--<button ion-button color="secondary" ion-button icon-right>-->
+    <!--Right Icon-->
+    <!--<ion-icon name="home"></ion-icon>-->
+  <!--</button>-->
+<!--</div>-->
+
+</ion-content>

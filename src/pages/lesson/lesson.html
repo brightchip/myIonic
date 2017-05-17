@@ -1,0 +1,246 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>{{lesson.lessonName}}</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+
+  <div class="lesson-head" >
+    <ion-segment [(ngModel)]="lesson_parts">
+      <ion-segment-button value="book">
+        {{lesson.lessonName}}
+      </ion-segment-button>
+      <ion-segment-button value="exercise">
+        练习册
+      </ion-segment-button>
+      <ion-segment-button value="vocabulary">
+        单词练习
+      </ion-segment-button>
+    </ion-segment>
+  </div>
+
+  <ion-col class="lesson-content" [ngSwitch]="lesson_parts">
+    <ion-list  *ngSwitchCase="'book'">
+      <video controls="controls" preload="metadata"  class="videoPlayer">
+        <source src="{{lesson.video}}" type="video/mp4"/>
+      </video>
+
+      <ion-row>
+        <ion-col>
+          <button ion-button icon-left clear small (click)="thumbUp(_recommedCourse)">
+            <ion-icon name="thumbs-up"></ion-icon>
+            <div>{{lesson.likes}}</div>
+          </button>
+        </ion-col>
+        <ion-col>
+          <button ion-button icon-left clear small>
+            <ion-icon name="text"></ion-icon>
+            <div>{{lesson.comments}}</div>
+          </button>
+        </ion-col>
+      </ion-row>
+
+      <div class="comments">
+
+
+        <div class="comment-post">
+          <ion-label stacked>评论</ion-label>
+          <ion-card class="card-post-comment">
+            <ion-textarea #textAreaComment [(ngModel)]="textArea1" placeHolder="在此处输入评论..." type="text"></ion-textarea>
+          </ion-card>
+          <div class="loading-comment" >
+            <button class="button_emoji" ion-button clear icon-only (click)="toggled = !toggled" [(emojiPickerIf)]="toggled" [emojiPickerDirection]="'top'"
+                    (emojiPickerSelect)="pickEmoji(false,$event)">🤗
+            </button>
+            <button class="button-comment"  ion-button (click)="postComment()" >发表  <ion-spinner  name="dots" *ngIf="isPosting"></ion-spinner></button>
+          </div>
+        </div>
+
+
+
+        <ion-card>
+
+          <div class="loading-comment" *ngIf="isLoadingComment">
+            <ion-spinner  name="bubbles" ></ion-spinner>
+          </div>
+
+        <div class="comment-content" *ngFor="let _comment of comments">
+          <!--<ion-list>-->
+            <!--<ion-item clss="head-comments" >-->
+          <div class="head-comment-avatar">
+              <ion-thumbnail item-left>
+                <img (click)="gotoViewUser(_comment)" src="{{_comment.avatar}}">
+              </ion-thumbnail>
+          </div>
+          <div class="head-comment-content">
+            <h2 >{{_comment.user_name}}<span >{{_comment.comment_date}}</span></h2>
+              <div class="line-break">{{_comment.content}}</div>
+
+              <ion-row>
+                <button ion-button icon-left clear small (click)="likeComment(_comment)" [color]="_comment.likeButtonColor">
+                  <ion-icon name="thumbs-up"></ion-icon>
+                  <div *ngIf="_comment.likes_amount > 0">{{_comment.likes_amount}}</div>
+                </button>
+
+                  <button *ngIf=" _comment.subComments.length > 0" ion-button icon-left clear small (click)="showReply(_comment)">
+                    <ion-icon  name={{_comment.showHidenIcon}}></ion-icon>
+                    {{_comment.showHidenText}}
+                  </button>
+
+                <button class="bt-reply" ion-button icon-left clear small (click)="replyComment(_comment)" >
+                  <ion-icon  name="text"></ion-icon>回复
+                </button>
+              </ion-row>
+
+            <div class="comment-post" *ngIf="_comment.isReplying">
+              <ion-card class="card-post-comment">
+                <ion-textarea #textAreaComment1 [(ngModel)]="textArea2" placeHolder="" type="text"></ion-textarea>
+              </ion-card>
+              <div class="loading-comment" >
+                <button class="button_emoji" ion-button clear icon-only (click)="_comment.toggled = !_comment.toggled" [(emojiPickerIf)]="_comment.toggled" [emojiPickerDirection]="'top'"
+                        (emojiPickerSelect)="pickEmoji(true,$event)">🤗
+                </button>
+                <button class="button-comment"  ion-button (click)="cancel(_comment)" >取消</button>
+                <button class="button-comment"  ion-button (click)="postCommentUnderComment(_comment,_comment)" > 回复  <ion-spinner  name="dots" *ngIf="isPosting"></ion-spinner></button>
+              </div>
+            </div>
+
+                <!--reply users-->
+                <ion-col *ngIf="_comment.showReply">
+                    <div class="sub-comments" *ngFor="let _subcomment of _comment.subComments">
+                      <div>
+                        <ion-thumbnail item-left>
+                          <img (click)="gotoViewUser(_subcomment)"  src="{{_subcomment.avatar}}">
+                        </ion-thumbnail>
+                      </div>
+
+                      <div>
+                        <h2 >{{_subcomment.user_name}}<span >{{_subcomment.comment_date}}</span></h2>
+                        <h3>{{_subcomment.content}}</h3>
+
+                        <button ion-button icon-left clear small (click)="likeComment(_subcomment)" [color]="_subcomment.likeButtonColor">
+                          <ion-icon name="thumbs-up"></ion-icon>
+                          <div *ngIf="_subcomment.likes_amount > 0"> {{_subcomment.likes_amount}}</div>
+                        </button>
+
+                        <button class="bt-reply" ion-button icon-left clear small (click)="replyComment(_subcomment)" >
+                          <ion-icon  name="text"></ion-icon>回复
+                        </button>
+
+
+                        <div class="comment-post" *ngIf="_subcomment.isReplying">
+                          <ion-card class="card-post-comment">
+                            <ion-textarea #textAreaComment1 [(ngModel)]="textArea2" placeHolder="" type="text"></ion-textarea>
+                          </ion-card>
+                          <div class="loading-comment" >
+                            <button class="button_emoji" ion-button clear icon-only (click)="_subcomment.toggled = !_subcomment.toggled" [(emojiPickerIf)]="_subcomment.toggled" [emojiPickerDirection]="'top'"
+                                    (emojiPickerSelect)="pickEmoji(true,$event)">🤗
+                            </button>
+                            <button class="button-comment"  ion-button (click)="cancel(_subcomment)" >取消</button>
+                            <button class="button-comment"  ion-button (click)="postCommentUnderComment(_subcomment,_comment)" > 回复  <ion-spinner  name="dots" *ngIf="isPosting"></ion-spinner></button>
+                          </div>
+                        </div>
+                      </div>
+
+                    </div>
+                </ion-col>
+          </div>
+
+            <!--</ion-item>-->
+          <!--</ion-list>-->
+        </div>
+        </ion-card>
+
+      </div>
+    </ion-list>
+
+    <ion-list *ngSwitchCase="'exercise'">
+
+    </ion-list>
+
+    <ion-list class="vocabulary" *ngSwitchCase="'vocabulary'" >
+
+      <div *ngIf="userInfo.identity == MyUserType.student">
+        <ion-row class="vacabulary-main" >
+
+          <ion-col col-2 >
+            <button *ngIf="currentIndex > 0" disabled={{disableArrowButton}} #backArrow ion-button clear (click)="slides.slidePrev(1000)">
+              <ion-icon  name="arrow-back" ></ion-icon>
+            </button>
+          </ion-col>
+
+          <ion-col col-8>
+            <ion-slides #slides (ionSlideDidChange)="slideChanged()" >
+              <ion-slide *ngFor="let _vacabulary of vacabularys">
+                <ion-card class="vocabulary-card">
+                  <ion-card-header>
+                    {{_vacabulary.word}} <span>{{_vacabulary.pronunciation}}</span>
+                  </ion-card-header>
+
+                  <ion-card-content>
+                    <p>{{_vacabulary.mean}}</p>
+                  </ion-card-content>
+                </ion-card>
+              </ion-slide>
+            </ion-slides>
+          </ion-col>
+
+          <ion-col col-2 >
+            <button *ngIf="currentIndex < vacabularys.length-1"  disabled={{disableArrowButton}} ion-button clear (click)="slides.slideNext(1000)">
+              <ion-icon name="arrow-forward" ></ion-icon>
+            </button>
+          </ion-col>
+
+        </ion-row>
+        <div class="avatar" text-center>
+          <img width="120" height="120" src="{{userInfo.userAvatar}}">
+        </div>
+        <div class="voice-recorder" padding>
+          <div>
+            <button ion-button (click)="testAudio()" disabled={{disablePlayButton}}>
+              {{playButtonText}}
+              <!--<ion-icon name={{testButtonIcon}}></ion-icon>-->
+            </button>
+          </div>
+          <div>
+            <button #btRecorder class="bt-recorder"  (click)="startPauseRecord()" disabled={{disableRecordButton}} >
+              <ion-icon name={{recordButtonIcon}}></ion-icon>
+            </button>
+          </div>
+          <div>
+            <button  ion-button (click)="submitHomework()" disabled={{disablePlayButton}}>
+              提交作业
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="userInfo.identity == MyUserType.teacher">
+        <ion-item *ngFor="let homework of arrHomework" (click) = "playAll(homework.audios)">
+          <ion-avatar item-left>
+            <img src={{homework.studen_phone}}>
+          </ion-avatar>
+          <h2>Finn</h2>
+          <h3></h3>
+        </ion-item>
+      </div>
+
+    </ion-list>
+
+    <!--<ion-list class="vocabulary" *ngSwitchCase="'vocabulary'" >-->
+      <!--<ion-item >-->
+        <!--<ion-icon name="leaf" item-left></ion-icon>-->
+        <!--Herbology-->
+        <!--<ion-icon name="rose" item-right></ion-icon>-->
+      <!--</ion-item>-->
+
+    <!--</ion-list>-->
+
+  </ion-col>
+
+</ion-content>
+
