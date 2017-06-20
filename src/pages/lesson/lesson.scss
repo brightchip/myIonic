@@ -76,6 +76,7 @@ page-lesson {
                 width: 50px;
                 height: 30px;
                 float: right;
+                text-align: center;
               }
            }
 
@@ -178,9 +179,29 @@ page-lesson {
 
           }
 
+          .no-comments{
+            text-align: center;
+            font-size: large;
+            font-family: Calibri ;
+            color: color($colors, link2);
+          }
 
         }
 
+        .bt-updatecard{
+          //height: ;
+          height: 100%;
+          text-align: center;
+        }
+
+        .record-text{
+          width: 100%;
+          text-align: center;
+        }
+
+        .bt-recorder{
+          background-color: transparent;
+        }
         //.vocabulary {
 
         div {
@@ -189,19 +210,19 @@ page-lesson {
             flex-direction: row;
             ion-col {
               background-color: #8f8f8f;
-              button {
-                color: #0a86d4;
-                background-color: #F4D03F;
-                //margin-top:100%;
-                text-align: center;
-                //margin-left: auto;
-                //margin-right: auto;
-                height: 100%;
-                ion-icon {
-                  text-align: center;
-                  font-size: 40px;
-                }
-              }
+              //button {
+              //  color: #0a86d4;
+              //  background-color: #F4D03F;
+              //  //margin-top:100%;
+              //  text-align: center;
+              //  //margin-left: auto;
+              //  //margin-right: auto;
+              //  height: 100%;
+              //  ion-icon {
+              //    text-align: center;
+              //    font-size: 40px;
+              //  }
+              //}
               //
               //backArrow{
               //  visibility: hidden;
@@ -293,17 +314,21 @@ page-lesson {
     }
 
     .image-chooser{
-      display: grid;
-      grid-template-columns: 25vh 25vh ;
-      grid-gap: 10%;
+      //display: grid;
+      //grid-template-columns: 25vh 25vh ;
+      //grid-gap: 10%;
       //background-color: #444;
       //color: #444;
       height: 50vh;
       width: 100%;
       bottom: 0;
+      padding: 20px;
 
       .image-box{
         position: relative;
+        float: left;
+        //background-color: #0a86d4;
+        width: 50%;
       }
       .answerInfo{
         z-index: 100;

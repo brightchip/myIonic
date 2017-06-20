@@ -248,6 +248,7 @@
                 </div>
 
                 <div class="image-chooser">
+
                   <div *ngFor="let _random of _vacabulary.randoms" >
                     <div class="image-box">
                       <img   src={{_random.img_url}} (click)="pickAnswer(_random)" />

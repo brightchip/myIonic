@@ -59573,8 +59573,8 @@ page-chatting ion-footer .chat-box {
 }
 
 page-chatting ion-footer .voice-input {
-  width: 80%;
-  float: left;
+  width: 100%;
+  float: right;
   background-color: #f4f4f4;
   color: #222;
 }
@@ -59640,6 +59640,11 @@ page-home .home-header {
   width: 100%;
   height: 30%;
   position: relative;
+}
+
+page-home .home-header .flash-img {
+  width: 100%;
+  height: 200px;
 }
 
 page-home .home-header .bt-checckin {
@@ -59744,18 +59749,10 @@ page-home .course-recommend .rcourses {
   text-align: center;
 }
 
-page-lesson ion-content {
-  background-color: #0a86d4;
-}
-
-page-lesson ion-content .send-comment {
-  width: 100%;
-  float: right;
-  padding: 0 10px;
-}
-
 page-lesson ion-content .lesson-head ion-segment {
-  background-color: #478aff;
+  color: #30d05f;
+  background-color: #0a86d4;
+  text-color: #30d05f;
 }
 
 page-lesson ion-content .lesson-head ion-segment ion-segment-button {
@@ -59776,48 +59773,79 @@ page-lesson ion-content .lesson-content ion-list video .videoPlayer {
 page-lesson ion-content .lesson-content ion-list .comments {
   width: 100%;
   margin-bottom: 5px;
-}
-
-page-lesson ion-content .lesson-content ion-list .comments .bt-reply {
-  color: #9F9F9F;
-}
-
-page-lesson ion-content .lesson-content ion-list .comments .loading-comment {
-  width: 50px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-page-lesson ion-content .lesson-content ion-list .comments .loading-comment ion-spinner * {
-  width: auto;
-  height: auto;
-  fill: #222;
-}
-
-page-lesson ion-content .lesson-content ion-list .comments .no-comments {
-  margin-left: auto;
-  margin-right: auto;
-  color: #478aff;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
 }
 
 page-lesson ion-content .lesson-content ion-list .comments .comment-post {
-  width: 100%;
+  height: auto;
 }
 
-page-lesson ion-content .lesson-content ion-list .comments .comment-post .card-post-comment {
-  overflow: scroll;
+page-lesson ion-content .lesson-content ion-list .comments .loading-comment {
+  width: auto;
+  text-align: center;
+  float: right;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  margin-right: 10px;
+  margin-top: -10px;
 }
 
-page-lesson ion-content .lesson-content ion-list .comments .comment-post .card-post-comment textAreaComment {
-  overflow: scroll;
+page-lesson ion-content .lesson-content ion-list .comments .loading-comment ion-spinner * {
+  width: 28px;
+  height: 28px;
+  stroke: #444;
+  margin-left: auto;
+  margin-right: auto;
+  fill: #222;
 }
 
-page-lesson ion-content .lesson-content ion-list .comments .comment-post .button_emoji {
+page-lesson ion-content .lesson-content ion-list .comments .send-comment {
+  padding-right: 10px;
+  width: auto;
   float: right;
 }
 
-page-lesson ion-content .lesson-content ion-list .comments .comment-post .button-comment {
+page-lesson ion-content .lesson-content ion-list .comments .send-comment .button_emoji {
   float: right;
+}
+
+page-lesson ion-content .lesson-content ion-list .comments .send-comment .button-comment {
+  width: 50px;
+  height: 30px;
+  float: right;
+}
+
+page-lesson ion-content .lesson-content ion-list .comments .card-post-comment {
+  overflow: scroll;
+}
+
+page-lesson ion-content .lesson-content ion-list .comments .card-post-comment textAreaComment {
+  overflow: scroll;
+}
+
+page-lesson ion-content .lesson-content ion-list .comments .button-comment {
+  width: auto;
+  font-size: 15px;
+  float: right;
+  height: auto;
+}
+
+page-lesson ion-content .lesson-content ion-list .comments .comment-contents {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
 }
 
 page-lesson ion-content .lesson-content ion-list .comments .comment-content {
@@ -59830,17 +59858,46 @@ page-lesson ion-content .lesson-content ion-list .comments .comment-content {
   padding-bottom: 20px;
 }
 
-page-lesson ion-content .lesson-content ion-list .comments .comment-content .head-comment-avatar ion-thumbnail img {
-  width: 80px;
-  height: 80px;
+page-lesson ion-content .lesson-content ion-list .comments .comment-content .reply-div {
+  width: 100%;
 }
 
-page-lesson ion-content .lesson-content ion-list .comments .comment-content .head-comment-content h2 {
+page-lesson ion-content .lesson-content ion-list .comments .comment-content .reply-div .bt-sub {
+  float: right;
+}
+
+page-lesson ion-content .lesson-content ion-list .comments .comment-content .reply-div .bt-reply {
+  color: #9F9F9F;
+}
+
+page-lesson ion-content .lesson-content ion-list .comments .comment-content .head-comment-avatar {
+  width: 20%;
+  padding: 3px;
+}
+
+page-lesson ion-content .lesson-content ion-list .comments .comment-content .head-comment-avatar ion-thumbnail img {
+  width: 50px;
+  height: 50px;
+}
+
+page-lesson ion-content .lesson-content ion-list .comments .comment-content .head-comment-content {
+  width: 80%;
+  padding: 0;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+page-lesson ion-content .lesson-content ion-list .comments .comment-content .head-comment-content .user-name {
   font-size: 17px;
+  top: 0;
   color: #478aff;
 }
 
-page-lesson ion-content .lesson-content ion-list .comments .comment-content .head-comment-content h2 span {
+page-lesson ion-content .lesson-content ion-list .comments .comment-content .head-comment-content .user-name span {
   margin-left: 20px;
   font-size: 12px;
   color: #9F9F9F;
@@ -59876,16 +59933,19 @@ page-lesson ion-content .lesson-content ion-list div .vacabulary-main {
 }
 
 page-lesson ion-content .lesson-content ion-list div .vacabulary-main ion-col {
-  padding-top: auto;
-  padding-bottom: auto;
+  background-color: #8f8f8f;
 }
 
-page-lesson ion-content .lesson-content ion-list div .vacabulary-main ion-col .bt-updatecard {
-  background-color: transparent;
-  margin-top: 60%;
+page-lesson ion-content .lesson-content ion-list div .vacabulary-main ion-col button {
+  color: #0a86d4;
+  background-color: #F4D03F;
   text-align: center;
-  top: 30%;
-  height: 40%;
+  height: 100%;
+}
+
+page-lesson ion-content .lesson-content ion-list div .vacabulary-main ion-col button ion-icon {
+  text-align: center;
+  font-size: 40px;
 }
 
 page-lesson ion-content .lesson-content ion-list div .vacabulary-main ion-col .vocabulary-card {
@@ -59913,11 +59973,6 @@ page-lesson ion-content .lesson-content ion-list div .avatar {
   margin-bottom: 10%;
 }
 
-page-lesson ion-content .lesson-content ion-list div .record-text {
-  width: 100%;
-  text-align: center;
-}
-
 page-lesson ion-content .lesson-content ion-list div .voice-recorder {
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -59932,20 +59987,60 @@ page-lesson ion-content .lesson-content ion-list div .voice-recorder div {
   margin-right: auto;
 }
 
-page-lesson ion-content .lesson-content ion-list div .voice-recorder div .bt-submit {
+page-lesson ion-content .lesson-content ion-list div .voice-recorder div button {
+  border-radius: 60px;
   width: 100px;
   height: 60px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
-page-lesson ion-content .lesson-content ion-list div .voice-recorder div .bt-recorder {
-  background-color: transparent;
-  text-align: center;
-  border: transparent;
+page-lesson ion-content .lesson-content ion-list div .voice-recorder div .bt-recorder ion-icon {
+  font-size: 60px;
 }
 
-page-lesson img {
+page-lesson ion-content .lesson-content ion-list page-lesson img {
   max-width: 140px;
   border-radius: 50%;
+}
+
+page-lesson ion-content .lesson-content ion-list .count-down-text {
+  text-align: center;
+}
+
+page-lesson ion-content .word-playing {
+  height: 20vh;
+}
+
+page-lesson ion-content .word-playing p {
+  font-size: small;
+}
+
+page-lesson ion-content .image-chooser {
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: 25vh 25vh;
+  grid-template-columns: 25vh 25vh;
+  grid-gap: 10%;
+  height: 50vh;
+  width: 100%;
+  bottom: 0;
+}
+
+page-lesson ion-content .image-chooser .image-box {
+  position: relative;
+}
+
+page-lesson ion-content .image-chooser .answerInfo {
+  z-index: 100;
+  top: 0;
+  left: 10px;
+  position: absolute;
+}
+
+page-lesson ion-content .image-chooser img {
+  height: 22vh;
+  width: 22vh;
 }
 
 page-user .logo {
@@ -60413,6 +60508,20 @@ page-veducation .education-vacation-classes .card-subtitle {
   bottom: 5%;
   width: 100%;
   color: #fff;
+}
+
+page-video-dubbing .main-content video {
+  width: 100%;
+  height: auto;
+}
+
+page-video-dubbing .main-content video .videoPlayer {
+  width: 100%;
+  height: auto;
+}
+
+page-video-dubbing .main-content .bt-recorder {
+  background-color: #3b5998;
 }
 
 page-view-account h1 {

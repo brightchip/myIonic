@@ -135,6 +135,7 @@ export class LessonPage {
   private showResultPage: boolean;
   private totalWrongTimes: number | any;
   wrongWordList = [];
+  lastRandom = 0;
 
   constructor(
     public events:Events,
@@ -431,6 +432,7 @@ export class LessonPage {
     // for(let i=0;i<this.vacabularys.length;i++){
     // }
     // $('#showExplain').hide();
+    this.lastRandom = 0;
 
     this.dbHelper.getTestResult(this.lesson_id).then( (result) => {
       if(result != null && typeof result != "undefined"){
@@ -761,10 +763,13 @@ export class LessonPage {
     let indexArr = [];
     for(let i=0;i< this.vacabularys.length;i++){
       if(this.vacabularys[i].need_recite_count > 0){
-        console.log("checkArray",this.vacabularys[i])
+        // console.log("checkArray",this.vacabularys[i])
         indexArr.push(i);
       }
     }
+    // if(indexArr.indexOf(this.currentIndex) > -1 && indexArr.length > 1){
+    //   indexArr.slice(this.currentIndex,1);
+    // }
    return indexArr;
   }
 
@@ -775,6 +780,7 @@ export class LessonPage {
 
   getNextTestVocabulary(){
     let temArr = this.checkArray();
+    console.log("getNextTestVocabulary",temArr);
     if(temArr.length < 1){
       console.log("getNextTestVocabulary show results")
       this.totalWrongTimes = 0;
@@ -795,11 +801,17 @@ export class LessonPage {
     }
     // console.log("getNextTestVocabulary",temArr);
     let length = temArr.length;
-    if(length == 1){
+    if(length <= 1){
       return temArr[0];
     }
-    console.log("getNextTestVocabulary",temArr,length);
+
     let random =  Math.floor(Math.random() * length);
+    console.log("getNextTestVocabulary",temArr,random,this.lastRandom);
+    if(random == this.lastRandom){
+      console.log("repeat and re-check")
+     return this.getNextTestVocabulary()
+    }
+    this.lastRandom = temArr[random];
     return temArr[random];
       // if(this.vacabularys[temArr[random]].need_recite_count < 1){
       //   return this.getNextTestVocabulary();
