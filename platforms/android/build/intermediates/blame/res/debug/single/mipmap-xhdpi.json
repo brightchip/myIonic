@@ -1,9 +1,5 @@
 [
     {
-        "merged": "D:\\Development\\Projects\\Cordova\\Ionic\\Myionicapp\\platforms\\android\\build\\intermediates\\res\\merged\\debug\\mipmap-xhdpi\\icon.png",
-        "source": "D:\\Development\\Projects\\Cordova\\Ionic\\Myionicapp\\platforms\\android\\res\\mipmap-xhdpi\\icon.png"
-    },
-    {
         "merged": "E:\\Development\\Projects\\Cordova\\Ionic\\Myionicapp\\platforms\\android\\build\\intermediates\\res\\merged\\debug\\mipmap-xhdpi\\icon.png",
         "source": "E:\\Development\\Projects\\Cordova\\Ionic\\Myionicapp\\platforms\\android\\res\\mipmap-xhdpi\\icon.png"
     }

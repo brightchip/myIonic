@@ -6,7 +6,9 @@ import { ConferenceData } from '../../providers/conference-data';
 import {UserData} from "../../providers/user-data";
 
 import {AngularInview} from 'ionicInView';
-
+import {ScreenOrientation} from "@ionic-native/screen-orientation";
+import * as $ from 'jquery'
+import {CoursePage} from "../course/course";
 
 @Component({
   selector: 'page-senglish',
@@ -16,10 +18,14 @@ export class SpecialEnglishPage {
   @ViewChild ("itroVideoPlayer") itroVideoPlayer: any[];
 
   actionSheet: ActionSheet;
-  specialEnglishBooks: any[] = [{book_id:1,title:"book1",courseTimeSpan:9,content:"this is book1",logo:"assets/img/logos/se.png",videoIntroduction:"assets/video/sample.mp4"},
-    {book_id:2,title:"book2",courseTimeSpan:9,content:"this is book2",logo:"assets/img/th.jpg",videoIntroduction:"assets/video/sample.mp4"},
-    {book_id:2,title:"book3",courseTimeSpan:9,content:"this is book3",logo:"assets/img/nonnonbiyori.jpg",videoIntroduction:"assets/video/sample1.mp4"},
-    {book_id:2,title:"book4",courseTimeSpan:9,content:"this is book4",logo:"assets/img/nonobiyori.jpg",videoIntroduction:"assets/video/sample2.mp4"}];
+
+
+  specialCourses: any[] = [
+    {book_id:1,title:"动感音标",courseTimeSpan:9,content:"this is 动感音标",logo:"assets/img/logos/se.png",videoIntroduction:"assets/video/sample.mp4"},
+    {book_id:2,title:"酷玩单词",courseTimeSpan:9,content:"this is 酷玩单词",logo:"assets/img/th.jpg",videoIntroduction:"assets/video/sample.mp4"},
+    {book_id:3,title:"魅力语法",courseTimeSpan:9,content:"this is 魅力语法",logo:"assets/img/nonnonbiyori.jpg",videoIntroduction:"assets/video/sample1.mp4"},
+    {book_id:4,title:"嘻哈语法",courseTimeSpan:9,content:"this is 嘻哈语法",logo:"assets/img/nonobiyori.jpg",videoIntroduction:"assets/video/sample2.mp4"}];
+
 
 currentPlayingVideo : any;
 
@@ -31,20 +37,47 @@ currentPlayingVideo : any;
     public config: Config,
     public inAppBrowser: InAppBrowser,
     public userData: UserData,
+    private screenOrientation: ScreenOrientation,
     // private videoPlayer: VideoPlayer
   ) {
     // console.log("Passed params", navParams.data);
 
   }
 
-  gotoOnlineCourse(_specialEnglishBooks){
+  onFullScreen(state) {
+      // get current
+      // console.log(this.screenOrientation.type); // logs the current orientation, example: 'landscape'
+      if(state){
+        // Disable orientation lock
+        this.screenOrientation.unlock();
+        this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.LANDSCAPE);
+      }else {
+        this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.PORTRAIT);
+      }
+      console.log("fullScreen has end!",this.screenOrientation.type);
+    }
+
+  addVideoControl(){
+    var self = this;
+    var video =  $(' #specengVideo');
+    console.log("addVideoControl",video)
+    video.bind('webkitfullscreenchange mozfullscreenchange fullscreenchange', function(e) {
+      var state =  document.webkitIsFullScreen;
+      var event = state ? 'FullscreenOn' : 'FullscreenOff';
+      // Now do something interesting
+      console.log('Event: ' + event);
+      self.onFullScreen(state);
+    });
+  }
+
+  gotoSpecialCourse(_specialEnglishBooks){
     console.log("gotoOnlineCourse");
+    this.navCtrl.push(CoursePage,{course:_specialEnglishBooks });
   }
 
   findLocation(_specialEnglishBooks){
     console.log("findLocation");
   }
-
 
 
   playVideo(){
@@ -55,8 +88,13 @@ currentPlayingVideo : any;
     console.log("lineInView",index);
   }
 
+  ionViewDidEnter(){
+    this.addVideoControl();
+  }
+
   ionViewDidLeave() {
     this.pauseVideo();
+
   }
 
   videoPlayed(specialEnglishBooks:any){

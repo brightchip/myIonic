@@ -5,7 +5,7 @@ page-lesson {
     .lesson-head ion-segment{
       color: #30d05f;
       background-color: #0a86d4;
-      //text-color:   #30d05f;
+      text-color:   #30d05f;
       ion-segment-button  {
         color: #30d05f;
         text-color:   #30d05f;
@@ -27,11 +27,15 @@ page-lesson {
         .comments{
           width: 100%;
           margin-bottom: 5px;
+          display: flex;
+          flex-direction: column;
 
-          .bt-reply{
-            color: color($colors, badge);
+          .comment-post {
+            //background-color: #3b5998;
+            height: auto;
+            //display: flex;
+            //flex-direction: column;
           }
-
           .loading-comment{
             width: auto;
             text-align: center;
@@ -55,49 +59,96 @@ page-lesson {
           }
 
 
-          .comment-post{
+          .send-comment{
+              padding-right: 10px;
+              //height: 100px;
+            //background-color: #3b5998;
+              width: auto;
+              //display:flex;
+              //flex-direction: row;
+              float: right;
 
-            margin-right: 10px;
-            margin-top: -10px;
-
-            .card-post-comment{
-              overflow: scroll;
-              textAreaComment{
-                overflow: scroll;
+              .button_emoji{
+                float: right;
               }
-            }
 
-            .button-comment{
+              .button-comment{
+                width: 50px;
+                height: 30px;
+                float: right;
+              }
+           }
+
+          .card-post-comment{
+            overflow: scroll;
+            textAreaComment{
+              overflow: scroll;
+            }
+          }
+
+          .button-comment{
               width: auto;
               font-size: 15px;
               float: right;
               height: auto;
             }
 
-          }
 
+          .comment-contents{
+            display: flex;
+            flex-direction: column;
+          }
 
           .comment-content{
             display: flex;
             flex-direction: row;
             padding-bottom: 20px;
+            //padding: 10px ;
             //overflow: visible;
+            //background-color: #2ec95c;
+            .reply-div{
+              width:100%;
+              //float: right;
+              //padding:5px;
+              //background-color: #2ec95c;
+              //display: flex;
+              //flex-direction: row;
+
+              .bt-sub{
+              float: right;
+              }
+
+              .bt-reply{
+                color: color($colors, badge);
+                //float: right;
+              }
+            }
 
             .head-comment-avatar{
               //background-color: #1b94e0;
+              width:20%;
+              padding: 3px;
+              //height:80px;
               ion-thumbnail img{
-                width:80px;
-                height:80px;
+                width:50px;
+                height:50px;
               }
             }
 
             .head-comment-content{
+              width: 80%;
+              padding: 0;
+              display: flex;
+              flex-direction: column;
+              //padding-top: 0;
 
-              h2{
+              //background-color: #2ec95c;
+              .user-name{
                 font-size: 17px;
+                top: 0;
                 color: color($colors, primary);
               }
-              h2  span{
+              .user-name  span{
                 margin-left: 20px;
                 font-size: 12px;
                 color: color($colors, badge);
@@ -116,6 +167,7 @@ page-lesson {
                 display: flex;
                 flex-direction: row;
                 margin-bottom: 5px;
+
               }
 
               ion-thumbnail img{
@@ -217,15 +269,56 @@ page-lesson {
 
           }
         }
+
+        page-lesson  img{
+          max-width: 140px;
+          border-radius: 50%;
+        }
+
+        .count-down-text{
+          text-align: center;
+        }
+
       }
 
     }
 
+
+    .word-playing{
+      height: 20vh;
+      //background-color: #3b5998;
+      p{
+        font-size: small;
+      }
+    }
+
+    .image-chooser{
+      display: grid;
+      grid-template-columns: 25vh 25vh ;
+      grid-gap: 10%;
+      //background-color: #444;
+      //color: #444;
+      height: 50vh;
+      width: 100%;
+      bottom: 0;
+
+      .image-box{
+        position: relative;
+      }
+      .answerInfo{
+        z-index: 100;
+        top: 0;
+        left:10px;
+        position: absolute;
+      }
+
+      img{
+        height: 22vh;
+        width: 22vh;
+      }
+
+    }
   }
 
 }
 
-page-lesson  img{
-  max-width: 140px;
-  border-radius: 50%;
-}

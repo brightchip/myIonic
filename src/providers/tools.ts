@@ -1,0 +1,429 @@
+import {Injectable} from "@angular/core";
+import {AlertController, Events, LoadingController, Platform, ToastController} from "ionic-angular";
+import {UserData} from "./user-data";
+import {Transfer, TransferObject} from "@ionic-native/transfer";
+import * as Enums from "./globals";
+import { File  } from '@ionic-native/file';
+
+/**
+ * Created by Winjoy on 5/19/2017.
+ */
+
+@Injectable()
+export class Tools{
+
+  // BASE_URL;
+  // IMAGE_DIR_NAME;
+  // AUDIO_DIR_NAME;
+
+  BASE_URL:string = Enums.baseUrl + '/userRouter/';
+  IMAGE_DIR_NAME:string = Enums.IMAGE_DIR_NAME ;
+  AUDIO_DIR_NAME:string = Enums.AUDIO_DIR_NAME ;
+  ROOT_DIR;
+  IMAGE_DIR;
+  AUDIO_DIR;
+  fileTransfer:TransferObject;
+
+  loading;
+  public loadingContent: any;
+
+  constructor(
+    private file:File,
+    private platform:Platform,
+    private alertCtrl: AlertController,
+    public events:Events,
+    public toastCtrl:ToastController,
+    private transfer: Transfer,
+    public  loadingCtrl:LoadingController
+
+  ){
+    console.log("tool constructor.......");
+    this.getRootDir();
+    this.fileTransfer = this.transfer.create();
+  }
+
+  getRootDir(){
+    if (this.platform.is('android')){
+      this.ROOT_DIR = this.file.externalDataDirectory;
+      this.IMAGE_DIR =  this.ROOT_DIR  + this.IMAGE_DIR_NAME;
+      this.AUDIO_DIR =  this.ROOT_DIR  + this.AUDIO_DIR_NAME;
+
+      console.log("getRootDir ",this.file.externalDataDirectory + " externalRootDirectory " + this.file.externalRootDirectory)
+      return this.ROOT_DIR;
+    }
+  }
+
+  retriveUserAvatar(arrFileNames) : Promise<boolean>{
+    console.log("retriveUserAvatar..."  );
+    let  self = this;
+    return this.downloadMultiFiles(self,"",arrFileNames,"avatars",this.IMAGE_DIR,this.BASE_URL,this.fileTransfer,this.file)
+      .then( result => {
+        console.log("retriveUserAvatars", "finished" );
+        return true;
+      } )
+      .catch( error => {
+        console.log("retriveUserAvatars", "Error while retrive User Avatars" );
+        return false;
+      } );
+  }
+
+  downloadAvatar(avatar){
+    this.file.checkDir(this.ROOT_DIR, this.IMAGE_DIR_NAME).then((exist) =>{
+      console.log('Directory exists')
+      this.downloadImg(avatar);
+    }).catch((err) => {
+      console.log("directory does not exist")
+      this.file.createDir(this.ROOT_DIR, this.IMAGE_DIR_NAME, true).then(() => {
+        this.downloadImg(avatar);
+      })
+        .catch((err) => { console.log("error during creating directory", err)  });
+    });
+  }
+
+  downloadAllhomeworks(arrHomeworkCollection):Promise<any>{
+    return this.file.checkDir(this.ROOT_DIR, this.AUDIO_DIR_NAME).then((exist) =>{
+      console.log('Directory exists')
+      return    this.checkAllHomeworks(arrHomeworkCollection,this.ROOT_DIR + this.AUDIO_DIR_NAME,this.BASE_URL);
+    }).catch((err) => {            //checkin dir error
+      this.file.createDir(this.ROOT_DIR , this.AUDIO_DIR_NAME , true).then(() => {
+        return this.checkAllHomeworks(arrHomeworkCollection, this.ROOT_DIR + this.AUDIO_DIR_NAME, this.BASE_URL);
+      })
+        .catch((err) => {
+          console.log("error during creating directory", err)
+        });
+      console.log('Directory not exists')
+    });
+  }
+
+  checkAllHomeworks(arrHomework,downloadForlder,baseUrl) : Promise<boolean>{
+    console.log("checkAllHomeworks..."  );
+    var promises = [];
+
+    var arrHomeworkData = [];
+    var self = this;
+
+    arrHomework.forEach(function (homework) {
+      let studen_phone = homework.student_phone;
+      let arrAudioFiles = homework.vacabulary_pronunciation;
+      let homeworkdata = {studen_phone:studen_phone,audios:downloadForlder + "/" + arrAudioFiles }
+      arrHomeworkData.push(homeworkdata);
+
+      let checkHomeworkPromise =    self.downloadMultiFiles(self,studen_phone,arrAudioFiles,"audios",downloadForlder,baseUrl,self.fileTransfer,self.file)
+        .then( result => Promise.resolve(result) )
+        .catch( error => Promise.resolve( [] ) );
+
+      promises.push(checkHomeworkPromise);
+      console.log("checkAllHomeworks","studen_phone:" + studen_phone + " audio files:" + arrAudioFiles);
+    });
+
+    // this.userData.saveHomeworkData(arrHomeworkData);
+
+    console.log("checkAllHomeworks","Promise all...");
+    return   Promise.all(promises).then(data => {
+      console.log("checkAllHomeworks", "finished" );
+      console.log("checkAllHomeworks", "finished" );
+      return true;
+    }, err => {
+
+      console.log("checkAllHomeworks", "Error while checking All Homeworks" );
+      return false;
+    });
+  }
+
+  downloadMultiFiles(self,phone,arrFileNames,fileType,downloadPath,baseUrl,fileTransfer,file) : Promise<boolean>{
+    let arrPromise = [];
+    let fileNames = [];
+
+    console.log("downloadMultiFiles","baseUrl:" + baseUrl + " downloadPath:" + downloadPath + " arrFileNames:" + arrFileNames);
+    arrFileNames.forEach(function (i) {
+      let fileName = i;
+      if(fileNames.indexOf(fileName) < 0){
+
+        fileNames.push(fileName);
+        console.log("downloadMultiFiles:file",fileName,file,fileTransfer);
+
+        file.checkFile(downloadPath,fileName).then( (exist) =>{
+          console.log("downloadMultiFiles",fileName + " exist!");
+        }).catch( (err) => {
+          console.log("downloadMultiFiles:url",baseUrl + "download" + "?fileName=" + fileName + "&fileType=" + fileType + "&schoolName= ",downloadPath + "/" + fileName)
+          let promise =    self.downloadFileFromSpecifiedLink(baseUrl + "download" + "?fileName=" + fileName + "&fileType=" + fileType + "&schoolName= ",downloadPath + "/" + fileName)
+            .then( result => Promise.resolve(result))
+          arrPromise.push(promise);
+          // console.log("error while checkFile" + err)
+        })
+
+      }
+
+    });
+
+    console.log("downloadMultiFiles","Promise all...");
+    return   Promise.all(arrPromise).then(data => {
+      console.log("downloadMultiFiles","finished download user:" + phone)
+      return true;
+    }, err => {
+      console.log("downloadMultiFiles", "Error while download file " + err);
+      return false;
+    });
+  }
+
+  public uploadImage(imagePath:string,fileName:string) :Promise<boolean>{
+    // File for Upload
+    var targetPath = imagePath;
+    // File name only
+
+    var options = {
+      fileKey: "avatar",
+      fileName: fileName,
+      chunkedMode: false,
+      mimeType: "image/jpeg",
+    };
+    console.log("uploadImage","targetPath " + targetPath + " filename " + fileName);
+    // Use the FileTransfer to upload the image
+    return  this.fileTransfer.upload(targetPath , this.BASE_URL + "uploadAvatar" , options).then(data => {
+      this.presentToast('Image succesful uploaded.');
+      //save avatar to local cache
+      // this.userData.userInfo.userAvatar = targetPath;
+      // this.userData.setUserInfo(this.userData.userInfo);
+      return true;
+    }, err => {
+      this.presentToast('Error while uploading file.');
+      console.log("uploadImage","Error while uploading file " + err);
+      return false;
+    });
+  }
+
+  uploadMultiFiles(audioFiles,baseUrl,phone,lesson_id):Promise<any>{
+    var promises = [];
+    var arrayFileName = [];
+
+    let self = this;
+    audioFiles.forEach(function (i) {
+      console.log("submitHomework","processing "  + i.audio)
+      let fileName = i.audio.substr(i.audio.lastIndexOf('/') + 1);
+
+      let options = {
+        fileKey: "audio",
+        fileName:fileName ,
+        chunkedMode: false,
+        mimeType: "audio/mp3",
+      };
+
+      let uploadPromise =  self.fileTransfer.upload(i.audio, baseUrl + "uploadAudio", options)
+        .then( result => Promise.resolve(result))
+        .catch( error => Promise.resolve( [] ));
+
+      arrayFileName.push(fileName);
+      promises.push(uploadPromise);
+    });
+
+    console.log("submitHomework","Promise all...");
+    return   Promise.all(promises).then(data => {
+      this.presentToast('submitHomework succesful uploaded.');
+
+      return {phone:phone,arrayFileName:arrayFileName,lesson_id:lesson_id};
+    }, err => {
+      this.presentToast('submitHomework Error while uploading file.');
+      console.log("submitHomework", "Error while uploading file " + err);
+      return null;
+    });
+
+  }
+
+  public downloadImg(fileName:string) {
+    console.log('downloadImg : fileName' , fileName);
+    this.downloadFileFromSpecifiedLink(this.BASE_URL + "download" + "?fileName=" + fileName,this.getImageUrl(fileName)).then((result) => {
+      console.log('downloadImg result' + result);
+    });
+  }
+
+
+  public downloadFileFromSpecifiedLink(url:string,filePath:string) :Promise<any> {
+    console.log('downloadFileFromSpecifiedLink file from',url,'to' , filePath);
+
+    this.fileTransfer.onProgress((event: ProgressEvent) => {
+      let num = Math.floor(event.loaded / event.total * 100);
+      if (num === 100) {
+      } else {
+        // console.log('downloadFileFromSpecifiedLink progress' + num + '%');
+      }
+    });
+
+   return this.fileTransfer.download(url,filePath).then((entry) => {
+
+      console.log('downloadFileFromSpecifiedLink complete: ' , entry.toURL());
+      return true;
+    }, (error) => {
+      console.error('downloadFileFromSpecifiedLink : error' , error);
+     return false;
+    });
+
+
+  }
+
+  public getImageUrl(fileName){
+    return this.IMAGE_DIR + "/" + fileName;
+  }
+
+  public getAudioUrl(fileName){
+    return this.AUDIO_DIR + "/" + fileName;
+  }
+
+  public  getAvatar(avatar){
+    if(avatar != null && typeof avatar != "undefined"){
+      this.downloadAvatar(avatar)
+      console.log("getAvatar",this.getImageUrl(avatar))
+      return this.getImageUrl(avatar);
+    }else {
+      console.log("getAvatar", "assets/img/default_avatar.png")
+      return  "assets/img/default_avatar.png";
+    }
+  }
+
+
+  public presentToast(text) {
+    let toast = this.toastCtrl.create({
+      message: text,
+      duration: 3000,
+      position: 'top'
+    });
+    toast.present();
+  }
+
+
+
+  presentErrorAlert(errorTitle,errorContent) {
+    let alert = this.alertCtrl.create({
+      title: errorTitle,
+      subTitle:errorContent,
+      buttons: ['Dismiss']
+    });
+    alert.present();
+  }
+
+  cleanCache() {
+    console.log("logout:cleanCache" + this.ROOT_DIR  + " " + this.IMAGE_DIR_NAME);
+    this.file.removeRecursively(this.ROOT_DIR,this.IMAGE_DIR_NAME)
+      .catch( (err) => {
+        console.log("logout:removeRecursively" + err);
+      })
+  }
+
+  handleResCommentData(data):any{//return array of comments
+    console.log("handleResCommentData",data)
+
+    let comments = data.comments;
+    let userInfos = data.userinfo;
+    if(comments.length <= 0 || userInfos.length <= 0){
+      return [];
+    }
+
+    let arrFileNames = [];
+    let arrComments = [];
+    // var self = this;
+
+    for (var i = 0; i < userInfos.length ; i++) {
+      console.log("handleResCommentData",userInfos[i])
+
+      //if use haven't update the avatar
+      let fileName = "default_avatar.png";
+      let avatar = "assets/img/default_avatar.png";
+
+      if(userInfos[i].avatar != null && typeof userInfos[i].avatar != "undefined"){
+        fileName = userInfos[i].avatar;
+        avatar = this.getImageUrl(fileName);
+
+        if(arrFileNames.indexOf(fileName) < 0) {
+          arrFileNames.push(fileName);
+        }
+      }
+
+
+      //convert timestamp to readable date
+      let date = comments[i].comment_date;
+
+      //parse comments
+      arrComments.push(
+        {
+          comment_id:comments[i].comment_id,
+          avatar:avatar,
+          author:comments[i].anchor,
+          phone:userInfos[i].phone,
+          user_id:userInfos[i].user_id,
+          user_name:userInfos[i].user_name,
+          content:comments[i].content,
+          under_which_user:comments[i].under_which_user,
+          reply_which_comment:comments[i].reply_which_comment,
+          likes:comments[i].likes != null ? comments[i].likes : [] ,
+          likes_amount:comments[i].likes_amount,
+          unread_reply:comments[i].unread_reply,
+          showReply: false,
+          subComments :[] ,
+          comment_date:date})
+    }
+    //download user avatars----
+    // console.log("getComments arrFileNames",arrFileNames);
+    this.retriveUserAvatar(arrFileNames);
+    console.log("user-data:handleResCommentData",arrComments);
+    return arrComments;
+  }
+
+
+  public notifyUpdate(eventObj: any) {
+    console.log("notifyUpdate",eventObj)
+    // this.events.publish('websocket:send',eventObj );
+  }
+
+  init() {
+    this.getRootDir();
+  }
+
+  presentLoadingText() {
+   this.loading  = this.loadingCtrl.create({
+      spinner: 'hide',
+      content: this.loadingContent
+    });
+    this.loading.present();
+  }
+
+  dismissLoadingText(dismissInstant){
+    if(this.loading == null){
+      return;
+    }
+    this.loading.dismiss();
+    // if(dismissInstant){
+    //
+    // }else {
+    //   setTimeout(() => {
+    //     this.loading.dismiss();
+    //   }, 1000);
+    // }
+
+  }
+
+  deepClone(oldArray: Object[]) {
+    let newArray: any = [];
+    oldArray.forEach((item) => {
+      newArray.push(Object.assign({}, item));
+    });
+    return newArray;
+  }
+
+  handleUserInfo(data) {
+    let userInfo = data;
+    userInfo.avatar =  this.getAvatar(data.avatar);
+    // userInfo.avatar  = this.IMAGE_DIR + "/" + fileName;
+    // let arrFileNames = [fileName];
+    // this.retriveUserAvatar(arrFileNames);
+   return userInfo;
+  }
+
+  checkRemoteFileUrl(audioFIle){
+    if(audioFIle.length <7){
+      return false
+    }
+    return true;
+  }
+
+
+
+}

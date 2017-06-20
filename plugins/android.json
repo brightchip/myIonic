@@ -51,10 +51,40 @@
         },
         "cordova-plugin-http": {
             "PACKAGE_NAME": "com.ionicframework.myionicapp723480"
+        },
+        "cordova-sqlite-storage": {
+            "PACKAGE_NAME": "com.ionicframework.myionicapp723480"
+        },
+        "cordova-plugin-network-information": {
+            "PACKAGE_NAME": "com.ionicframework.myionicapp723480"
+        },
+        "cordova-plugin-app-version": {
+            "PACKAGE_NAME": "com.ionicframework.myionicapp723480"
+        },
+        "cordova-plugin-appminimize": {
+            "PACKAGE_NAME": "com.ionicframework.myionicapp723480"
+        },
+        "cordova-plugin-x-toast": {
+            "PACKAGE_NAME": "com.ionicframework.myionicapp723480"
+        },
+        "cordova-plugin-appavailability": {
+            "PACKAGE_NAME": "com.ionicframework.myionicapp723480"
+        },
+        "cordova-plugin-screen-orientation": {
+            "PACKAGE_NAME": "com.ionicframework.myionicapp723480"
+        },
+        "cordova-plugin-device-orientation": {
+            "PACKAGE_NAME": "com.ionicframework.myionicapp723480"
+        },
+        "cordova-plugin-geolocation": {
+            "PACKAGE_NAME": "com.ionicframework.myionicapp723480"
         }
     },
     "dependent_plugins": {
         "cordova-plugin-compat": {
+            "PACKAGE_NAME": "com.ionicframework.myionicapp723480"
+        },
+        "es6-promise-plugin": {
             "PACKAGE_NAME": "com.ionicframework.myionicapp723480"
         }
     }

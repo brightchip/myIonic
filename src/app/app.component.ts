@@ -1,29 +1,23 @@
 import { Component, ViewChild } from '@angular/core';
-
-import { Events, MenuController, Nav, Platform } from 'ionic-angular';
+import {Events, MenuController, Nav, Platform, ToastController} from 'ionic-angular';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { Storage } from '@ionic/storage';
-
 import { AboutPage } from '../pages/about/about';
 import { AccountPage } from '../pages/account/account';
 import { LoginPage } from '../pages/login/login';
-// import { MapPage } from '../pages/map/map';
-// import { SignupPage } from '../pages/signup/signup';
 import { TabsPage } from '../pages/tabs/tabs';
 import { TutorialPage } from '../pages/tutorial/tutorial';
-// import { SchedulePage } from '../pages/schedule/schedule';
 import { MyclassListPage } from '../pages/myclass-list/myclass-list';
-  import { SupportPage } from '../pages/support/support';
-
+import { SupportPage } from '../pages/support/support';
 import { HomePage } from '../pages/home/home';
 import { EntryPage } from '../pages/entry/entry';
-
-// import { ConferenceData } from '../providers/conference-data';
 import { UserData } from '../providers/user-data';
-import {SignupPage} from "../pages/signup/signup";
 import {WebsocketEntity} from "../providers/websocketEntity";
-import {LessonPage} from "../pages/lesson/lesson";
-
+import {Tools} from "../providers/tools";
+import {Auth} from "../providers/auth";
+import {ChatData} from "../providers/chat-data";
+import {DBHelper} from "../providers/dbhelper";
+import {enableProdMode} from '@angular/core';
 
 
 export interface PageInterface {
@@ -46,6 +40,7 @@ export class ConferenceApp {
   @ViewChild(Nav) nav: Nav;
 
   test:any;
+
 
   // List of pages that can be navigated to from the left menu
   // the left menu only works after login
@@ -70,20 +65,32 @@ export class ConferenceApp {
     { title: 'Signup', component: EntryPage, icon: 'person-add' }
   ];
   rootPage: any;
+  private loginToast: any;
 
   constructor(
     public events: Events,
     public userData: UserData,
     public menu: MenuController,
     public platform: Platform,
+    public chatData:ChatData,
     public websocket:WebsocketEntity,
-    // public confData: ConferenceData,
+    public tools: Tools,
+    public auth:Auth,
     public storage: Storage,
+    public toastCtrl:ToastController,
+    public dbHelper:DBHelper,
+
       // page: PageInterface,
   public splashScreen: SplashScreen
   ) {
+    // //noinspection JSAnnotator
+    // if (this.platform.is('ios') || this.platform.is('android')) {
+    //
+    //   enableProdMode();
+    // } else {
+    //   // something else
+    // }
 
-    this.websocket.connect();
 
     // Check if the user has already seen the tutorial
     this.storage.get('hasSeenTutorial')
@@ -94,6 +101,22 @@ export class ConferenceApp {
               if (hasIdentified) {
                 console.log("hasIdentified")
                 this.rootPage  = (TabsPage);
+                this.presentLoginToast("正在尝试连接到服务器...")
+                this.auth.checkAuthentication().then( success =>{
+                  // console.log("login: success",success)
+                  // this.rootPage  = (LoginPage)
+                  this.dimissToastBar();
+                  // this.chatData.login(this.userData.userInfo.user_id);
+                  console.log("token still working")
+                  this.websocket.connect();
+
+                }).catch( err =>{
+                  console.log("token expired")
+                  this.dimissToastBar();
+                  this.tools.presentToast("登录已过时")
+                  this.rootPage  = (LoginPage)
+                });
+
               } else {
                 this.rootPage  = (LoginPage)
                 // this.rootPage = (TabsPage)
@@ -105,12 +128,6 @@ export class ConferenceApp {
         // this.rootPage  = (TabsPage);
         this.platformReady()//ss
       });
-
-
-
-    // load the conference data
-    // confData.load();
-
     // decide which menu items should be hidden by current login status stored in local storage
     this.userData.hasLoggedIn().then((hasLoggedIn) => {
       this.enableMenu(hasLoggedIn === true);
@@ -118,6 +135,20 @@ export class ConferenceApp {
 
     this.listenToLoginEvents();
   }
+
+  dimissToastBar(){
+    this.loginToast.dismiss();
+  }
+
+  public presentLoginToast(text) {
+    this.loginToast = this.toastCtrl.create({
+      message: text,
+      duration: 3600000,
+      position: 'top'
+    });
+    this.loginToast .present();
+  }
+
 
   openPage(page: PageInterface) {
     // the nav component was found using @ViewChild(Nav)
@@ -131,8 +162,6 @@ export class ConferenceApp {
       this.nav.setRoot(page.component).catch(() => {
         console.log("Didn't set nav root");
       });
-
-
     }
 
     if (page.logsOut === true) {
@@ -141,7 +170,6 @@ export class ConferenceApp {
         this.userData.logout();
       }, 1000);
     }
-
   }
 
   openTutorial() {
@@ -175,18 +203,18 @@ export class ConferenceApp {
       this.rootPage  = (LoginPage);
       this.nav.setRoot(LoginPage);
 
-      this.userData.cleanCache();
+      // this.tools.cleanCache();
 
       this.websocket.closeConnection();
     });
 
-    this.events.subscribe('websocket:send', (eventObj) => {
-      this.websocket.sendData(eventObj);
-    });
-
-    this.events.subscribe('websocket:receive', (data) => {
-      this.handleData(data);
-    });
+    // this.events.subscribe('websocket:send', (eventObj) => {
+    //   this.websocket.sendData(eventObj);
+    // });
+    //
+    // this.events.subscribe('websocket:receive', (data) => {
+    //   this.handleData(data);
+    // });
 
   }
 
@@ -208,6 +236,7 @@ export class ConferenceApp {
     // Tabs are a special case because they have their own navigation
     if (childNav) {
       if (childNav.getSelected() && childNav.getSelected().root === page.tabComponent) {
+
         return 'primary';
       }
       return;
@@ -222,5 +251,7 @@ export class ConferenceApp {
   private handleData(data: any) {
     console.log("handleData",data)
   }
+
+
 
 }

@@ -6,15 +6,17 @@
     <ion-title>设置</ion-title>
   </ion-navbar>
 </ion-header>
+
+
 <ion-content >
 
   <ion-card>
     <ion-item >
     <ion-avatar item-left>
-      <img width="50" height="50" src={{userInfo.userAvatar}}>
+      <img width="50" height="50" src={{userData.userInfo.avatar}}>
     </ion-avatar>
-    <h2>{{userInfo.user_name}}</h2>
-    <p>签到次数:{{userInfo.checkinCount}}</p>
+    <h2>{{userData.userInfo.user_name}}</h2>
+    <p>签到次数:{{userData.userInfo.checkin_count}}</p>
     </ion-item>
   </ion-card>
 

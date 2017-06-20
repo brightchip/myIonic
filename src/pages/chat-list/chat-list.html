@@ -1,0 +1,27 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>消息</ion-title>　
+  </ion-navbar>
+</ion-header>
+
+<ion-content class="outer-content" >
+  <ion-list>
+      <ion-item *ngFor="let room of arrMessage" class="chat-list-item" (click)="gotoChatting(room)" >
+        <ion-thumbnail *ngIf="room.userInfo.avatar" class="icon-left">
+          <img  src="{{room.userInfo.avatar}}">
+        </ion-thumbnail>
+        <div class="message" padding>
+          <h2 class="message-title">{{room.userInfo.user_name}}</h2>
+          <p class="message-content">{{room.lastMessage}}</p>
+        </div>
+        <div class="date-container">
+          <ion-badge class="date">{{room.lastDate}}</ion-badge>
+        </div>
+      </ion-item>
+  </ion-list>
+
+</ion-content>
+

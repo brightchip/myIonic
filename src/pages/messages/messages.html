@@ -1,0 +1,30 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Account</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content class="outer-content">
+
+
+  <h1>{{selectedUser.user_name}}</h1>
+
+  <div class="userinfo" padding>
+    <h2><ion-icon name="call"></ion-icon>{{selectedUser.phone}}</h2>
+
+    <div class="profile">
+      <img src={{selectedUser.avatar}} alt="avatar">
+    </div>
+
+
+  </div>
+
+  <ion-footer padding>
+    <button ion-button  class="call"  (click)="call()">Call</button>
+    <button ion-button  class="sendmsg"  (click)="sendMsg()">SendMsg</button>
+  </ion-footer>
+
+</ion-content>

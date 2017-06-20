@@ -10,7 +10,7 @@
 </ion-header>
 
 <ion-content>
-<div  >
+<div>
   <ion-segment  [(ngModel)]="course" >
     <ion-segment-button value="student">
       学生课程
@@ -24,7 +24,7 @@
 
 <div   [ngSwitch]="course">
   <ion-list *ngSwitchCase="'student'">
-    <ion-item detail-push class="student-course"  *ngFor="let promo of studentCourses" (click)="gotoCourse(promo)">
+    <ion-item detail-push class="student-course"  *ngFor="let promo of onlineCourses" (click)="gotoCourse(promo)">
       <ion-thumbnail item-left>
         <img *ngIf="promo" src="{{promo.logo}}" >
       </ion-thumbnail>
@@ -44,5 +44,6 @@
     </ion-item>
   </ion-list>
 </div>
+
 </ion-content>
 

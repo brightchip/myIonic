@@ -1,0 +1,38 @@
+
+page-chat-list {
+  background-color: color($colors, chat);
+
+  .outer-content {
+    background-color: color($colors, chat);
+    margin-bottom: 5%;
+
+    .chat-list-item{
+
+      display: flex;
+      flex-direction: row;
+      background-color: color($colors, chat);
+      .icon-left{
+        float: left;
+      }
+      .message{
+        //background-color: #0a86d4;
+        display: flex;
+        flex-direction: column;
+
+        .message-content{
+          overflow: hidden;
+        }
+      }
+
+      .date{
+        float: right;
+        margin-top: 0;
+        color: color($colors, badge);
+        background-color: color($colors, chat);
+
+      }
+      //text-align: center;
+    }
+  }
+
+}

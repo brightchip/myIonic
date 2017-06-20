@@ -8,7 +8,7 @@ import {AccountPage} from "../account/account";
   templateUrl: 'settings.html'
 })
 export class SettingsPage {
-  userInfo: {user_name?: string, checkinCount?: string,userAvatar?:string,phone?:string} = {};
+  // userInfo: {user_name?: string, checkinCount?: string,userAvatar?:string,phone?:string} = {};
 
   constructor(public navCtrl: NavController,public events: Events,public userData:UserData) {
 
@@ -19,28 +19,34 @@ export class SettingsPage {
   }
 
   init(){
-    this.userData.getDefaultUserData().then( (userInfo) =>{
-      if(typeof userInfo != "undefined"){
-        if(typeof userInfo.user_name != "undefined"){
-          this.userInfo.user_name = userInfo.user_name;
-          console.log("SettingsPage init", "userInfo.user_name " + userInfo.user_name + " this.userInfo.user_name " + this.userInfo.user_name  )
-        }
-        if(typeof userInfo.checkinCount != "undefined"){
-          this.userInfo.checkinCount = userInfo.checkinCount;
-          console.log("SettingsPage init", "userInfo.checkinCount " + userInfo.checkinCount + " this.userInfo.checkinCount " + this.userInfo.checkinCount  )
-
-        }
-        if(typeof userInfo.userAvatar != "undefined"){
-          this.userInfo.userAvatar = userInfo.userAvatar;
-        }
-        if(typeof userInfo.phone != "undefined"){
-          this.userInfo.phone = userInfo.phone;
-        }
-      }else {
-        console.log("SettingsPage init", "userInfo undefined")
-      }
-      console.log("SettingsPage init", userInfo)
+    this.userData.getDefaultUserData().then( _ => {
+      console.log("init setting",this.userData.userInfo)
+    }).catch( err => {
+      // this.checkin();
     })
+
+    // this.userData.getDefaultUserData().then( (userInfo) =>{
+    //   if(typeof userInfo != "undefined"){
+    //     if(typeof userInfo.user_name != "undefined"){
+    //       this.userInfo.user_name = userInfo.user_name;
+    //       console.log("SettingsPage init", "userInfo.user_name " + userInfo.user_name + " this.userInfo.user_name " + this.userInfo.user_name  )
+    //     }
+    //     if(typeof userInfo.checkinCount != "undefined"){
+    //       this.userInfo.checkinCount = userInfo.checkinCount;
+    //       console.log("SettingsPage init", "userInfo.checkinCount " + userInfo.checkinCount + " this.userInfo.checkinCount " + this.userInfo.checkinCount  )
+    //
+    //     }
+    //     if(typeof userInfo.userAvatar != "undefined"){
+    //       this.userInfo.userAvatar = userInfo.userAvatar;
+    //     }
+    //     if(typeof userInfo.phone != "undefined"){
+    //       this.userInfo.phone = userInfo.phone;
+    //     }
+    //   }else {
+    //     console.log("SettingsPage init", "userInfo undefined")
+    //   }
+    //   console.log("SettingsPage init", userInfo)
+    // })
 
   }
 

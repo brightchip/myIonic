@@ -3,6 +3,13 @@
 //
 // 'use strict';
 
+export const baseUrl = 'http://192.168.0.103:3000';
+export const wsUrl = 'ws://192.168.0.103:3000';
+
+export const IMAGE_DIR_NAME = 'user_data';
+export const AUDIO_DIR_NAME = 'audios';
+
+
  export enum
   AgentStatus {
   available = 1
@@ -15,7 +22,9 @@
 }
 export enum UserType {  // userType: number= 1;//1-student ,2-parents , 3-teacher ,
    student = 1,
-   teacher = 3
+     parent = 2,
+   teacher = 3,
+   admin = 110
 }
 
 
@@ -35,5 +44,7 @@ export const Logos:any []= [{title:"特色英语",logo:"assets/img/logos/se.png"
 export const iuInfo:any []= [{title:"title1",logo:"assets/img/logos/se.png",page_id:1},
   {title:"title2",logo:"assets/img/logos/se.png",page_id:2},
 ];
+
+
 
 

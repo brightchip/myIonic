@@ -3,24 +3,6 @@
 
     <item
         is-multidex="false"
-        jar="E:\Development\Projects\Cordova\Ionic\Myionicapp\platforms\android\build\intermediates\exploded-aar\com.android.support\support-v4\24.1.1\jars\classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.3"
-        sha1="6d7d803871e3203465f71a163e7af104f807b446">
-        <dex dex="E:\Development\Projects\Cordova\Ionic\Myionicapp\platforms\android\build\intermediates\pre-dexed\debug\com.android.support-support-v4-24.1.1_507b8487394b7991897f3d730755032b0bc0fd22.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="E:\Development\Projects\Cordova\Ionic\Myionicapp\platforms\android\build\intermediates\exploded-aar\android\CordovaLib\unspecified\debug\jars\classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.3"
-        sha1="afe8eb4906b94df000e2b3714c864ec42d4e4ea6">
-        <dex dex="E:\Development\Projects\Cordova\Ionic\Myionicapp\platforms\android\build\intermediates\pre-dexed\debug\CordovaLib-unspecified-debug_fdb17d8d717a56ba7865496aaf8aff3e13bd5872.jar" />
-    </item>
-    <item
-        is-multidex="false"
         jar="E:\Development\Projects\Cordova\Ionic\Myionicapp\platforms\android\build\intermediates\exploded-aar\com.android.support\support-v4\24.1.1\jars\libs\internal_impl-24.1.1.jar"
         jumboMode="false"
         optimize="true"
@@ -30,12 +12,39 @@
     </item>
     <item
         is-multidex="false"
+        jar="E:\Development\Projects\Cordova\Ionic\Myionicapp\platforms\android\build\intermediates\exploded-aar\com.android.support\support-v4\24.1.1\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.3"
+        sha1="6d7d803871e3203465f71a163e7af104f807b446">
+        <dex dex="E:\Development\Projects\Cordova\Ionic\Myionicapp\platforms\android\build\intermediates\pre-dexed\debug\com.android.support-support-v4-24.1.1_507b8487394b7991897f3d730755032b0bc0fd22.jar" />
+    </item>
+    <item
+        is-multidex="false"
         jar="C:\Users\Winjoy\AppData\Local\Android\sdk\extras\android\m2repository\com\android\support\support-annotations\24.1.1\support-annotations-24.1.1.jar"
         jumboMode="false"
         optimize="true"
         revision="25.0.3"
         sha1="3af19f153122737b372622fa6c81dd11a1c6b999">
         <dex dex="E:\Development\Projects\Cordova\Ionic\Myionicapp\platforms\android\build\intermediates\pre-dexed\debug\support-annotations-24.1.1_8bf62c2fbbe9688c931be4615b5d5ffce0860b3b.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="E:\Development\Projects\Cordova\Ionic\Myionicapp\platforms\android\libs\sqlite-connector.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.3"
+        sha1="76169ab23a4f939925491c6fe186749da5a56ee9">
+        <dex dex="E:\Development\Projects\Cordova\Ionic\Myionicapp\platforms\android\build\intermediates\pre-dexed\debug\sqlite-connector_b05c1c8d651a47ab15ba46a0b0a65ad093a64184.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="E:\Development\Projects\Cordova\Ionic\Myionicapp\platforms\android\build\intermediates\exploded-aar\android\CordovaLib\unspecified\debug\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.3"
+        sha1="afe8eb4906b94df000e2b3714c864ec42d4e4ea6">
+        <dex dex="E:\Development\Projects\Cordova\Ionic\Myionicapp\platforms\android\build\intermediates\pre-dexed\debug\CordovaLib-unspecified-debug_fdb17d8d717a56ba7865496aaf8aff3e13bd5872.jar" />
     </item>
 
 </items>

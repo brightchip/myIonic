@@ -1,13 +1,5 @@
 [
     {
-        "merged": "D:\\Development\\Projects\\Cordova\\Ionic\\Myionicapp\\platforms\\android\\build\\intermediates\\res\\merged\\debug\\xml\\config.xml",
-        "source": "D:\\Development\\Projects\\Cordova\\Ionic\\Myionicapp\\platforms\\android\\res\\xml\\config.xml"
-    },
-    {
-        "merged": "D:\\Development\\Projects\\Cordova\\Ionic\\Myionicapp\\platforms\\android\\build\\intermediates\\res\\merged\\debug\\xml\\provider_paths.xml",
-        "source": "D:\\Development\\Projects\\Cordova\\Ionic\\Myionicapp\\platforms\\android\\res\\xml\\provider_paths.xml"
-    },
-    {
         "merged": "E:\\Development\\Projects\\Cordova\\Ionic\\Myionicapp\\platforms\\android\\build\\intermediates\\res\\merged\\debug\\xml\\config.xml",
         "source": "E:\\Development\\Projects\\Cordova\\Ionic\\Myionicapp\\platforms\\android\\res\\xml\\config.xml"
     },

@@ -9,6 +9,7 @@ import {Camera, CameraOptions} from "@ionic-native/camera";
 
 import { File  } from '@ionic-native/file';
 import { FilePath } from '@ionic-native/file-path';
+import {Tools} from "../../providers/tools";
 
 
 @Component({
@@ -18,50 +19,35 @@ import { FilePath } from '@ionic-native/file-path';
 export class AccountPage {
   ROOT_DIR;
   IMAGE_DIR;
-  IMAGE_DIR_NAME = 'user_data';
+  IMAGE_DIR_NAME;
 
-  userInfo: {user_name?: string, checkinCount?: string,userAvatar?:string,phone?:string} = {};
+  // userInfo: {user_name?: string, checkinCount?: string,avatar?:string,phone?:string} = {};
 
 
-  constructor(public alertCtrl: AlertController, public nav: NavController, public platform:Platform,  public events: Events,public actionSheetCtrl: ActionSheetController, public camera: Camera,public toastCtrl :ToastController, public file: File,private filePath: FilePath,public userData: UserData) {
+  constructor(public alertCtrl: AlertController, public nav: NavController, public platform:Platform,  public events: Events,public actionSheetCtrl: ActionSheetController, public camera: Camera,public toastCtrl :ToastController, public file: File,private filePath: FilePath,public userData: UserData,public tools:Tools) {
     // this.listenToErrorEvents();
 
     //initialize platform root directory
-    if (this.platform.is('android')){
-      this.ROOT_DIR = this.file.externalDataDirectory;
-      this.IMAGE_DIR =  this.ROOT_DIR  + this.IMAGE_DIR_NAME;
-      console.log("account page externalDataDirectory ",this.file.externalDataDirectory + " externalRootDirectory " + this.file.externalRootDirectory)
-    }
-    console.log("account page",this.IMAGE_DIR);
+      this.ROOT_DIR = tools.ROOT_DIR;
+    this.IMAGE_DIR = tools.IMAGE_DIR;
+    this.IMAGE_DIR_NAME = tools.IMAGE_DIR_NAME;
+      // console.log("account page externalDataDirectory ",this.file.externalDataDirectory + " externalRootDirectory " + this.file.externalRootDirectory)
+    // }
+    // console.log("account page",this.IMAGE_DIR);
   }
 
-  ngAfterViewInit() {
+  ionViewDidEnter() {
     this.init();
   }
 
   init(){
-    this.userData.getDefaultUserData().then( (userInfo) =>{
-      if(typeof userInfo != "undefined"){
-        if(typeof userInfo.user_name != "undefined"){
-          this.userInfo.user_name = userInfo.user_name;
-          console.log("AccountPage init", "userInfo.user_name " + userInfo.user_name + " this.userInfo.user_name " + this.userInfo.user_name  )
-        }
-        if(typeof userInfo.checkinCount != "undefined"){
-          this.userInfo.checkinCount = userInfo.checkinCount;
-          console.log("AccountPage init", "userInfo.checkinCount " + userInfo.checkinCount + " this.userInfo.checkinCount " + this.userInfo.checkinCount  )
-
-        }
-        if(typeof userInfo.userAvatar != "undefined"){
-          this.userInfo.userAvatar = userInfo.userAvatar;
-        }
-        if(typeof userInfo.phone != "undefined"){
-          this.userInfo.phone = userInfo.phone;
-        }
-      }else {
-        console.log("AccountPage init", "userInfo undefined")
-      }
-      console.log("AccountPage init", userInfo)
-    })
+    // this.userInfo = this.userData.userInfo;
+    // this.userData.getDefaultUserData().then( _ => {
+    //
+    // }).catch( err => {
+    //   // this.checkin();
+    // })
+    console.log("init account",this.userData.userInfo)
   }
 
   updatePicture() {
@@ -81,17 +67,26 @@ export class AccountPage {
     });
     alert.addInput({
       name: 'user_name',
-      value: this.userInfo.user_name,
+      value: this.userData.userInfo.user_name,
       placeholder: 'user_name'
     });
     alert.addButton({
       text: 'Ok',
       handler: (data: any) => {
         // this.userData.setuser_name(data.user_name);
-        this.userInfo.user_name = data.user_name;
+        // let temp = this.userData.userInfo.user_name;
+        // this.userData.userInfo.user_name = data.user_name;
+
+        let reqUserInfo = {user_name:data.user_name,user_id:this.userData.userInfo.user_id};
+
+        this.userData.updateUserInfo(reqUserInfo).then( (results => {
+          // this.userData.userInfo.user_name = data.user_name;
+
+        })).catch(err => {
+          // this.userData.userInfo.user_name = temp;
+        } )
 
 
-        this.userData.updateUserInfo(this.userInfo)
 
       }
     });
@@ -101,11 +96,11 @@ export class AccountPage {
 
 
   listenToErrorEvents(){
-    this.events.subscribe('user:checkinCount', (checkinCount) => {
-      console.log("account:checkinCount ", checkinCount);
-      this.userInfo.checkinCount = checkinCount;
-
-    });
+    // this.events.subscribe('user:checkinCount', (checkinCount) => {
+    //   console.log("account:checkinCount ", checkinCount);
+    //   this.userData.userInfo.checkinCount = checkinCount;
+    //
+    // });
   }
 
 
@@ -184,7 +179,8 @@ export class AccountPage {
     // }
     var d = new Date(),
       n = d.getTime(),
-      newFileName =  n + ".jpg";
+      prefeix = this.userData.userInfo.user_id + "_",
+      newFileName = prefeix +  n + ".jpg";
     return newFileName;
   }
 
@@ -200,7 +196,6 @@ export class AccountPage {
       console.log("directory not exist")
       this.file.createDir(this.ROOT_DIR, this.IMAGE_DIR_NAME, true).then(() => {
         this.copyImage(namePath,currentName,newFileName);
-
     })
       .catch((err) => { console.log("error during creating directory", err)  });
     });
@@ -210,19 +205,18 @@ export class AccountPage {
   copyImage(namePath,currentName,newFileName){
     this.file.copyFile(namePath, currentName, this.IMAGE_DIR, newFileName).then(success => {
       //update image view
-      var temp = this.userInfo.userAvatar;
-      this.userInfo.userAvatar = this.pathForImage(newFileName);
+      var temp = this.userData.userInfo.avatar;
+      this.userData.userInfo.avatar = this.pathForImage(newFileName);
 
-      console.log('the image src path:', this.userInfo.userAvatar);
-      this.userData.saveProfile(this.pathForImage(newFileName),this.userInfo.phone).then( (success) =>{
+      console.log('the image src path:', this.userData.userInfo.avatar);
+      this.userData.saveProfile(this.pathForImage(newFileName),newFileName,temp).then( (success) =>{
         console.log("copyImage:saveProfile",success)
         if(!success){//set image back when failed upload
-          this.userInfo.userAvatar = temp;
+          this.userData.userInfo.avatar = temp;
         }
         this.init();
       })
-
-      // this.presentToast('the image src path:'+ this.userAvatar)
+      // this.presentToast('the image src path:'+ this.avatar)
     }, error => {
       this.presentToast('Error while storing file.');
     });

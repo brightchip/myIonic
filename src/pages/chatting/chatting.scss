@@ -1,0 +1,144 @@
+
+page-chatting {
+  background-color: color($colors, chat);
+
+  .subtitle{
+    //width: 100%;
+    font-size: 15px;
+    //margin-left: auto;
+    //margin-right: auto;
+    color: color($colors, badge);
+    //color: #0a86d4;
+  }
+
+  .avatar{
+    width: 20px;
+    height: 20px;
+    background-color: #0a86d4;
+  }
+
+  ion-spinner * {
+    width: 20px;
+    height: 20px;
+    //stroke: #444;
+    fill: #222;
+  }
+
+  .center-icon{
+    text-align: center;
+    color: #0a86d4;
+  }
+
+  .chat-content{
+    margin: 0 10px;
+    max-width: 200px;
+    width: auto;
+    height: auto;
+    overflow: scroll;
+    background-color: #ffffff;
+    text-align: left;
+  }
+
+   .sender-color{
+      margin: 0 10px;
+      max-width: 200px;
+      height: auto;
+      overflow: scroll;
+    background-color: color($colors, primary);
+  }
+
+  .item-color{
+    background-color: color($colors, chat);
+  }
+
+
+
+
+  .outer-content{
+    background-color: color($colors, chat);
+    margin-bottom: 5%;
+
+    .prompt-window{
+      position: absolute;
+      margin: auto;
+      width: 60%;
+      top: 30%;
+      left: 20%;
+      height: 40%;
+      background-color:color($colors, badge);
+      text-align: center;
+      opacity: 0.7;
+      img{
+        width: 150px;
+        height: 150px;
+        background-color:color($colors, badge);
+      }
+    }
+
+    .chat-list-receiver{
+      float: left;
+      display: flex;
+      flex-direction: row;
+      text-align: center;
+    }
+    .chat-list-sender{
+      float: right;
+      display: flex;
+      flex-direction: row;
+      text-align: center;
+      //background-color: #0a86d4;
+
+    }
+    //padding-left: 0;
+  }
+  h1{
+    width: 100%;
+    text-align: center;
+  }
+  h2 ion-icon{
+    margin-right: 10px;
+  }
+
+  .dumpy{
+    height: 10px;
+  }
+
+  .bt-chatting{
+    background-color:color($colors, footer);
+  }
+
+  ion-footer{
+    width:100%;
+    height: 40px;
+    display: flex;
+    flex-direction: row;
+    padding-bottom: 0;
+    background-color:color($colors, footer);
+
+    .input-img{
+      width: 20px;
+      height: 20px;
+    }
+
+    .chat-box{
+      width: 80%;
+      float: left;
+      overflow: scroll;
+    }
+    .voice-input{
+      width: 100%;
+      float: right;
+      background-color:color($colors, chat);
+      color:color($colors, dark);  ;
+    }
+
+    .sendmsg{
+      float: right;
+      width: auto;
+      height: 30px;
+      .button_emoji{
+
+      }
+    }
+  }
+}

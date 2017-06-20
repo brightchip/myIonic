@@ -9,6 +9,8 @@ import {VacationEducationPage} from "../vacation-education/vacation-education";
 import {OnlineCoursesPage} from "../online-courses/online-courses";
 import {ImagePicker} from "@ionic-native/image-picker";
 import {isSuccess} from "@angular/http/src/http_utils";
+import {Tools} from "../../providers/tools";
+import {MapPage} from "../map/map";
 
 
 @Component({
@@ -36,6 +38,7 @@ export class HomePage {
   constructor(
   public navCtrl: NavController,
   public events: Events,
+  public tools:Tools,
   public userData: UserData)
   {
     // this.content.addCssClass("scroll");,private app: App
@@ -46,17 +49,55 @@ export class HomePage {
 
   ionViewDidEnter() {
     // the root left menu should be disabled on the tutorial page
-    console.log("home","ionViewDidEnter");
-    this.slides.startAutoplay();
     this.init();
+    if(typeof this.slides == "undefined"){
+      console.log("home","undefined slides");
+      return;
+    }
+    try {
+      setTimeout(() => {
+        console.log("home","startAutoplay slides");
+        // this.slides.slideNext(1000);
+        this.slides.slideTo(1, 500);
+        // this.slides.update();
+
+      }, 3);
+
+    }
+    catch(err){
+      console.error("home",err);
+    }
+
+    // this.userData.retriveHomework(1);
   }
 
+  ionViewWillLeave(){
+    this.slides.stopAutoplay();
+  }
+
+  slideAuto(){
+    // console.log("HomePage::slideAuto" );
+  }
 
   slideChanged(slider: Slides){
-   console.log("HomePage::slideChanged" + slider.loop);
-   slider.startAutoplay();
+    try {
+      console.log("HomePage::slideChanged" + slider.loop);
+      if(typeof slider == "undefined"){
+        return;
+      }
+      slider.startAutoplay();
+
+    }
+    catch (e){
+      console.log("slideChanged",e)
+    }
+
   }
 
+  slideChange(){
+    let currentIndex = this.slides.getActiveIndex();
+    // console.log('Current index is', currentIndex);
+  }
 
   gotoCardsPage(page_id:any){
     switch (page_id){
@@ -65,7 +106,7 @@ export class HomePage {
         this.selectTab(1);
         break;
       case 2:
-        this.navCtrl.push(VacationEducationPage);
+        // this.navCtrl.push(VacationEducationPage);
         this.selectTab(3);
         break;
       case 3:
@@ -75,7 +116,7 @@ export class HomePage {
         //i-u community
         break;
       case 5:
-        this.navCtrl.push(OnlineCoursesPage);
+        // this.navCtrl.push(OnlineCoursesPage);
         this.selectTab(2);
         break;
       case 6:
@@ -84,6 +125,8 @@ export class HomePage {
         break;
       case 7:
         //schools recommending
+        console.log("goto mappage")
+        this.navCtrl.push(MapPage);
         break;
       default:
         break;
@@ -119,34 +162,37 @@ export class HomePage {
   }
 
 
-  ionViewWillEnter() {
-    console.log("ionViewWillEnter");
-    this.slides.update();
-
-    this.userData.testVar = "home";
-
-    this.userData.retriveHomework(1);
-  }
-
   checkin(){
     console.log("checkin");
     this.checkedin = true;
     this.userData.dailyCheckin().then( (isSuccess) => {
-      this.updateUI(isSuccess);
+      this.updateUI(true);
+      console.log("checkin",isSuccess)
+    }).catch( err => {
+      console.error("checkin",err)
+      this.updateUI(false);
     })
+
     // this.btCheckin.backgroundColor = "#8f8f8f"
   }
 
   init(){
     // console.log("init:getDefaultUserData")
-    this.userData.getDefaultUserData().then( (userInfo) =>{
-      console.log("homeinit:userInfo", userInfo)
-      if(typeof userInfo != "undefined"){
-        this.updateUI(userInfo.hasChecin);
-      }else {
-        console.log("init", "userInfo undefined")
-      }
+    // this.userData.getDefaultUserData().then( (userInfo) =>{
+    //   console.log("homeinit:userInfo", userInfo)
+    //   if(typeof userInfo != "undefined"){
+    //     this.updateUI(userInfo.hasChecin);
+    //   }else {
+    //     console.log("init", "userInfo undefined")
+    //   }
+    // })
+    this.userData.getDefaultUserData().then( _ => {
+      this.updateUI(this.userData.userInfo.hasChecin);
+    }).catch( err => {
+      // this.checkin();
     })
+
+
   }
 
 updateUI(isSuccess){

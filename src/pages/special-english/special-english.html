@@ -8,7 +8,7 @@
 </ion-header>
 
 <ion-content class="main-content" no-padding>
-  <ion-card  class="books" *ngFor="let _specialEnglishBooks of specialEnglishBooks" >
+  <ion-card  class="books" *ngFor="let _specialEnglishBooks of specialCourses">
     <!--<ion-item>-->
     <!--<ion-avatar item-left>-->
     <!--<img *ngIf="_recommedCourse" src="{{_recommedCourse.logo}}">-->
@@ -16,8 +16,7 @@
     <!--<h2>Marty McFly</h2>-->
     <!--<p>November 5, 1955</p>-->
     <!--</ion-item>-->
-
-      <ion-item class="book" detail-push (click)="gotoBook(_specialEnglishBooks)">
+      <ion-item class="book" detail-push  (click)="gotoSpecialCourse(_specialEnglishBooks)">
         <ion-thumbnail item-left>
           <img *ngIf="_specialEnglishBooks"
                src="{{_specialEnglishBooks.logo}}" >
@@ -40,10 +39,8 @@
       </ion-item>
     </div>
 
-    <div  class="intro-video"
-
-          in-view="lineInView($index, $inview, $inviewpart)" >
-      <video  (play)="videoPlayed(_specialEnglishBooks)"
+    <div  class="intro-video" in-view="lineInView($index, $inview, $inviewpart)" >
+      <video #specengVideo class="video"  (play)="videoPlayed(_specialEnglishBooks)"
               (click)="toggleVideo(_specialEnglishBooks.index)"
         controls="controls" preload="metadata"  class="videoPlayer"
         (viewport-leave)="playVideo()" (viewport-enter)="pauseVideo()"><source src="{{_specialEnglishBooks.videoIntroduction}}" type="video/mp4"/>

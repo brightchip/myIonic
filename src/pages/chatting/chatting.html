@@ -1,0 +1,63 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>{{selectedUser.user_name}}
+      <span class="subtitle" >{{subTiltleInfo}}</span>
+    </ion-title>　
+
+  </ion-navbar>
+</ion-header>
+
+<ion-content class="outer-content"  #chatList>
+  <div class="prompt-window" *ngIf="inSpeaking">
+    <img  id="icon-prompt"  [src]="iconProptImg" />
+    <p>{{proptText}}</p>
+  </div>
+
+  <ion-list no-lines #list>
+      <ion-item *ngFor="let chatData of chatDatas" class="item-color">
+        <div item-left *ngIf="chatData.send_id == selectedUser.user_id" class="chat-list-receiver">
+          <ion-avatar class="avatar" class="icon-left">
+            <img (click)="gotoViewUser()" src="{{selectedUser.avatar}}">
+          </ion-avatar>
+          <ion-card padding class="chat-content">
+            {{chatData.content}}
+          </ion-card>
+          <div class="center-icon">
+            <ion-spinner  *ngIf="chatData.isSending"></ion-spinner>
+            <ion-icon  name="warning" *ngIf="chatData.sendFailed"></ion-icon>
+          </div>
+        </div>
+        <div item-right *ngIf="chatData.send_id == userData.userInfo.user_id" class="chat-list-sender">
+          <div class="center-icon">
+            <ion-spinner  *ngIf="chatData.isSending"></ion-spinner>
+            <ion-icon  name="warning" *ngIf="chatData.sendFailed"></ion-icon>
+          </div>
+          <ion-card padding  class="sender-color">
+            {{chatData.content}}
+          </ion-card>
+          <ion-avatar class="avatar" class="icon-right">
+            <img    src="{{userData.userInfo.avatar}}">
+          </ion-avatar>
+        </div>
+      </ion-item>
+    <!--<ion-item #dumpy class="dumpy"> </ion-item>-->
+  </ion-list>
+</ion-content>
+
+
+<ion-footer>
+  <button class="bt-chatting" (click)="toggleInput()">
+    <img class="input-img" [src]="inputIcon" />
+  </button>
+  <button  id="bt-recorder"   ion-button class="voice-input" >{{proptText}}</button>
+  <ion-textarea *ngIf="!isSpeaking" class="chat-box" [(ngModel)]="chatBox" placeHolder="Message..." type="text" (focus)="focusChange(true)" (blur)="focusChange(false)"></ion-textarea>
+  <div class="sendmsg">
+    <button *ngIf="!isSpeaking" class="button_emoji" ion-button clear icon-only (click)="toggled = !toggled" [(emojiPickerIf)]="toggled" [emojiPickerDirection]="'top'"
+            (emojiPickerSelect)="pickEmoji($event)"><ion-icon name="happy"></ion-icon>
+    </button>
+    <button *ngIf="!isSpeaking" ion-button  (click)="send()">Send</button>
+  </div>
+</ion-footer>

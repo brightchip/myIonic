@@ -8,5 +8,31 @@
 </ion-header>
 
 <ion-content class="map-page">
-  <div style="height: 100%; width: 100%" #mapCanvas id="map_canvas"></div>
+
+  <ion-item class="map-control">
+    <ion-icon class="map-icon" name="search" item-left (click)="search(targetPosition)"></ion-icon>
+    <input id="tipinput" placeholder="Enter your address" class="input" [(ngModel)]="targetPosition" type="text"/>
+    <!--<ion-input class="input" id="tipinput">{{targetPosition}}</ion-input>-->
+    <!--<button ion-button class="bt-search" (click)="search()" item-right>Search</button>-->
+  </ion-item>
+
+  <!--<ion-searchbar-->
+    <!--[autocomplete]="on"-->
+    <!--no-padding-->
+    <!--class="map-control"-->
+    <!--[(ngModel)]="targetPosition"-->
+    <!--[showCancelButton]="shouldShowCancel"-->
+    <!--(ionInput)="onInput($event)"-->
+    <!--(ionCancel)="onCancel($event)">-->
+  <!--</ion-searchbar>-->
+
+  <ion-icon class="bt-nav map-icon" name="locate" (click)="doAutoNav()"></ion-icon>
+
+  <div style="height: 100%; width: 100%"  id="container" class="map_canvas">
+  </div>
+  <!--<div style="height: 100%; width: 100%" #mapCanvas id="map_canvas"> ss</div>-->
 </ion-content>
+
+<!--<div class="map-info">-->
+  <!--<p class="hint">{{hintMsg}}</p>-->
+<!--</div>-->

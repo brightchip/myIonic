@@ -11,7 +11,7 @@
 <ion-content  class="home">
 
   <div class="home-header">
-    <ion-slides #slides auto-height="false" autoplay="2000" speed="1000" loop="true" (ionSlideAutoplayStop)="slideChanged($event)"  pager>
+    <ion-slides #slides auto-height="false" autoplay="2000" speed="1000" loop="true" (ionSlideDidChange)="slideChange()" (ionSlideAutoplay)="slideAuto()" (ionSlideAutoplayStop)="slideChanged($event)"  pager>
       <ion-slide *ngFor="let promo of MyHomeData">
         <img *ngIf="promo"  src="{{promo.img}}"  >
       </ion-slide>

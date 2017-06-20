@@ -27,6 +27,7 @@ export class CoursePage {
 
 
   myLessonList:any[]=[this.myLesson,this.myLesson];
+  private selectedCourse: any;
 
 
   constructor(
@@ -36,7 +37,9 @@ export class CoursePage {
               public config: Config,
               public inAppBrowser: InAppBrowser,
               ) {
-    this.title =   this.navParams.get('title');
+
+    this.selectedCourse =   this.navParams.get('course');
+    this.title = this.selectedCourse.title;
     console.log("Passed params", navParams.data);
     // this.myLesson = new Lesson("lesson1","assets/video/sample.mp4","comments",3,"homework","vocabulary work");
     // this.myLesson = new Lesson();
@@ -51,7 +54,7 @@ export class CoursePage {
   }
 
   gotoLesson(lesson:any){
-    this.navCtrl.push(LessonPage,{lesson:lesson });
+    this.navCtrl.push(LessonPage,{lesson:lesson,course_id:this.selectedCourse.book_id });
   }
 
 

@@ -23,12 +23,21 @@ export class LoginPage {
   constructor(public navCtrl: NavController,    public events: Events, public userData: UserData, public storage: Storage) {
 
     this.listenToLoginEvents();
+
+    this.storage.get('loginusername').then((value) => {
+      this.login.phone = value
+      console.log("loginusername", this.login)
+    })
+
     this.storage.get('savePassword').then((value) => {
-      if(value){
-        this.login.savePassword = value;
-        this.autoLogin();
+      if(value.save){
+        console.log("savePassword", value)
+        this.login.password = value.password;
+        this.login.savePassword = value.save;
       }
     })
+
+
 
   }
 
@@ -39,17 +48,23 @@ export class LoginPage {
       this.errorMsg = "";
       let userInfo = { phone:this.login.phone,password:this.login.password}
 
+
+
+
       this.userData.login(userInfo);
 
-      this.storage.set('savePassword', this.login.savePassword);
-      // this.storage.set('username', this.login.savePassword);  //set in userdata page
+      this.storage.set('savePassword',{save:this.login.savePassword,password: this.login.password});
+
+      this.storage.set('loginusername',this.login.phone );
+
+      this.storage.set('autologinuserInfo', userInfo);
 
     }
   }
 
   autoLogin(){
     //check whether save-password  had been checked
-    return     this.storage.get('username').then((value) => {
+    return     this.storage.get('autologinuserInfo').then((value) => {
       if(value){
         this.userData.login(value);
         // this.storage.get('password');

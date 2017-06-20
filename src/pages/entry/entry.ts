@@ -3,6 +3,7 @@ import { MenuController,NavController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import {SignupPage} from "../signup/signup";
 import * as Enums from "../../providers/globals";
+import {LoginPage} from "../login/login";
 
 
 
@@ -33,4 +34,8 @@ export class EntryPage {
       this.navCtrl.push(SignupPage,{userType: userType});
   }
 
+
+  gotoLogin(){
+    this.navCtrl.push(LoginPage);
+  }
 }

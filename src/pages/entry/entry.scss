@@ -3,4 +3,9 @@ page-entry {
     height: 100%;
     justify-content: center;
   }
+  ion-footer p{
+    width: 100%;
+    text-align: center;
+    color: color($colors, secondary);
+  }
 }

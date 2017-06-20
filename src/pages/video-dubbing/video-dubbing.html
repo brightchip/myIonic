@@ -1,0 +1,34 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Video Dubbing</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content class="main-content" no-padding>
+
+    <video #videoEditing class="video-material"
+           (viewport-leave)="playVideo()" (viewport-enter)="pauseVideo()" source src="{{videoEditingSrc}}" type="video/mp4"/>
+    </video>
+
+  <div class="recorder">
+      <button #btRecorder id="bt-recorder"  disabled={{disableRecordButton}} class="bt-recorder" (click)="startDubbing()">
+        <img width="60" height="60" class="input-img"  [src]="btRecorderIcon"  />
+        <h3 class="count-down-text">{{remnantTime}}</h3>
+      </button>
+    <button class="test-player" *ngIf="isDubbing">
+      <audio></audio>
+      试听
+      <ion-icon name="headset"></ion-icon>
+    </button>
+  </div>
+
+  <ion-range min="0" max={{videoDuration}} [(ngModel)]="currentTime" color="secondary">
+    <ion-label range-left>0</ion-label>
+    <ion-label range-right>{{videoDuration}}</ion-label>
+  </ion-range>
+
+</ion-content>
+
