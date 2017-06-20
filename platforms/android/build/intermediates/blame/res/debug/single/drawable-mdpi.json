@@ -1,0 +1,26 @@
+[
+    {
+        "merged": "D:\\Development\\Projects\\Cordova\\Ionic\\Myionicapp\\platforms\\android\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi\\ic_action_next_item.png",
+        "source": "D:\\Development\\Projects\\Cordova\\Ionic\\Myionicapp\\platforms\\android\\res\\drawable-mdpi\\ic_action_next_item.png"
+    },
+    {
+        "merged": "E:\\Development\\Projects\\Cordova\\Ionic\\Myionicapp\\platforms\\android\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi\\ic_action_previous_item.png",
+        "source": "E:\\Development\\Projects\\Cordova\\Ionic\\Myionicapp\\platforms\\android\\res\\drawable-mdpi\\ic_action_previous_item.png"
+    },
+    {
+        "merged": "E:\\Development\\Projects\\Cordova\\Ionic\\Myionicapp\\platforms\\android\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi\\ic_action_next_item.png",
+        "source": "E:\\Development\\Projects\\Cordova\\Ionic\\Myionicapp\\platforms\\android\\res\\drawable-mdpi\\ic_action_next_item.png"
+    },
+    {
+        "merged": "D:\\Development\\Projects\\Cordova\\Ionic\\Myionicapp\\platforms\\android\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi\\ic_action_remove.png",
+        "source": "D:\\Development\\Projects\\Cordova\\Ionic\\Myionicapp\\platforms\\android\\res\\drawable-mdpi\\ic_action_remove.png"
+    },
+    {
+        "merged": "D:\\Development\\Projects\\Cordova\\Ionic\\Myionicapp\\platforms\\android\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi\\ic_action_previous_item.png",
+        "source": "D:\\Development\\Projects\\Cordova\\Ionic\\Myionicapp\\platforms\\android\\res\\drawable-mdpi\\ic_action_previous_item.png"
+    },
+    {
+        "merged": "E:\\Development\\Projects\\Cordova\\Ionic\\Myionicapp\\platforms\\android\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi\\ic_action_remove.png",
+        "source": "E:\\Development\\Projects\\Cordova\\Ionic\\Myionicapp\\platforms\\android\\res\\drawable-mdpi\\ic_action_remove.png"
+    }
+]
