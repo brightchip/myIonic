@@ -121,11 +121,12 @@ export class VideoDubbingPage {
   startRecord(rootDir,audioDir,fileName){
     // console.log("lesson:startPauseRecord",rootDir  + audioDir  + "/" + fileName);
     try {
-      this.recorder = this.media.create(this.currentAudioPath);
+
       $('#videoEditing').prop('muted', true)
+      this.currentAudioPath = rootDir + audioDir + "/" + fileName;
+      this.recorder = this.media.create(this.currentAudioPath);
       $('#videoEditing')[0].play();
       this.currentStartTime = this.currentTime;
-      this.currentAudioPath = rootDir + audioDir + "/" + fileName;
       console.log("ready to recordAudio",fileName,"start at",this.currentStartTime,this.currentAudioPath);
       this.isPlayingTest = false;
       this.recorder.startRecord();
@@ -180,9 +181,12 @@ export class VideoDubbingPage {
       $(' #audioTest')[0].pause();
     }
 
-    if(this.isRecording){
+
+    if(this.isDubbing){
+      this.isDubbing = null;
       this.isRecording = null;
       this.showNextButton = true;
+      this.customAudio = true;
       this.currentStopTime =  this.videoDuration;
       // this.showRecordRange = null;
       this.customAudio = true;
@@ -194,9 +198,9 @@ export class VideoDubbingPage {
       this.isRecording = null;
       return;
     }
-    console.log("videoEnd...stopRecord");
     this.isPlayingTest = false;
     this.recorder.stopRecord();
+    console.log("videoEnd...stopRecord");
   }
 
   private stopRecording() {
@@ -205,7 +209,9 @@ export class VideoDubbingPage {
       this.isRecording = null;
       return;
     }
+
     this.recorder.stopRecord();
+    console.log("stopRecording...stopRecord");
     $('#videoEditing')[0].pause();
     this.currentStopTime =  this.currentTime;
     this.isRecording = null;
@@ -227,8 +233,10 @@ export class VideoDubbingPage {
     if(this.isPlayingTest){
       video.pause();
       audio.pause();
-      this.isPlayingTest = false
-      video.currentTime = this.currentStartTime;
+
+      this.endPlayDub()
+      // this.isPlayingTest = false
+      video.currentTime = this.currentTime = this.currentStopTime;
       console.log("pause test dubbing")
       // audio.currentTime = 0;
       return;
@@ -236,15 +244,17 @@ export class VideoDubbingPage {
 
 
     $(' #videoEditing').prop('muted', true);
-    video.currentTime = this.currentStartTime;
+    video.currentTime = this.currentTime = this.currentStartTime;
     audio.setAttribute('src',this.currentAudioPath);
+
     video.play();
     audio.play();
     this.isPlayingTest = true;
     this.videoIsPaused = null;
     this.testAudioIcon = this.STOP_ICON;
-    console.log("testCustomRecord",video.currentTime,audio);
+    console.log("testCustomRecord",this.currentTime,video.currentTime, this.currentStopTime,audio);
   }
+
 
   addVideoControl(){
     var self = this;
@@ -268,17 +278,20 @@ export class VideoDubbingPage {
 
     video.on('ended',function myHandler(e) {
       self.videoEnd();
+
       // What you want to do after the event
     });
 
-    $(' #audioTest').on('ended',function myHandler(e) {
+    $(' #audioTest').bind('ended',function myHandler(e) {
       self.testAudioIcon = self.TEST_PLAY_ICON;
       self.isPlayingTest = false;
+      self.endPlayDub();
     });
 
     $(' #audioTest').on("pause", function (e) {
       self.testAudioIcon = self.TEST_PLAY_ICON;
       self.isPlayingTest = false;
+      self.endPlayDub();
     });
 
 
@@ -288,25 +301,32 @@ export class VideoDubbingPage {
       // console.log("onTrackedVideoFrame",currentTime,duration)
       if( self.isRecording || self.isPlayingTest){
         self.currentTime = currentTime.toFixed(2);
+        if(self.isPlayingTest){
+          if(parseFloat(self.currentTime) >=  parseFloat(self.currentStopTime)){
+            self.endPlayDub();
+          }
+
+        }
         console.log("on dubbing or playing test...", self.currentTime );
       }
 
       self.videoDuration = duration.toFixed(2);
       self.videoProgress = (currentTime/duration*100).toFixed(2);
-      if(self.isPlayingTest){
-        if(self.currentStopTime <=  self.currentTime){
-          $(' #videoEditing')[0].pause();
-          $(' #audioTest')[0].pause();
-          self.isPlayingTest = false;
-          self.testAudioIcon = self.TEST_PLAY_ICON;
-          self.videoIsPaused = true;
-          console.log("on playing test finish...", );
-        }
-      }
+
 
     }
 
   }
+
+  endPlayDub(){
+      $(' #videoEditing')[0].pause();
+      $(' #audioTest')[0].pause();
+      this.isPlayingTest = false;
+      this.testAudioIcon = this.TEST_PLAY_ICON;
+      this.videoIsPaused = true;
+      console.log("on playing test finish...", this.currentTime,this.currentStopTime);
+  }
+
 
   generateDubVideo(){
     console.log("generateDubVideo")
@@ -316,17 +336,20 @@ export class VideoDubbingPage {
     if(this.videoDuration <= 0){
       return;
     }
-    console.log("rangChange",event.value);
+
     if(this.isDubbing || this.isPlayingTest){
      return;
     }
+    console.log("rangChange",event.value);
+
     let video =  $(' #videoEditing');
     video[0].currentTime = event.value
+    // this.currentStartTime = event.value
 
   }
 
   toggleVideo(){
-    if(this.isDubbing){
+    if(this.isDubbing || this.isPlayingTest){
       return;
     }
     let video =  $(' #videoEditing');
@@ -335,6 +358,7 @@ export class VideoDubbingPage {
       video.prop('muted', false);
       video[0].play();
       this.isPlayingVideo = true;
+      this.customAudio = null;
       this.videoIsPaused = null;
       this.showRecordRange = null;
       console.log("play video");
@@ -342,6 +366,7 @@ export class VideoDubbingPage {
       video[0].pause();
       this.videoIsPaused = true;
       this.isPlayingVideo = null;
+      this.customAudio = true;
       if(this.hasRecorded){
         this.showRecordRange = true;
       }

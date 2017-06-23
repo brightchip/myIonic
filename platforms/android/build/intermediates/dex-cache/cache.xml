@@ -3,6 +3,15 @@
 
     <item
         is-multidex="false"
+        jar="E:\Development\Projects\Cordova\Ionic\Myionicapp\platforms\android\build\intermediates\exploded-aar\com.github.ergovia-mobile\android-transcoder\v0.1.10R_ergovia\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.3"
+        sha1="9e04f6b79bf9a8b3c1d2d6585d8353427330e0db">
+        <dex dex="E:\Development\Projects\Cordova\Ionic\Myionicapp\platforms\android\build\intermediates\pre-dexed\debug\com.github.ergovia-mobile-android-transcoder-v0.1.10R_ergovia_513a57c29bd678c9d52f1a81277e600232a04dbc.jar" />
+    </item>
+    <item
+        is-multidex="false"
         jar="E:\Development\Projects\Cordova\Ionic\Myionicapp\platforms\android\build\intermediates\exploded-aar\com.android.support\support-v4\24.1.1\jars\libs\internal_impl-24.1.1.jar"
         jumboMode="false"
         optimize="true"

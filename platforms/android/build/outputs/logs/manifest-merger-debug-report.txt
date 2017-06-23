@@ -37,6 +37,7 @@ ADDED from E:\Development\Projects\Cordova\Ionic\Myionicapp\platforms\android\An
 		ADDED from E:\Development\Projects\Cordova\Ionic\Myionicapp\platforms\android\AndroidManifest.xml:4:22-64
 application
 ADDED from E:\Development\Projects\Cordova\Ionic\Myionicapp\platforms\android\AndroidManifest.xml:5:5-15:19
+MERGED from [com.github.ergovia-mobile:android-transcoder:v0.1.10R_ergovia] E:\Development\Projects\Cordova\Ionic\Myionicapp\platforms\android\build\intermediates\exploded-aar\com.github.ergovia-mobile\android-transcoder\v0.1.10R_ergovia\AndroidManifest.xml:9:5-20
 MERGED from [com.android.support:support-v4:24.1.1] E:\Development\Projects\Cordova\Ionic\Myionicapp\platforms\android\build\intermediates\exploded-aar\com.android.support\support-v4\24.1.1\AndroidManifest.xml:25:5-20
 	android:label
 		ADDED from E:\Development\Projects\Cordova\Ionic\Myionicapp\platforms\android\AndroidManifest.xml:5:81-113
@@ -91,6 +92,7 @@ ADDED from E:\Development\Projects\Cordova\Ionic\Myionicapp\platforms\android\An
 		ADDED from E:\Development\Projects\Cordova\Ionic\Myionicapp\platforms\android\AndroidManifest.xml:13:24-74
 uses-sdk
 ADDED from E:\Development\Projects\Cordova\Ionic\Myionicapp\platforms\android\AndroidManifest.xml:16:5-74
+MERGED from [com.github.ergovia-mobile:android-transcoder:v0.1.10R_ergovia] E:\Development\Projects\Cordova\Ionic\Myionicapp\platforms\android\build\intermediates\exploded-aar\com.github.ergovia-mobile\android-transcoder\v0.1.10R_ergovia\AndroidManifest.xml:5:5-7:41
 MERGED from [com.android.support:support-v4:24.1.1] E:\Development\Projects\Cordova\Ionic\Myionicapp\platforms\android\build\intermediates\exploded-aar\com.android.support\support-v4\24.1.1\AndroidManifest.xml:21:5-23:54
 MERGED from [android:CordovaLib:unspecified:debug] E:\Development\Projects\Cordova\Ionic\Myionicapp\platforms\android\build\intermediates\exploded-aar\android\CordovaLib\unspecified\debug\AndroidManifest.xml:25:5-44
 	tools:overrideLibrary

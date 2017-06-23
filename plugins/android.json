@@ -78,6 +78,9 @@
         },
         "cordova-plugin-geolocation": {
             "PACKAGE_NAME": "com.ionicframework.myionicapp723480"
+        },
+        "cordova-plugin-video-editor": {
+            "PACKAGE_NAME": "com.ionicframework.myionicapp723480"
         }
     },
     "dependent_plugins": {

@@ -60532,6 +60532,10 @@ page-veducation .education-vacation-classes .card-subtitle {
   color: #fff;
 }
 
+page-video-dubbing .main-content .video-box {
+  position: fixed;
+}
+
 page-video-dubbing .main-content video {
   width: 100%;
   height: 30%;

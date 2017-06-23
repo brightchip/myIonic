@@ -207,5 +207,13 @@
         },
         "is_top_level": true,
         "variables": {}
+    },
+    "cordova-plugin-video-editor": {
+        "source": {
+            "type": "registry",
+            "id": "cordova-plugin-video-editor"
+        },
+        "is_top_level": true,
+        "variables": {}
     }
 }

@@ -551,8 +551,8 @@ export class LessonPage {
          if(this.recorder == null || typeof this.recorder == "undefined"){
            return;
          }
-         console.log("lesson:stopRecord");
          this.recorder.stopRecord();
+         console.log("lesson:stopRecord");
          this.recordButtonIcon = this.START_RECORD_ICON;
          this.isRecording = false;
          this.disablePlayButton = null;

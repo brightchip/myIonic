@@ -424,6 +424,22 @@ module.exports = [
         "file": "plugins/cordova-plugin-geolocation/www/PositionError.js",
         "pluginId": "cordova-plugin-geolocation",
         "runs": true
+    },
+    {
+        "id": "cordova-plugin-video-editor.VideoEditor",
+        "file": "plugins/cordova-plugin-video-editor/www/VideoEditor.js",
+        "pluginId": "cordova-plugin-video-editor",
+        "clobbers": [
+            "VideoEditor"
+        ]
+    },
+    {
+        "id": "cordova-plugin-video-editor.VideoEditorOptions",
+        "file": "plugins/cordova-plugin-video-editor/www/VideoEditorOptions.js",
+        "pluginId": "cordova-plugin-video-editor",
+        "clobbers": [
+            "VideoEditorOptions"
+        ]
     }
 ];
 module.exports.metadata = 
@@ -454,7 +470,8 @@ module.exports.metadata =
     "es6-promise-plugin": "4.1.0",
     "cordova-plugin-screen-orientation": "2.0.1",
     "cordova-plugin-device-orientation": "1.0.7",
-    "cordova-plugin-geolocation": "2.4.3"
+    "cordova-plugin-geolocation": "2.4.3",
+    "cordova-plugin-video-editor": "1.1.2"
 };
 // BOTTOM OF METADATA
 });
