@@ -59351,6 +59351,20 @@ hr.style-four {
   margin-top: 50px;
 }
 
+progress-bar .progress-outer {
+  width: 100%;
+  height: 5px;
+  background-color: #f4f4f4;
+  color: #fff;
+}
+
+progress-bar .progress-inner {
+  min-width: 0;
+  height: 5px;
+  color: #3b5998;
+  background-color: #478aff;
+}
+
 .about-header {
   background-color: #434954;
   padding: 16px;
@@ -59822,6 +59836,7 @@ page-lesson ion-content .lesson-content ion-list .comments .send-comment .button
   width: 50px;
   height: 30px;
   float: right;
+  text-align: center;
 }
 
 page-lesson ion-content .lesson-content ion-list .comments .card-post-comment {
@@ -59923,6 +59938,27 @@ page-lesson ion-content .lesson-content ion-list .comments .comment-content .hea
   height: 50px;
 }
 
+page-lesson ion-content .lesson-content ion-list .comments .no-comments {
+  text-align: center;
+  font-size: large;
+  font-family: Calibri;
+  color: #F4D03F;
+}
+
+page-lesson ion-content .lesson-content ion-list .bt-updatecard {
+  height: 100%;
+  text-align: center;
+}
+
+page-lesson ion-content .lesson-content ion-list .record-text {
+  width: 100%;
+  text-align: center;
+}
+
+page-lesson ion-content .lesson-content ion-list .bt-recorder {
+  background-color: transparent;
+}
+
 page-lesson ion-content .lesson-content ion-list div .vacabulary-main {
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -59934,18 +59970,6 @@ page-lesson ion-content .lesson-content ion-list div .vacabulary-main {
 
 page-lesson ion-content .lesson-content ion-list div .vacabulary-main ion-col {
   background-color: #8f8f8f;
-}
-
-page-lesson ion-content .lesson-content ion-list div .vacabulary-main ion-col button {
-  color: #0a86d4;
-  background-color: #F4D03F;
-  text-align: center;
-  height: 100%;
-}
-
-page-lesson ion-content .lesson-content ion-list div .vacabulary-main ion-col button ion-icon {
-  text-align: center;
-  font-size: 40px;
 }
 
 page-lesson ion-content .lesson-content ion-list div .vacabulary-main ion-col .vocabulary-card {
@@ -60017,18 +60041,16 @@ page-lesson ion-content .word-playing p {
 }
 
 page-lesson ion-content .image-chooser {
-  display: -ms-grid;
-  display: grid;
-  -ms-grid-columns: 25vh 25vh;
-  grid-template-columns: 25vh 25vh;
-  grid-gap: 10%;
   height: 50vh;
   width: 100%;
   bottom: 0;
+  padding: 20px;
 }
 
 page-lesson ion-content .image-chooser .image-box {
   position: relative;
+  float: left;
+  width: 50%;
 }
 
 page-lesson ion-content .image-chooser .answerInfo {
@@ -60512,16 +60534,32 @@ page-veducation .education-vacation-classes .card-subtitle {
 
 page-video-dubbing .main-content video {
   width: 100%;
-  height: auto;
+  height: 30%;
+  position: relative;
 }
 
-page-video-dubbing .main-content video .videoPlayer {
+page-video-dubbing .main-content .bt-play {
+  z-index: 100;
+  position: absolute;
+  top: 15vh;
+  left: 40%;
+}
+
+page-video-dubbing .main-content .video-progress-bar {
   width: 100%;
-  height: auto;
+  height: 1px;
+  position: absolute;
+  z-index: 100;
+  top: 0;
 }
 
 page-video-dubbing .main-content .bt-recorder {
-  background-color: #3b5998;
+  background-color: #ffffff;
+  width: 100%;
+}
+
+page-video-dubbing .main-content .test-player {
+  background-color: transparent;
 }
 
 page-view-account h1 {

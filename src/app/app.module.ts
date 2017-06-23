@@ -56,6 +56,7 @@ import {ImagePicker} from '@ionic-native/image-picker';
 import {ScreenOrientation} from "@ionic-native/screen-orientation";
 import { Geolocation } from '@ionic-native/geolocation';
 import { VideoDubbingPage} from "../pages/video-dubbing/video-dubbing";
+import {ProgressBarComponent} from "../components/progress-bar/progress-bar";
 // import { BackgroundGeolocation } from '@ionic-native/background-geolocation';
 // import {AngularInview} from 'angular-inview';
 
@@ -90,7 +91,8 @@ import { VideoDubbingPage} from "../pages/video-dubbing/video-dubbing";
     ViewAccountPage,
     ChattingPage,
     ChatListPage,
-    VideoDubbingPage
+    VideoDubbingPage,
+    ProgressBarComponent,
   ],
   imports: [
     IonicModule.forRoot(ConferenceApp),

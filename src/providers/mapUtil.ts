@@ -5,7 +5,7 @@ import {Injectable} from '@angular/core';
 import {ToastController, LoadingController, Platform, Loading, AlertController} from 'ionic-angular';
 
 import {StatusBar} from '@ionic-native/status-bar';
-import {SplashScreen} from '@ionic-native/splash-screen';
+// import {SplashScreen} from '@ionic-native/splash-screen';
 import {AppVersion} from '@ionic-native/app-version';
 import {Camera, CameraOptions} from '@ionic-native/camera';
 import {Toast} from '@ionic-native/toast';
@@ -32,7 +32,7 @@ export class NativeService {
               private toastCtrl: ToastController,
               private alertCtrl: AlertController,
               private statusBar: StatusBar,
-              private splashScreen: SplashScreen,
+              // private splashScreen: SplashScreen,
               private appVersion: AppVersion,
               private camera: Camera,
               private toast: Toast,
@@ -381,12 +381,12 @@ export class NativeService {
     this.statusBar.styleDefault();
   }
 
-  /**
-   * 隐藏启动页面
-   */
-  splashScreenHide() {
-    this.splashScreen.hide();
-  }
+  // /**
+  //  * 隐藏启动页面
+  //  */
+  // splashScreenHide() {
+  //   this.splashScreen.hide();
+  // }
 
   /**
    * 调用最小化app插件

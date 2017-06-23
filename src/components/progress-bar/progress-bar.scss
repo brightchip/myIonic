@@ -1,0 +1,26 @@
+progress-bar {
+
+  .progress-outer {
+    width: 100%;
+    //margin: 10px 2%;
+    height: 5px;
+    //padding: 3px;
+    //text-align: center;
+    background-color:  color($colors, light);
+    //border: 1px solid #dcdcdc;
+    color: #fff;
+    //border-radius: 20px;
+  }
+
+  .progress-inner {
+    min-width: 0;
+    height: 5px;
+    //white-space: nowrap;
+    //overflow: hidden;
+    //padding: 5px;
+    color: #3b5998;
+    //border-radius: 2px;
+    background-color: color($colors, primary);
+  }
+
+}

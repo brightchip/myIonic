@@ -586,7 +586,6 @@ export class LessonPage {
       this.disablePlayButton = true;
       this.disableArrowButton = true;
       this.recordButtonIcon = this.RESUME_RECORD_ICON;
-
       this.recorder = this.media.create(this.vacabularys[this.currentIndex].audio);
       this.recorder.startRecord();
     }
@@ -956,26 +955,28 @@ export class LessonPage {
     // console.log("timestampToDate",unix_timestamp.getTime());
     let date = new Date(unix_timestamp);
     let today = new Date();
-
-    let  dateLabel = date.getFullYear() + " 年前";
-    if(today.getFullYear() >= date.getFullYear()){
-      dateLabel = ( date.getMonth() - today.getMonth()) + " 个月前";
-      if(today.getMonth() >= date.getMonth()){
-        dateLabel = (date.getDay() - today.getDay() )  + " 天前";
-        if(today.getDay() >= date.getDay()){
-          dateLabel = (date.getHours() - today.getHours() )  + " 小时前";
-          if(today.getHours() >= date.getHours()){
-            dateLabel = (date.getMinutes() - today.getMinutes() )  + " 分钟前";
-            if(today.getMinutes() >= date.getMinutes()){
-              dateLabel = (date.getSeconds() - today.getSeconds() )  + " 秒前";
-              if(today.getSeconds() >= date.getSeconds()){
-                dateLabel = "刚刚";
-              }
-            }
-          }
-        }
-      }
-    }
+    let  dateLabel = this.tools.dateDiff(date,today);
+    // let  dateLabel = date;
+    // if(date.getFullYear() >= today.getFullYear()){
+    //   dateLabel = ( date.getMonth() - today.getMonth()) + " 个月前";
+    //   if(today.getMonth() >= date.getMonth()){
+    //     dateLabel = (date.getDay() - today.getDay() )  + " 天前";
+    //     if(today.getDay() >= date.getDay()){
+    //       dateLabel = (date.getHours() - today.getHours() )  + " 小时前";
+    //       if(today.getHours() >= date.getHours()){
+    //         dateLabel = (date.getMinutes() - today.getMinutes() )  + " 分钟前";
+    //         if(today.getMinutes() >= date.getMinutes()){
+    //           dateLabel = (date.getSeconds() - today.getSeconds() )  + " 秒前";
+    //           if(today.getSeconds() >= date.getSeconds()){
+    //             dateLabel = "刚刚";
+    //           }
+    //         }
+    //       }
+    //     }
+    //   }
+    // }else {
+    //   dateLabel  = date.getFullYear() + " 年前"
+    // }
 // Will display time in 10:30:23 format
     return dateLabel;
   }

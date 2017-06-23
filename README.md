@@ -23,3 +23,6 @@ $ npm install --save @ionic-native/screen-orientation
 
 $ ionic cordova plugin add cordova-plugin-geolocation
 $ npm install --save @ionic-native/geolocation
+
+$ ionic cordova plugin add cordova-plugin-splashscreen
+$ npm install --save @ionic-native/splash-screen

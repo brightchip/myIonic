@@ -35,7 +35,7 @@
     "@ionic-native/network": "^3.12.1",
     "@ionic-native/screen-orientation": "^3.12.1",
     "@ionic-native/sms": "^3.4.4",
-    "@ionic-native/splash-screen": "3.1.0",
+    "@ionic-native/splash-screen": "^3.12.1",
     "@ionic-native/sqlite": "^3.11.0",
     "@ionic-native/status-bar": "3.1.0",
     "@ionic-native/toast": "^3.12.1",

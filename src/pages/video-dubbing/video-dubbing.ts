@@ -4,13 +4,14 @@ import { InAppBrowser } from '@ionic-native/in-app-browser';
 import { VideoPlayer } from '@ionic-native/video-player';
 import { ConferenceData } from '../../providers/conference-data';
 import {UserData} from "../../providers/user-data";
-
+import { File  } from '@ionic-native/file';
 import {AngularInview} from 'ionicInView';
 import {ScreenOrientation} from "@ionic-native/screen-orientation";
 import * as $ from 'jquery'
 import { TimerObservable } from 'rxjs/observable/TimerObservable';
-import {MediaObject} from "@ionic-native/media";
+import {MediaObject, MediaPlugin} from "@ionic-native/media";
 import {NativeService} from "../../providers/mapUtil";
+import {Tools} from "../../providers/tools";
 
 @Component({
   selector: 'page-video-dubbing',
@@ -22,11 +23,14 @@ export class VideoDubbingPage {
   actionSheet: ActionSheet;
 
   videoEditingSrc:"assets/video/sample2.mp4"
-  videoDuration:any = 100;
+  videoDuration:any = 0;
   currentTime:any = 0;
+  videoProgress: any = 0;
   currentPlayingVideo : any;
   RECORDER_ICON:any = "assets/icon/record.png";
   PAUSE_ICON: string = "assets/icon/pause.png";
+  STOP_ICON: string = "assets/icon/stopaudio.png";
+  TEST_PLAY_ICON: string = "assets/icon/testaudio.png";
   btRecorderIcon = this.RECORDER_ICON;
   remnantTime = 4;
   TIME_TICKER = 4;
@@ -36,9 +40,23 @@ export class VideoDubbingPage {
   isDubbing = null;
   isRecording = null;
   isCountingDown = null;
-  disableRecordButton:boolean = null;
+  isPlayingVideo:boolean = null;
   customAudio = null;
   timer:any
+  showRecordRange = null;
+
+  hasRecorded = false;
+
+  videoIsPaused = true;
+
+  currentStartTime :any ;
+  currentStopTime: any ;
+
+  arrAudioFragments = []
+  private currentAudioPath: string = ""// = "assets/video/test.mp3";
+  isPlayingTest:boolean = false;
+  testAudioIcon = this.TEST_PLAY_ICON
+  showNextButton: boolean = false;
 
   constructor(
     public actionSheetCtrl: ActionSheetController,
@@ -50,22 +68,21 @@ export class VideoDubbingPage {
     public userData: UserData,
     private screenOrientation: ScreenOrientation,
     public nativeSevice:NativeService,
+    public file:File,
+    public tools:Tools,
+    public media: MediaPlugin,
     // private videoPlayer: VideoPlayer
   ) {
     // console.log("Passed params", navParams.data);
-
+    // this.listenVideo();
   }
 
   startDub(){
-    console.log("currentTime",this.currentTime)
-    if(this.recorder == null || typeof this.recorder == "undefined"){
-      this.nativeSevice.showToast("不能启动录音");
-      return;
-    }
-
+    console.log("start dub...")
+    this.videoIsPaused = null;
     this.isDubbing = true;
     this.remnantTime = this.TIME_TICKER;
-
+    this.btRecorderIcon = this.PAUSE_ICON;
     let self = this;
     this.isCountingDown = true;
     this.timer = TimerObservable.create(0, 1000).subscribe(t => {
@@ -77,14 +94,74 @@ export class VideoDubbingPage {
           self.timer.unsubscribe();
         }
 
-        self.startRecording();
+        self.recordAudio();
       }
     });
   }
 
+  recordAudio(){
+    let fileName = this.createFileName();
+
+    // console.log("lesson:stopRecord", this.recordButtonIcon);
+    this.file.checkDir(this.tools.ROOT_DIR, this.tools.AUDIO_DIR_NAME).then((exist) =>{
+      console.log('Directory exists');
+      this.startRecord(this.tools.ROOT_DIR,this.tools.AUDIO_DIR_NAME,fileName)
+    }).catch( err => {
+      console.log("directory not exist",err)
+      console.log("lesson:createDir",this.tools.ROOT_DIR + this.tools.AUDIO_DIR_NAME)
+      this.file.createDir(this.tools.ROOT_DIR, this.tools.AUDIO_DIR_NAME, true).then(() => {
+        this.startRecord(this.tools.ROOT_DIR,this.tools.AUDIO_DIR_NAME,fileName)
+      }).catch((err) => {
+        console.error("error during creating directory", err)
+        this.nativeSevice.showToast(err,2000);
+      });
+    })
+  }
+
+  startRecord(rootDir,audioDir,fileName){
+    // console.log("lesson:startPauseRecord",rootDir  + audioDir  + "/" + fileName);
+    try {
+      this.recorder = this.media.create(this.currentAudioPath);
+      $('#videoEditing').prop('muted', true)
+      $('#videoEditing')[0].play();
+      this.currentStartTime = this.currentTime;
+      this.currentAudioPath = rootDir + audioDir + "/" + fileName;
+      console.log("ready to recordAudio",fileName,"start at",this.currentStartTime,this.currentAudioPath);
+      this.isPlayingTest = false;
+      this.recorder.startRecord();
+      this.isRecording = true;
+      this.showRecordRange = true;
+
+
+    }
+    catch (e) {
+      this.nativeSevice.showToast('Error on recording start.' );
+      console.log("startRecord:Error",e)
+      this.endDub();
+    }
+  }
+
+  listenVideo(){
+
+  }
+
   endDub(){
-    this.stopRecording();
-    this.isDubbing = null;
+    try{
+
+      this.isCountingDown = null;
+      this.timer.unsubscribe();
+      this.stopRecording();
+      this.isDubbing = null;
+      this.btRecorderIcon = this.RECORDER_ICON;
+      this.videoIsPaused = true;
+      this.showRecordRange = true;
+      this.hasRecorded = true;
+      console.log("end Dub")
+
+    }catch (e){
+      console.error("eendsub",e);
+    }
+
   }
 
   startDubbing(){
@@ -95,16 +172,31 @@ export class VideoDubbingPage {
    this.startDub();
   }
 
-  startRecording(){
-    console.log("startRecording...");
+
+  videoEnd() {
+    console.log("videoEnd...");
+    this.videoIsPaused = true;
+    if(typeof $(' #audioTest')[0] != "undefined" && $(' #audioTest')[0] != null){
+      $(' #audioTest')[0].pause();
+    }
+
+    if(this.isRecording){
+      this.isRecording = null;
+      this.showNextButton = true;
+      this.currentStopTime =  this.videoDuration;
+      // this.showRecordRange = null;
+      this.customAudio = true;
+      this.btRecorderIcon = this.RECORDER_ICON;
+      this.generateAudioFragment(this.currentStartTime,this.currentStopTime,this.currentAudioPath);
+    }
+
     if(this.recorder == null || typeof this.recorder == "undefined"){
       this.isRecording = null;
       return;
     }
-
-    this.recorder.startRecord();
-    this.isRecording = true;
-    this.btRecorderIcon = this.PAUSE_ICON;
+    console.log("videoEnd...stopRecord");
+    this.isPlayingTest = false;
+    this.recorder.stopRecord();
   }
 
   private stopRecording() {
@@ -113,44 +205,149 @@ export class VideoDubbingPage {
       this.isRecording = null;
       return;
     }
-
     this.recorder.stopRecord();
+    $('#videoEditing')[0].pause();
+    this.currentStopTime =  this.currentTime;
     this.isRecording = null;
     this.customAudio = true;
     this.btRecorderIcon = this.RECORDER_ICON;
+    this.generateAudioFragment(this.currentStartTime,this.currentStopTime,this.currentAudioPath);
+  }
+
+  generateAudioFragment(recordStartTime,recordStopTime,audioPath){
+    this.arrAudioFragments.push({startAt:recordStartTime,stopAt:recordStopTime,audioPath:audioPath})
+    console.log("generateAudioFragment",this.arrAudioFragments);
   }
 
 
-  onFullScreen(state) {
-      // get current
-      // console.log(this.screenOrientation.type); // logs the current orientation, example: 'landscape'
-      if(state){
-        // Disable orientation lock
-        this.screenOrientation.unlock();
-        this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.LANDSCAPE);
-      }else {
-        this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.PORTRAIT);
-      }
-      console.log("fullScreen has end!",this.screenOrientation.type);
+  testCustomRecord(){
+    let video =   $(' #videoEditing')[0];
+    let audio =   $(' #audioTest')[0];
+
+    if(this.isPlayingTest){
+      video.pause();
+      audio.pause();
+      this.isPlayingTest = false
+      video.currentTime = this.currentStartTime;
+      console.log("pause test dubbing")
+      // audio.currentTime = 0;
+      return;
     }
+
+
+    $(' #videoEditing').prop('muted', true);
+    video.currentTime = this.currentStartTime;
+    audio.setAttribute('src',this.currentAudioPath);
+    video.play();
+    audio.play();
+    this.isPlayingTest = true;
+    this.videoIsPaused = null;
+    this.testAudioIcon = this.STOP_ICON;
+    console.log("testCustomRecord",video.currentTime,audio);
+  }
 
   addVideoControl(){
     var self = this;
-    var video =  $(' #videoEditing');
-    console.log("addVideoControl",video)
-    video.bind('webkitfullscreenchange mozfullscreenchange fullscreenchange', function(e) {
-      var state =  document.webkitIsFullScreen;
-      var event = state ? 'FullscreenOn' : 'FullscreenOff';
-      // Now do something interesting
-      console.log('Event: ' + event);
-      self.onFullScreen(state);
+
+    // $(document).ready(function(){
+      var video =  $(' #videoEditing');
+      console.log("addVideoControl",video)
+
+    this.videoDuration =  (video[0].duration).toFixed(2);
+      video.on(
+        "timeupdate",
+        function(event){
+          onTrackedVideoFrame(this.currentTime,this.duration);
+        });
+
+    video.on("pause", function (e) {
+      console.log("Video paused. Current time of videoplay: " + e.target.currentTime );
+      // self.isPlayingTest = false;
+      this.videoIsPaused = true;
     });
+
+    video.on('ended',function myHandler(e) {
+      self.videoEnd();
+      // What you want to do after the event
+    });
+
+    $(' #audioTest').on('ended',function myHandler(e) {
+      self.testAudioIcon = self.TEST_PLAY_ICON;
+      self.isPlayingTest = false;
+    });
+
+    $(' #audioTest').on("pause", function (e) {
+      self.testAudioIcon = self.TEST_PLAY_ICON;
+      self.isPlayingTest = false;
+    });
+
+
+    // });
+
+    function onTrackedVideoFrame(currentTime,duration){
+      // console.log("onTrackedVideoFrame",currentTime,duration)
+      if( self.isRecording || self.isPlayingTest){
+        self.currentTime = currentTime.toFixed(2);
+        console.log("on dubbing or playing test...", self.currentTime );
+      }
+
+      self.videoDuration = duration.toFixed(2);
+      self.videoProgress = (currentTime/duration*100).toFixed(2);
+      if(self.isPlayingTest){
+        if(self.currentStopTime <=  self.currentTime){
+          $(' #videoEditing')[0].pause();
+          $(' #audioTest')[0].pause();
+          self.isPlayingTest = false;
+          self.testAudioIcon = self.TEST_PLAY_ICON;
+          self.videoIsPaused = true;
+          console.log("on playing test finish...", );
+        }
+      }
+
+    }
+
   }
 
-  findLocation(_specialEnglishBooks){
-    console.log("findLocation");
+  generateDubVideo(){
+    console.log("generateDubVideo")
   }
 
+  rangChange(event){
+    if(this.videoDuration <= 0){
+      return;
+    }
+    console.log("rangChange",event.value);
+    if(this.isDubbing || this.isPlayingTest){
+     return;
+    }
+    let video =  $(' #videoEditing');
+    video[0].currentTime = event.value
+
+  }
+
+  toggleVideo(){
+    if(this.isDubbing){
+      return;
+    }
+    let video =  $(' #videoEditing');
+    let isPlaying =  !video[0].paused;
+    if( !isPlaying ){
+      video.prop('muted', false);
+      video[0].play();
+      this.isPlayingVideo = true;
+      this.videoIsPaused = null;
+      this.showRecordRange = null;
+      console.log("play video");
+    }else {
+      video[0].pause();
+      this.videoIsPaused = true;
+      this.isPlayingVideo = null;
+      if(this.hasRecorded){
+        this.showRecordRange = true;
+      }
+      console.log("pause video");
+    }
+  }
 
   playVideo(){
     console.log("playVideo");
@@ -164,6 +361,12 @@ export class VideoDubbingPage {
 
   }
 
+  private createFileName()  {
+    var d = new Date(),
+      n = d.getTime(),
+      newFileName =  this.userData.userInfo.phone + "_" + n + ".mp3";
+    return newFileName;//this.vacabularys[this.currentIndex].word;
+  }
 
 
 }

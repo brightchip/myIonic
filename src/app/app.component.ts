@@ -18,6 +18,7 @@ import {Auth} from "../providers/auth";
 import {ChatData} from "../providers/chat-data";
 import {DBHelper} from "../providers/dbhelper";
 import {enableProdMode} from '@angular/core';
+import {ScreenOrientation} from "@ionic-native/screen-orientation";
 
 
 export interface PageInterface {
@@ -80,6 +81,7 @@ export class ConferenceApp {
     public toastCtrl:ToastController,
     public dbHelper:DBHelper,
 
+    private screenOrientation: ScreenOrientation,
       // page: PageInterface,
   public splashScreen: SplashScreen
   ) {
@@ -90,6 +92,7 @@ export class ConferenceApp {
     // } else {
     //   // something else
     // }
+    this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.PORTRAIT);
 
 
     // Check if the user has already seen the tutorial

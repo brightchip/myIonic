@@ -9,25 +9,34 @@
 
 <ion-content class="main-content" no-padding>
 
-  <video id="videoEditing" controls="controls" preload="metadata"  class="videoPlayer">
-    <source src="assets/video/sample2.mp4" type="video/mp4"/>
-  </video>
+  <div class="video-box">
+    <video id="videoEditing"  preload="metadata" (click)="toggleVideo()" class="video-player">
+      <source src="assets/video/kmb.mp4" type="video/mp4"/>
+
+    </video>
+    <img *ngIf="videoIsPaused" class="bt-play" (click)="toggleVideo()"  src="assets/icon/play.png" />
+    <progress-bar class="video-progress-bar" [progress]="videoProgress" ></progress-bar>
+  </div>
+
 
   <div class="recorder">
-    <button #btRecorder disabled="isPlaying" id="bt-recorder"  disabled={{disableRecordButton}} class="bt-recorder" (click)="startDubbing()">
+    <button #btRecorder disabled="isPlaying" id="bt-recorder"  disabled={{isPlayingVideo}} class="bt-recorder" (click)="startDubbing()">
       <img width="60" height="60" class="input-img"  [src]="btRecorderIcon"  />
       <h3 *ngIf="isCountingDown" class="count-down-text">{{remnantTime}}</h3>
     </button>
-    <button  class="test-player" *ngIf="customAudio">
-      <audio></audio>
+    <button  class="test-player" *ngIf="customAudio" (click)="testCustomRecord()">
+      <audio id="audioTest" ></audio>
       试听
-      <ion-icon name="headset"></ion-icon>
+      <img width="60" height="60" class="test-custom-record"  [src]="testAudioIcon"  />
     </button>
+    <button  class="test-player" *ngIf="showNextButton" (click)="generateDubVideo()">
+      生成视频
+      <!--<img width="60" height="60" class="test-custom-record"  [src]="testAudioIcon"  />-->
+    </button>
+
   </div>
 
-  <ion-range min="0" max={{videoDuration}} [(ngModel)]="currentTime" color="secondary">
-    <!--<ion-label range-left>0</ion-label>-->
-    <!--<ion-label range-right>{{videoDuration}}</ion-label>-->
+  <ion-range min="0" step="1" snaps="true" *ngIf="showRecordRange"  (ionChange)="rangChange($event)" max={{videoDuration}} [(ngModel)]="currentTime" color="secondary">
   </ion-range>
 
 </ion-content>
