@@ -119,7 +119,7 @@ export class DBHelper {
   }
 
   getRandomRows(vocabulary):Promise<any>{
-    console.log("getRandomRows,update in local sqlite")
+    console.log("getRandomRows")
     return this.platform.ready().then(() => {
      let tmp =  [this.vacabularys[0],this.vacabularys[3],this.vacabularys[5],vocabulary]
 
@@ -148,9 +148,9 @@ export class DBHelper {
   }
 
   getVocabulary(vocabulary_id):Promise<any>{
-    console.log("getVocabulary,update in local sqlite")
+    console.log("getVocabulary")
     return this.platform.ready().then(() => {
-      let query = "SELECT * FROM tb_vocabulary WHERE vocabulary_id = ?";
+      let query = "SELECT * FROM tb_vocabulary WHERE vocabulary_id=$1";
       return this.db.executeSql(query, [vocabulary_id])
         .then(function (res) {
           let vocabulary = {};
@@ -175,7 +175,7 @@ export class DBHelper {
   getTestResult(lesson_id) {
     console.log("getTestResult,update in local sqlite")
     return this.platform.ready().then(() => {
-      let query = "SELECT * FROM tb_vocabulary_result order by created_date DESC WHERE lesson_id = ?";
+      let query = "SELECT * FROM tb_vocabulary_result  WHERE lesson_id=$1 ORDER BY created_date DESC";
       return  this.db.executeSql( query, [lesson_id])
         .then(function(res) {
           return res.rows.item(0);
@@ -191,7 +191,7 @@ export class DBHelper {
   }
 
   addTestResult(result: { lesson_id: number; created_date: Date; wrong_times: (number | any) }) {
-    console.log("addTestResult,update in local sqlite")
+    console.log("addTestResult",result)
     return this.platform.ready().then(() => {
          let query = "INSERT INTO tb_vocabulary_result (lesson_id,created_date,wrong_times) VALUES ($1,$2,$3)";
           this.db.executeSql( query, [result.lesson_id,result.created_date,result.wrong_times])

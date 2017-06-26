@@ -1,0 +1,105 @@
+vocabulary-recording{
+
+
+  .vacabulary-main {
+    display: flex;
+    flex-direction: row;
+    ion-col {
+      background-color: #8f8f8f;
+      //button {
+      //  color: #0a86d4;
+      //  background-color: #F4D03F;
+      //  //margin-top:100%;
+      //  text-align: center;
+      //  //margin-left: auto;
+      //  //margin-right: auto;
+      //  height: 100%;
+      //  ion-icon {
+      //    text-align: center;
+      //    font-size: 40px;
+      //  }
+      //}
+      //
+      //backArrow{
+      //  visibility: hidden;
+      //}
+
+    }
+
+    ion-col .vocabulary-card {
+      margin-left: auto;
+      margin-right: auto;
+      width: 100%;
+      height: auto;
+      background-color: #0a86d4;
+
+      ion-card-header {
+        //width:50%;
+        text-align: center;
+        span {
+          color: #9eeeb6;
+        }
+      }
+
+      ion-card-content {
+        text-align: center;
+      }
+
+    }
+  }
+
+  .avatar {
+    //width:100%;
+    margin-top: 10%;
+    margin-bottom: 10%;
+    //height: 20vh;
+    //background-color: #F4D03F;
+  }
+
+  .voice-recorder {
+    display: flex;
+    //flex-direction: row;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+
+    //background-color: #F4D03F;
+
+  }
+
+  .voice-recorder div {
+    //flex: 1;
+    margin-left: auto;
+    margin-right: auto;
+    button {
+      border-radius: 60px;
+      width: 100px;
+      height: 60px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .bt-recorder ion-icon {
+
+      font-size: 60px;
+    }
+
+  }
+
+  .bt-updatecard{
+    //height: ;
+    //height: 30%;
+    margin-top: 50%;
+    text-align: center;
+  }
+
+  .record-text{
+    width: 100%;
+    text-align: center;
+  }
+
+  .bt-recorder{
+    background-color: transparent;
+  }
+
+}

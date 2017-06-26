@@ -1,14 +1,10 @@
 import {Component, ViewChild} from '@angular/core';
 
 import {Events, NavController, Slides, Tabs} from 'ionic-angular';
-import {startAutoplay} from "ionic-angular/components/slides/swiper/swiper";
+
 import * as Enums from "../../providers/globals";
 import {UserData} from "../../providers/user-data";
-import {SpecialEnglishPage} from "../special-english/special-english";
-import {VacationEducationPage} from "../vacation-education/vacation-education";
-import {OnlineCoursesPage} from "../online-courses/online-courses";
-import {ImagePicker} from "@ionic-native/image-picker";
-import {isSuccess} from "@angular/http/src/http_utils";
+
 import {Tools} from "../../providers/tools";
 import {MapPage} from "../map/map";
 

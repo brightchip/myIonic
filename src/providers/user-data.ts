@@ -544,10 +544,10 @@ export class UserData {
 
   }
 
-  findVocabulary(lesson_id){
+  findVocabulary(lesson_id): Promise<any>{
     console.log("findVocabulary",lesson_id);
     var vocabularys = []
-    this.dbHelper.getVocabularys(lesson_id).then( (vocabularysOld) => {
+    return this.dbHelper.getVocabularys(lesson_id).then( (vocabularysOld) => {
       if(typeof  vocabularysOld != "undefined" && vocabularysOld != null) {
         console.log("findVocabulary of" , lesson_id,vocabularysOld,vocabularysOld.length)
         for (let i = 0; i < vocabularysOld.length; i++) {
@@ -567,8 +567,9 @@ export class UserData {
       }else {
 
       }
+      return vocabularys;
     })
-    return vocabularys;
+
   }
 
   findCoolPlayVocabulary(lesson_id) : Promise<any>{

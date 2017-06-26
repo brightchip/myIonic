@@ -1,0 +1,44 @@
+vocabulary-selecting{
+
+  .image-chooser{
+    //display: grid;
+    //grid-template-columns: 25vh 25vh ;
+    //grid-gap: 10%;
+    //background-color: #444;
+    //color: #444;
+    height: 50vh;
+    width: 100%;
+    bottom: 0;
+    padding: 20px;
+
+    .image-box{
+      position: relative;
+      float: left;
+      //background-color: #0a86d4;
+      width: 50%;
+    }
+    .answerInfo{
+      z-index: 100;
+      top: 0;
+      left:10px;
+      position: absolute;
+    }
+
+    img{
+      height: 22vh;
+      width: 22vh;
+    }
+
+  }
+
+
+  .word-playing{
+    height: 20vh;
+    //background-color: #3b5998;
+    p{
+      font-size: small;
+    }
+  }
+
+
+}

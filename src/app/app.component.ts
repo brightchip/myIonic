@@ -7,7 +7,7 @@ import { AccountPage } from '../pages/account/account';
 import { LoginPage } from '../pages/login/login';
 import { TabsPage } from '../pages/tabs/tabs';
 import { TutorialPage } from '../pages/tutorial/tutorial';
-import { MyclassListPage } from '../pages/myclass-list/myclass-list';
+
 import { SupportPage } from '../pages/support/support';
 import { HomePage } from '../pages/home/home';
 import { EntryPage } from '../pages/entry/entry';
@@ -18,7 +18,7 @@ import {Auth} from "../providers/auth";
 import {ChatData} from "../providers/chat-data";
 import {DBHelper} from "../providers/dbhelper";
 import {enableProdMode} from '@angular/core';
-import {ScreenOrientation} from "@ionic-native/screen-orientation";
+
 
 
 export interface PageInterface {
@@ -49,7 +49,7 @@ export class ConferenceApp {
   appPages: PageInterface[] = [
     // { title: 'Schedule', component: TabsPage, tabComponent: SchedulePage, icon: 'calendar' },
     { title: 'Home', component: TabsPage, tabComponent: HomePage,  index: 0, icon: 'map' },
-    { title: 'My classes', component: TabsPage, tabComponent: MyclassListPage, index: 1, icon: 'contacts' },
+    // { title: 'My classes', component: TabsPage, tabComponent: MyclassListPage, index: 1, icon: 'contacts' },
     { title: 'About', component: TabsPage, tabComponent: AboutPage, index: 2, icon: 'information-circle' },
 
     // { title: 'Map', component: TabsPage, tabComponent: MapPage, index: 2, icon: 'map' },
@@ -71,7 +71,7 @@ export class ConferenceApp {
   constructor(
     public events: Events,
     public userData: UserData,
-    public menu: MenuController,
+    // public menu: MenuController,
     public platform: Platform,
     public chatData:ChatData,
     public websocket:WebsocketEntity,
@@ -81,7 +81,7 @@ export class ConferenceApp {
     public toastCtrl:ToastController,
     public dbHelper:DBHelper,
 
-    private screenOrientation: ScreenOrientation,
+
       // page: PageInterface,
   public splashScreen: SplashScreen
   ) {
@@ -92,7 +92,8 @@ export class ConferenceApp {
     // } else {
     //   // something else
     // }
-    this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.PORTRAIT);
+
+
 
 
     // Check if the user has already seen the tutorial
@@ -132,9 +133,9 @@ export class ConferenceApp {
         this.platformReady()//ss
       });
     // decide which menu items should be hidden by current login status stored in local storage
-    this.userData.hasLoggedIn().then((hasLoggedIn) => {
-      this.enableMenu(hasLoggedIn === true);
-    });
+    // this.userData.hasLoggedIn().then((hasLoggedIn) => {
+    //   // this.enableMenu(hasLoggedIn === true);
+    // });
 
     this.listenToLoginEvents();
   }
@@ -182,7 +183,7 @@ export class ConferenceApp {
 
   listenToLoginEvents() {
     this.events.subscribe('user:login', () => {
-      this.enableMenu(true);
+      // this.enableMenu(true);
       this.nav.setRoot(TabsPage);
       this.rootPage  = (TabsPage);
 
@@ -192,7 +193,7 @@ export class ConferenceApp {
     });
 
     this.events.subscribe('user:signup', () => {
-      this.enableMenu(true);
+      // this.enableMenu(true);
       this.rootPage  = (TabsPage);
       this.nav.setRoot(TabsPage);
 
@@ -202,7 +203,7 @@ export class ConferenceApp {
     });
 
     this.events.subscribe('user:logout', () => {
-      this.enableMenu(false);
+      // this.enableMenu(false);
       this.rootPage  = (LoginPage);
       this.nav.setRoot(LoginPage);
 
@@ -221,10 +222,10 @@ export class ConferenceApp {
 
   }
 
-  enableMenu(loggedIn: boolean) {
-    this.menu.enable(loggedIn, 'loggedInMenu');
-    this.menu.enable(!loggedIn, 'loggedOutMenu');
-  }
+  // enableMenu(loggedIn: boolean) {
+  //   this.menu.enable(loggedIn, 'loggedInMenu');
+  //   this.menu.enable(!loggedIn, 'loggedOutMenu');
+  // }
 
   platformReady() {
     // Call any initial plugins when ready

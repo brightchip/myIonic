@@ -4,6 +4,9 @@ import {UserData} from "./user-data";
 import {Transfer, TransferObject} from "@ionic-native/transfer";
 import * as Enums from "./globals";
 import { File  } from '@ionic-native/file';
+import {ScreenOrientation} from "@ionic-native/screen-orientation";
+import {DBHelper} from "./dbhelper";
+import {NativeService} from "./mapUtil";
 
 /**
  * Created by Winjoy on 5/19/2017.
@@ -34,11 +37,21 @@ export class Tools{
     public events:Events,
     public toastCtrl:ToastController,
     private transfer: Transfer,
-    public  loadingCtrl:LoadingController
+    public  loadingCtrl:LoadingController,
+    private screenOrientation: ScreenOrientation,
+    public nativeService:NativeService
 
   ){
     console.log("tool constructor.......");
-    this.getRootDir();
+    this.platform.ready().then(() => {
+      if(this.nativeService.isMobile()){
+        this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.PORTRAIT);
+      }else {
+        console.log("not on mobile")
+      }
+
+      this.getRootDir();
+    });
     this.fileTransfer = this.transfer.create();
   }
 

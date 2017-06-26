@@ -17,48 +17,48 @@
 		<ion-list no-lines>
 
       <ion-item>
-        <ion-input color="primary" [(ngModel)]="signup.tel" name="tel" type="tel" #tel="ngModel" required type="tel" placeholder="Tel Input">
+        <ion-input [(ngModel)]="signup.tel" name="tel" type="tel" #tel="ngModel" required type="tel" placeholder="手机号码">
         </ion-input>
       </ion-item>
-      <p ion-text [hidden]="tel.valid || submitted == false" color="danger" padding-left>
-        Tel is required
+      <p ion-text [hidden]="tel.valid || submitted == false" padding-left>
+        手机号未填写
       </p>
 
-      <ion-item>
-				<ion-input color="primary" placeholder="User name" [(ngModel)]="signup.username" name="username" type="text" #username="ngModel" required>
-				</ion-input>
-			</ion-item>
-			<p ion-text [hidden]="username.valid || submitted == false" color="danger" padding-left>
-				Username is required
-			</p>
+      <!--<ion-item>-->
+				<!--<ion-input  placeholder="User name" [(ngModel)]="signup.username" name="username" type="text" #username="ngModel" required>-->
+				<!--</ion-input>-->
+			<!--</ion-item>-->
+			<!--<p ion-text [hidden]="username.valid || submitted == false"  padding-left>-->
+				<!--Username is required-->
+			<!--</p>-->
 
 			<ion-item>
-				<ion-input color="primary" placeholder="Password" [(ngModel)]="signup.password" name="password" type="password" #password="ngModel" required>
+				<ion-input placeholder="密码" [(ngModel)]="signup.password" name="password" type="password" #password="ngModel" required>
 				</ion-input>
 			</ion-item>
-			<p ion-text [hidden]="password.valid || submitted == false" color="danger" padding-left>
-				Password is required
+			<p ion-text [hidden]="password.valid || submitted == false" padding-left>
+				密码未填写
 			</p>
 
       <ion-item>
-        <ion-input color="primary" placeholder="Re Password" [(ngModel)]="signup.repassword" name="repassword" type="password" #repassword="ngModel" required >
+        <ion-input  placeholder="确认密码" [(ngModel)]="signup.repassword" name="repassword" type="password" #repassword="ngModel" required >
         </ion-input>
       </ion-item>
-      <p ion-text [hidden]="(signup.password===signup.repassword  && password.valid) || submitted == false" color="danger" padding-left>
-        Passwords  mismatch
+      <p ion-text [hidden]="(signup.password===signup.repassword  && password.valid) || submitted == false"  padding-left>
+        密码不匹配
       </p>
 
       <ion-item>
-        <ion-input placeholder="Captcha" [(ngModel)]="signup.captcha" name="captcha" type="text"  #captcha="ngModel" required>
+        <ion-input placeholder="验证码" [(ngModel)]="signup.captcha" name="captcha" type="text"  #captcha="ngModel" required>
         </ion-input>
 
         <button ion-button outline item-right icon-right ion-button (click)="sendSMS()">
-          Send SMS
+          获取验证码
         </button>
 
       </ion-item>
-      <p  ion-text [hidden]="signup.captchaMismatch || submitted == false" color="danger" padding-left>
-        Captcha Wrong
+      <p  ion-text [hidden]="signup.captchaMismatch || submitted == false"  padding-left>
+       验证码错误
       </p>
 
 
@@ -69,6 +69,6 @@
 		</div>
 	</form>
 
-  <p  color="danger"> {{errorMsg}}</p>
+  <p > {{errorMsg}}</p>
 
 </ion-content>

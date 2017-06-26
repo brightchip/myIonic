@@ -95,13 +95,13 @@ export class ChattingPage {
 
   addAudioInput(){
     console.log("addAudioInput");
+    var self = this;
     this.btRecorder  = document.getElementById("bt-recorder");
     this.iconPropt = document.getElementById("icon-prompt");
     this.btRecorder.style.display  = "none";
     this.inSpeaking = false;
     console.log("iconPropt",this.iconPropt)
 
-    var self = this;
     var touchStartY = 600;
 
     var touchStart = function(event) {

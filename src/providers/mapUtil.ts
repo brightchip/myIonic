@@ -410,6 +410,9 @@ export class NativeService {
             console.log('lat: ' + pos.coords.latitude + ', lon: ' + pos.coords.longitude);
             // console.log("getUserLocation",data);
             resolve({'lng': pos.coords.longitude, 'lat': pos.coords.latitude});
+          }).catch((error) => {
+
+            throw  error;
           });
 
           // const watch = this.geolocation.watchPosition().subscribe(pos => {

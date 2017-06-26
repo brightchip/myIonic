@@ -1,0 +1,57 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>听词试图</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content class="main-content" no-padding>
+
+  <div  *ngIf="showTestingPage">
+    <ion-slides #slides (ionSlideDidChange)="slideChanged()"  (ionSlideReachStart)="slideOnHead()" (ionSlideReachEnd)="slidesFinish()" >
+      <ion-slide *ngFor="let _vacabulary of vacabularys">
+
+        <div class="word-playing" no-padding>
+          <h4>{{_vacabulary.word}}</h4>
+          <p>{{_vacabulary.pronunciation}}</p>
+          <p >{{isPickWrong ? _vacabulary.mean : "  "}}</p>
+        </div>
+
+        <div class="image-chooser">
+
+          <div *ngFor="let _random of _vacabulary.randoms" >
+            <div class="image-box">
+              <img   src={{_random.img_url}} (click)="pickAnswer(_random)" />
+              <div *ngIf="_random.wrongAnswer"  class="answerInfo"><img src="assets/icon/wrong.png"></div>
+              <div *ngIf="_random.correctAnswer"  class="answerInfo"><img src="assets/icon/right.png" /></div>
+            </div>
+
+          </div>
+          <audio id="audio"></audio>
+        </div>
+
+      </ion-slide>
+    </ion-slides>
+  </div>
+
+  <div *ngIf="showResultPage" class="resultPage">
+    <div class="result-summary">total wrong recite time:{{totalWrongTimes}}</div>
+    <div *ngFor="let _vacabulary of vacabularys">
+      <ion-item  *ngIf="_vacabulary.recite_wrong_times > 0">
+        <p class="voabulary-list-item">
+          {{_vacabulary.word}}
+        </p>
+        <p class="word-wrong-times-item">
+          {{_vacabulary.recite_wrong_times}}
+        </p>
+      </ion-item>
+    </div>
+    <div  class="pefect-result" *ngIf="totalWrongTimes < 1">
+      <h5>很好满分，继续努力哦</h5>
+      <!--<video></video>-->
+    </div>
+  </div>
+
+</ion-content>

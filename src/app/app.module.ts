@@ -6,12 +6,10 @@ import { AboutPage } from '../pages/about/about';
 import { PopoverPage } from '../pages/about-popover/about-popover';
 import { AccountPage } from '../pages/account/account';
 import { LoginPage } from '../pages/login/login';
-import { SchedulePage } from '../pages/schedule/schedule';
-import { ScheduleFilterPage } from '../pages/schedule-filter/schedule-filter';
-import { SessionDetailPage } from '../pages/session-detail/session-detail';
+
 import { SignupPage } from '../pages/signup/signup';
-import { SpeakerDetailPage } from '../pages/speaker-detail/speaker-detail';
-import { MyclassListPage } from '../pages/myclass-list/myclass-list';
+
+
 import { TabsPage } from '../pages/tabs/tabs';
 import { TutorialPage } from '../pages/tutorial/tutorial';
 import { SupportPage } from '../pages/support/support';
@@ -57,6 +55,8 @@ import {ScreenOrientation} from "@ionic-native/screen-orientation";
 import { Geolocation } from '@ionic-native/geolocation';
 import { VideoDubbingPage} from "../pages/video-dubbing/video-dubbing";
 import {ProgressBarComponent} from "../components/progress-bar/progress-bar";
+import {VocabularyRecordingPage} from "../pages/vocabulary-recording/vocabulary-recording";
+import {VocabularySelectingPage} from "../pages/vocabulary-selecting/vocabulary-selecting";
 // import { BackgroundGeolocation } from '@ionic-native/background-geolocation';
 // import {AngularInview} from 'angular-inview';
 
@@ -70,12 +70,9 @@ import {ProgressBarComponent} from "../components/progress-bar/progress-bar";
     HomePage,
     MapPage,
     PopoverPage,
-    SchedulePage,
-    ScheduleFilterPage,
-    SessionDetailPage,
+
     SignupPage,
-    SpeakerDetailPage,
-    MyclassListPage,
+
     TabsPage,
     TutorialPage,
     SupportPage,
@@ -93,6 +90,8 @@ import {ProgressBarComponent} from "../components/progress-bar/progress-bar";
     ChatListPage,
     VideoDubbingPage,
     ProgressBarComponent,
+    VocabularyRecordingPage,
+    VocabularySelectingPage
   ],
   imports: [
     IonicModule.forRoot(ConferenceApp),
@@ -108,12 +107,9 @@ import {ProgressBarComponent} from "../components/progress-bar/progress-bar";
     HomePage,
     MapPage,
     PopoverPage,
-    SchedulePage,
-    ScheduleFilterPage,
-    SessionDetailPage,
+
     SignupPage,
-    SpeakerDetailPage,
-    MyclassListPage,
+
     TabsPage,
     TutorialPage,
     SupportPage,
@@ -129,7 +125,9 @@ import {ProgressBarComponent} from "../components/progress-bar/progress-bar";
     ViewAccountPage,
     ChattingPage,
     ChatListPage,
-    VideoDubbingPage
+    VideoDubbingPage,
+    VocabularyRecordingPage,
+    VocabularySelectingPage
   ],
   providers: [
     ConferenceData,

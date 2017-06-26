@@ -59946,7 +59946,7 @@ page-lesson ion-content .lesson-content ion-list .comments .no-comments {
 }
 
 page-lesson ion-content .lesson-content ion-list .bt-updatecard {
-  height: 100%;
+  margin-top: 50%;
   text-align: center;
 }
 
@@ -60065,6 +60065,11 @@ page-lesson ion-content .image-chooser img {
   width: 22vh;
 }
 
+page-lesson ion-content .bt-start-dub {
+  height: auto;
+  width: 100px;
+}
+
 page-user .logo {
   padding: 20px 0;
   min-height: 200px;
@@ -60128,8 +60133,7 @@ page-map .bt-nav {
   margin-top: 90%;
   z-index: 100;
   margin-left: 10px;
-  font-size: 50px;
-  background-color: #ffffff;
+  font-size: 30px;
 }
 
 page-map ion-content {

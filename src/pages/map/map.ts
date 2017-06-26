@@ -34,6 +34,7 @@ export class MapPage {
   }
 
   doAutoNav(){
+    this.nativeService.showLoading("正在获取位置...");
     console.log("doAutoNav")
     this.nativeService.getUserLocation().then(location => {
       // if(!location){
@@ -43,8 +44,12 @@ export class MapPage {
       console.log("getUserLocation autonav",location);
       this.regeocoder([location.lng,location.lat])
       this.map.setCenter([location.lng,location.lat])
+      this.nativeService.hideLoading();
 
-    });
+    }).catch(err => {
+      console.error('Error getting location', err);
+      this.nativeService.hideLoading();
+    })
   }
 
   search(location){
@@ -56,8 +61,11 @@ export class MapPage {
     this.geocoder(location).then( (data) => {
       console.log("geocoder result",data)
       this.map.setCenter([data[0].getLng(), data[0].getLat()])
+
+
     }, err => {
       console.error("geocoder",err);
+
     })
   }
 

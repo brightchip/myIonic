@@ -4,8 +4,7 @@ import { ActionSheet, ActionSheetController, Config, NavController,NavParams } f
 import { InAppBrowser } from '@ionic-native/in-app-browser';
 
 import { ConferenceData } from '../../providers/conference-data';
-import { SessionDetailPage } from '../session-detail/session-detail';
-import { SpeakerDetailPage } from '../speaker-detail/speaker-detail';
+
 import {UserData} from "../../providers/user-data";
 
 
