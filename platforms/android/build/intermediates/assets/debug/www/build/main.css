@@ -60558,6 +60558,13 @@ page-video-dubbing .main-content .bt-recorder {
   width: 100%;
 }
 
+page-video-dubbing .main-content .hide-button {
+  height: auto;
+  width: 100px;
+  background-color: #478aff;
+  margin-left: 30px;
+}
+
 page-video-dubbing .main-content .test-player {
   background-color: transparent;
 }

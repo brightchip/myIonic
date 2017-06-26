@@ -51,11 +51,11 @@ export class VacationEducationPage {
   }
 
   ionViewDidEnter(){
-    $('#vaceduVideo').play();
+    $('#vaceduVideo')[0].play();
   }
 
   ionViewDidLeave(){
-    $('#vaceduVideo').pause();
+    $('#vaceduVideo')[0].pause();
   }
 
   gotoClasses(id:any){

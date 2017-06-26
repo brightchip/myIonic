@@ -2,10 +2,6 @@ page-video-dubbing {
 
   .main-content {
 
-    .video-box{
-      position: fixed;
-    }
-
     video{
       width: 100%;
       height: 30%;
@@ -30,6 +26,15 @@ page-video-dubbing {
       width:100%;
 
     }
+
+    .hide-button{
+      height: auto;
+      width:100px;
+      background-color: color($colors,primary);
+      margin-left:30px;
+    }
+
+
 
     .test-player{
       background-color: transparent;

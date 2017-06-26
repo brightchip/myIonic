@@ -10,7 +10,7 @@
 <ion-content class="main-content" no-padding>
 
   <div class="video-box">
-    <video id="videoEditing"  preload="metadata" (click)="toggleVideo()" class="video-player">
+    <video id="videoEditing"  preload="metadata" (click)="toggleVideo()" class="video-player" webkit-playsinline>
       <source src="assets/video/kmb.mp4" type="video/mp4"/>
 
     </video>
@@ -29,15 +29,20 @@
       试听
       <img width="60" height="60" class="test-custom-record"  [src]="testAudioIcon"  />
     </button>
-    <button  class="test-player" *ngIf="showNextButton" (click)="generateDubVideo()">
-      生成视频
-      <!--<img width="60" height="60" class="test-custom-record"  [src]="testAudioIcon"  />-->
-    </button>
-
   </div>
 
   <ion-range min="0" step="1" snaps="true" *ngIf="showRecordRange"  (ionChange)="rangChange($event)" max={{videoDuration}} [(ngModel)]="currentTime" color="secondary">
   </ion-range>
+
+  <button  class="hide-button" *ngIf="showNextButton" (click)="playAllDub()">
+    预览
+    <!--<img width="60" height="60" class="test-custom-record"  [src]="testAudioIcon"  />-->
+  </button>
+
+  <button  class="hide-button" *ngIf="showNextButton" (click)="generateDubVideo()">
+    分享
+    <!--<img width="60" height="60" class="test-custom-record"  [src]="testAudioIcon"  />-->
+  </button>
 
 </ion-content>
 

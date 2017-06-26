@@ -57,6 +57,8 @@ export class VideoDubbingPage {
   isPlayingTest:boolean = false;
   testAudioIcon = this.TEST_PLAY_ICON
   showNextButton: boolean = false;
+  private playAllDubTest: boolean = false;
+  private currentPlayDubIndex: number;
 
   constructor(
     public actionSheetCtrl: ActionSheetController,
@@ -157,6 +159,7 @@ export class VideoDubbingPage {
       this.videoIsPaused = true;
       this.showRecordRange = true;
       this.hasRecorded = true;
+      this.testAudioIcon = this.TEST_PLAY_ICON
       console.log("end Dub")
 
     }catch (e){
@@ -242,17 +245,8 @@ export class VideoDubbingPage {
       return;
     }
 
+    this.playDubFragments();
 
-    $(' #videoEditing').prop('muted', true);
-    video.currentTime = this.currentTime = this.currentStartTime;
-    audio.setAttribute('src',this.currentAudioPath);
-
-    video.play();
-    audio.play();
-    this.isPlayingTest = true;
-    this.videoIsPaused = null;
-    this.testAudioIcon = this.STOP_ICON;
-    console.log("testCustomRecord",this.currentTime,video.currentTime, this.currentStopTime,audio);
   }
 
 
@@ -263,6 +257,7 @@ export class VideoDubbingPage {
       var video =  $(' #videoEditing');
       console.log("addVideoControl",video)
 
+    video.preload = "metadata"
     this.videoDuration =  (video[0].duration).toFixed(2);
       video.on(
         "timeupdate",
@@ -301,7 +296,20 @@ export class VideoDubbingPage {
       // console.log("onTrackedVideoFrame",currentTime,duration)
       if( self.isRecording || self.isPlayingTest){
         self.currentTime = currentTime.toFixed(2);
+
         if(self.isPlayingTest){
+          if( self.playAllDubTest){
+            if(parseFloat(self.currentTime) >=  parseFloat(self.currentStopTime)){
+              let index = ++self.currentPlayDubIndex;
+              if(index < self.arrAudioFragments.length){
+                self.playDubFragmentWithIndex(index);
+              }else {
+                self.endDub();
+              }
+
+            }
+            return;
+          }
           if(parseFloat(self.currentTime) >=  parseFloat(self.currentStopTime)){
             self.endPlayDub();
           }
@@ -324,6 +332,7 @@ export class VideoDubbingPage {
       this.isPlayingTest = false;
       this.testAudioIcon = this.TEST_PLAY_ICON;
       this.videoIsPaused = true;
+      this.playAllDubTest = true;
       console.log("on playing test finish...", this.currentTime,this.currentStopTime);
   }
 
@@ -347,6 +356,40 @@ export class VideoDubbingPage {
     // this.currentStartTime = event.value
 
   }
+
+  playAllDub(){
+    this.playAllDubTest = true;
+    this.currentPlayDubIndex = 0;
+    this.playDubFragmentWithIndex(this.currentPlayDubIndex);
+
+  }
+
+  playDubFragmentWithIndex(index){
+    this.currentStartTime = this.arrAudioFragments[index].startAt;
+    this.currentStopTime = this.arrAudioFragments[index].stopAt;
+    this.currentAudioPath = this.arrAudioFragments[index].audioPath;
+
+    this.playDubFragments();
+  }
+
+  playDubFragments(){
+
+    let video =   $(' #videoEditing')[0];
+    let audio =   $(' #audioTest')[0];
+
+    $(' #videoEditing').prop('muted', true);
+    video.currentTime = this.currentTime = this.currentStartTime;
+    audio.setAttribute('src',this.currentAudioPath);
+
+    video.play();
+    audio.play();
+    this.isPlayingTest = true;
+    this.videoIsPaused = null;
+    this.testAudioIcon = this.STOP_ICON;
+    console.log("playDubFragments",this.currentTime,video.currentTime, this.currentStopTime,audio);
+
+  }
+
 
   toggleVideo(){
     if(this.isDubbing || this.isPlayingTest){
