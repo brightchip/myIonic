@@ -59945,124 +59945,9 @@ page-lesson ion-content .lesson-content ion-list .comments .no-comments {
   color: #F4D03F;
 }
 
-page-lesson ion-content .lesson-content ion-list .bt-updatecard {
-  margin-top: 50%;
-  text-align: center;
-}
-
-page-lesson ion-content .lesson-content ion-list .record-text {
-  width: 100%;
-  text-align: center;
-}
-
-page-lesson ion-content .lesson-content ion-list .bt-recorder {
-  background-color: transparent;
-}
-
-page-lesson ion-content .lesson-content ion-list div .vacabulary-main {
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: row;
-  -ms-flex-direction: row;
-  flex-direction: row;
-}
-
-page-lesson ion-content .lesson-content ion-list div .vacabulary-main ion-col {
-  background-color: #8f8f8f;
-}
-
-page-lesson ion-content .lesson-content ion-list div .vacabulary-main ion-col .vocabulary-card {
-  margin-left: auto;
-  margin-right: auto;
-  width: 100%;
-  height: auto;
-  background-color: #0a86d4;
-}
-
-page-lesson ion-content .lesson-content ion-list div .vacabulary-main ion-col .vocabulary-card ion-card-header {
-  text-align: center;
-}
-
-page-lesson ion-content .lesson-content ion-list div .vacabulary-main ion-col .vocabulary-card ion-card-header span {
-  color: #9eeeb6;
-}
-
-page-lesson ion-content .lesson-content ion-list div .vacabulary-main ion-col .vocabulary-card ion-card-content {
-  text-align: center;
-}
-
-page-lesson ion-content .lesson-content ion-list div .avatar {
-  margin-top: 10%;
-  margin-bottom: 10%;
-}
-
-page-lesson ion-content .lesson-content ion-list div .voice-recorder {
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  margin-left: auto;
-  margin-right: auto;
-  width: 100%;
-}
-
-page-lesson ion-content .lesson-content ion-list div .voice-recorder div {
-  margin-left: auto;
-  margin-right: auto;
-}
-
-page-lesson ion-content .lesson-content ion-list div .voice-recorder div button {
-  border-radius: 60px;
-  width: 100px;
-  height: 60px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-page-lesson ion-content .lesson-content ion-list div .voice-recorder div .bt-recorder ion-icon {
-  font-size: 60px;
-}
-
 page-lesson ion-content .lesson-content ion-list page-lesson img {
   max-width: 140px;
   border-radius: 50%;
-}
-
-page-lesson ion-content .lesson-content ion-list .count-down-text {
-  text-align: center;
-}
-
-page-lesson ion-content .word-playing {
-  height: 20vh;
-}
-
-page-lesson ion-content .word-playing p {
-  font-size: small;
-}
-
-page-lesson ion-content .image-chooser {
-  height: 50vh;
-  width: 100%;
-  bottom: 0;
-  padding: 20px;
-}
-
-page-lesson ion-content .image-chooser .image-box {
-  position: relative;
-  float: left;
-  width: 50%;
-}
-
-page-lesson ion-content .image-chooser .answerInfo {
-  z-index: 100;
-  top: 0;
-  left: 10px;
-  position: absolute;
-}
-
-page-lesson ion-content .image-chooser img {
-  height: 22vh;
-  width: 22vh;
 }
 
 page-lesson ion-content .bt-start-dub {
@@ -60145,35 +60030,6 @@ page-map .map_canvas {
   height: 100vh;
 }
 
-page-myclass-list .scroll-content {
-  background: #EDEDED;
-}
-
-page-myclass-list .class-card {
-  height: 100%;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-}
-
-page-myclass-list .class-card ion-card-content {
-  -webkit-flex: 1 1 auto;
-  -ms-flex: 1 1 auto;
-  flex: 1 1 auto;
-}
-
-page-myclass-list .class-card ion-card-header .item {
-  padding: 4px 16px;
-}
-
-page-myclass-list .class-card ion-card-content {
-  padding-left: 0;
-  padding-right: 0;
-}
-
 page-online-courses ion-content div ion-segment {
   color: #30d05f;
   background-color: #0a86d4;
@@ -60213,162 +60069,9 @@ page-parents .class-card ion-card-content {
   padding-right: 0;
 }
 
-page-schedule ion-item-sliding[track=ionic] ion-label {
-  border-left: 2px solid #478aff;
-  padding-left: 10px;
-}
-
-page-schedule ion-item-sliding[track=angular] ion-label {
-  border-left: 2px solid #AC282B;
-  padding-left: 10px;
-}
-
-page-schedule ion-item-sliding[track=communication] ion-label {
-  border-left: 2px solid #8E8D93;
-  padding-left: 10px;
-}
-
-page-schedule ion-item-sliding[track=tooling] ion-label {
-  border-left: 2px solid #FE4C52;
-  padding-left: 10px;
-}
-
-page-schedule ion-item-sliding[track=services] ion-label {
-  border-left: 2px solid #FD8B2D;
-  padding-left: 10px;
-}
-
-page-schedule ion-item-sliding[track=design] ion-label {
-  border-left: 2px solid #FED035;
-  padding-left: 10px;
-}
-
-page-schedule ion-item-sliding[track=workshop] ion-label {
-  border-left: 2px solid #69BB7B;
-  padding-left: 10px;
-}
-
-page-schedule ion-item-sliding[track=food] ion-label {
-  border-left: 2px solid #3BC7C4;
-  padding-left: 10px;
-}
-
-page-schedule ion-item-sliding[track=documentation] ion-label {
-  border-left: 2px solid #B16BE3;
-  padding-left: 10px;
-}
-
-page-schedule ion-item-sliding[track=navigation] ion-label {
-  border-left: 2px solid #6600CC;
-  padding-left: 10px;
-}
-
-.reset-filters {
-  color: #f53d3d;
-}
-
-ion-item[track=ionic] .dot {
-  height: 10px;
-  display: inline-block;
-  width: 10px;
-  background-color: #478aff;
-  border-radius: 5px;
-  margin-right: 10px;
-}
-
-ion-item[track=angular] .dot {
-  height: 10px;
-  display: inline-block;
-  width: 10px;
-  background-color: #AC282B;
-  border-radius: 5px;
-  margin-right: 10px;
-}
-
-ion-item[track=communication] .dot {
-  height: 10px;
-  display: inline-block;
-  width: 10px;
-  background-color: #8E8D93;
-  border-radius: 5px;
-  margin-right: 10px;
-}
-
-ion-item[track=tooling] .dot {
-  height: 10px;
-  display: inline-block;
-  width: 10px;
-  background-color: #FE4C52;
-  border-radius: 5px;
-  margin-right: 10px;
-}
-
-ion-item[track=services] .dot {
-  height: 10px;
-  display: inline-block;
-  width: 10px;
-  background-color: #FD8B2D;
-  border-radius: 5px;
-  margin-right: 10px;
-}
-
-ion-item[track=design] .dot {
-  height: 10px;
-  display: inline-block;
-  width: 10px;
-  background-color: #FED035;
-  border-radius: 5px;
-  margin-right: 10px;
-}
-
-ion-item[track=workshop] .dot {
-  height: 10px;
-  display: inline-block;
-  width: 10px;
-  background-color: #69BB7B;
-  border-radius: 5px;
-  margin-right: 10px;
-}
-
-ion-item[track=food] .dot {
-  height: 10px;
-  display: inline-block;
-  width: 10px;
-  background-color: #3BC7C4;
-  border-radius: 5px;
-  margin-right: 10px;
-}
-
-ion-item[track=documentation] .dot {
-  height: 10px;
-  display: inline-block;
-  width: 10px;
-  background-color: #B16BE3;
-  border-radius: 5px;
-  margin-right: 10px;
-}
-
-ion-item[track=navigation] .dot {
-  height: 10px;
-  display: inline-block;
-  width: 10px;
-  background-color: #6600CC;
-  border-radius: 5px;
-  margin-right: 10px;
-}
-
 page-user p {
   width: 100%;
   text-align: center;
-}
-
-.speaker-detail img {
-  max-width: 140px;
-  border-radius: 50%;
-}
-
-.speaker-detail p {
-  color: #60646B;
 }
 
 page-senglish .main-content .book {
@@ -60603,4 +60306,107 @@ page-view-account ion-footer .sendmsg {
   float: right;
   width: 100px;
   height: 50px;
+}
+
+vocabulary-recording .vacabulary-main {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+}
+
+vocabulary-recording .vacabulary-main ion-col .vocabulary-card {
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+  height: auto;
+  background-color: #478aff;
+}
+
+vocabulary-recording .vacabulary-main ion-col .vocabulary-card ion-card-header {
+  text-align: center;
+}
+
+vocabulary-recording .vacabulary-main ion-col .vocabulary-card ion-card-content {
+  text-align: center;
+}
+
+vocabulary-recording .avatar {
+  margin-top: 10%;
+  margin-bottom: 10%;
+}
+
+vocabulary-recording .voice-recorder {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+}
+
+vocabulary-recording .voice-recorder div {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+vocabulary-recording .voice-recorder div button {
+  border-radius: 60px;
+  width: 100px;
+  height: 60px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+vocabulary-recording .voice-recorder div .bt-recorder ion-icon {
+  font-size: 60px;
+}
+
+vocabulary-recording .bt-updatecard {
+  margin-top: 50%;
+  text-align: center;
+}
+
+vocabulary-recording .record-text {
+  width: 100%;
+  text-align: center;
+}
+
+vocabulary-recording .bt-recorder {
+  background-color: transparent;
+}
+
+vocabulary-selecting .image-chooser {
+  height: 50vh;
+  width: 100%;
+  bottom: 0;
+  padding: 20px;
+}
+
+vocabulary-selecting .image-chooser .image-box {
+  position: relative;
+  float: left;
+  width: 50%;
+}
+
+vocabulary-selecting .image-chooser .answerInfo {
+  z-index: 100;
+  top: 0;
+  left: 10px;
+  position: absolute;
+}
+
+vocabulary-selecting .image-chooser img {
+  height: 22vh;
+  width: 22vh;
+}
+
+vocabulary-selecting .word-playing {
+  height: 20vh;
+}
+
+vocabulary-selecting .word-playing p {
+  font-size: small;
 }

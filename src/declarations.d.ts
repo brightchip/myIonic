@@ -12,3 +12,6 @@ declare module '*';
 
 declare var AMap;
 declare var AMapUI;
+// declare var LocationPlugin;
+declare var AMapNavigation;
+// declare var cordova: any;

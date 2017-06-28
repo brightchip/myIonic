@@ -5,7 +5,7 @@ vocabulary-recording{
     display: flex;
     flex-direction: row;
     ion-col {
-      background-color: #8f8f8f;
+      //background-color: #8f8f8f;
       //button {
       //  color: #0a86d4;
       //  background-color: #F4D03F;
@@ -31,13 +31,13 @@ vocabulary-recording{
       margin-right: auto;
       width: 100%;
       height: auto;
-      background-color: #0a86d4;
+      background-color: color($colors,primary);
 
       ion-card-header {
         //width:50%;
         text-align: center;
         span {
-          color: #9eeeb6;
+          //color: #9eeeb6;
         }
       }
 

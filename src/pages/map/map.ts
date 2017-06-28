@@ -33,6 +33,9 @@ export class MapPage {
     this.findSchools();
   }
 
+
+
+
   doAutoNav(){
     this.nativeService.showLoading("正在获取位置...");
     console.log("doAutoNav")
@@ -47,7 +50,7 @@ export class MapPage {
       this.nativeService.hideLoading();
 
     }).catch(err => {
-      console.error('Error getting location', err);
+      console.log('Error getting location', err);
       this.nativeService.hideLoading();
     })
   }

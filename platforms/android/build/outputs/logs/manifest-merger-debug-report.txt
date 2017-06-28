@@ -2,7 +2,7 @@
 manifest
 ADDED from E:\Development\Projects\Cordova\Ionic\Myionicapp\platforms\android\AndroidManifest.xml:2:1-28:12
 	package
-		ADDED from E:\Development\Projects\Cordova\Ionic\Myionicapp\platforms\android\AndroidManifest.xml:2:98-143
+		ADDED from E:\Development\Projects\Cordova\Ionic\Myionicapp\platforms\android\AndroidManifest.xml:2:98-130
 		INJECTED from E:\Development\Projects\Cordova\Ionic\Myionicapp\platforms\android\AndroidManifest.xml
 		INJECTED from E:\Development\Projects\Cordova\Ionic\Myionicapp\platforms\android\AndroidManifest.xml
 	android:versionName
@@ -16,7 +16,7 @@ ADDED from E:\Development\Projects\Cordova\Ionic\Myionicapp\platforms\android\An
 		INJECTED from E:\Development\Projects\Cordova\Ionic\Myionicapp\platforms\android\AndroidManifest.xml
 		INJECTED from E:\Development\Projects\Cordova\Ionic\Myionicapp\platforms\android\AndroidManifest.xml
 	xmlns:android
-		ADDED from E:\Development\Projects\Cordova\Ionic\Myionicapp\platforms\android\AndroidManifest.xml:2:144-202
+		ADDED from E:\Development\Projects\Cordova\Ionic\Myionicapp\platforms\android\AndroidManifest.xml:2:131-189
 supports-screens
 ADDED from E:\Development\Projects\Cordova\Ionic\Myionicapp\platforms\android\AndroidManifest.xml:3:5-191
 	android:largeScreens
@@ -47,7 +47,7 @@ MERGED from [com.android.support:support-v4:24.1.1] E:\Development\Projects\Cord
 		ADDED from E:\Development\Projects\Cordova\Ionic\Myionicapp\platforms\android\AndroidManifest.xml:5:18-52
 	android:icon
 		ADDED from E:\Development\Projects\Cordova\Ionic\Myionicapp\platforms\android\AndroidManifest.xml:5:53-80
-activity#com.ionicframework.myionicapp723480.MainActivity
+activity#com.gakuen.iueducation.MainActivity
 ADDED from E:\Development\Projects\Cordova\Ionic\Myionicapp\platforms\android\AndroidManifest.xml:6:9-11:20
 	android:label
 		ADDED from E:\Development\Projects\Cordova\Ionic\Myionicapp\platforms\android\AndroidManifest.xml:6:97-134

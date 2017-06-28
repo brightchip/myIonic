@@ -19,9 +19,9 @@ import { Geolocation } from '@ionic-native/geolocation';
 
 import {Position} from "../model/type";
 import {APP_DOWNLOAD, APK_DOWNLOAD} from "./Constants";
-// declare var LocationPlugin;
-declare var AMapNavigation;
-declare var cordova: any;
+
+
+
 
 @Injectable()
 export class NativeService {
@@ -116,6 +116,7 @@ export class NativeService {
    * @return {boolean}
    */
   isMobile(): boolean {
+    // return true;
     return this.platform.is('mobile') && !this.platform.is('mobileweb');
   }
 
@@ -400,44 +401,63 @@ export class NativeService {
    * @return {Promise<Position>}
    */
   getUserLocation(): Promise<Position> {
-    return new Promise((resolve) => {
-      if (this.isMobile()) {
 
-        this.platform.ready().then(() => {
+        return  this.platform.ready().then(() => {
 
+            console.log("getUserLocation...");
+
+            // if (navigator.geolocation) {
+            //   var options = { maximumAge: 3000, timeout: 5000, enableHighAccuracy: true };
+            //
+            //
+            //   return navigator.geolocation.getCurrentPosition(options).then(position => {
+            //     console.info('using navigator');
+            //     console.info(position.coords.latitude);
+            //     console.info(position.coords.longitude);
+            //     return ({'lng': position.coords.longitude, 'lat': position.coords.latitude});
+            //   }, error => {
+            //     console.log(error);
+            //     throw error;
+            //     // });
+            //   });
+            // }else {
+            //   throw "not found";
+            // }
+            //
+            return   this.geolocation.getCurrentPosition().then(pos => {
+                console.log("getCurrentPosition");
+                console.log('lat: ' + pos.coords.latitude + ', lon: ' + pos.coords.longitude);
+                // console.log("getUserLocation",data);
+                return ({'lng': pos.coords.longitude, 'lat': pos.coords.latitude});
+              }).catch((error) => {
+                console.log("getCurrentPosition error",error);
+                throw  error;
+              });
+
+              // const watch = this.geolocation.watchPosition().subscribe(pos => {
+              //   console.log('lat: ' + pos.coords.latitude + ', lon: ' + pos.coords.longitude);
+              // });
+              //
+              // // to stop watching
+              // watch.unsubscribe();
+
+
+            // LocationPlugin.getLocation(data => {
+            //   console.log("getUserLocation",data);
+            //   resolve({'lng': data.longitude, 'lat': data.latitude});
+            // }, msg => {
+            //   console.log('getUserLocation:' + msg);
+            //   alert(msg.indexOf('缺少定位权限') == -1 ? ('错误消息：' + msg) : '缺少定位权限，请在手机设置中开启');
+            //   throw msg;
+            //
+            // });
           // get current position
-          this.geolocation.getCurrentPosition().then(pos => {
-            console.log('lat: ' + pos.coords.latitude + ', lon: ' + pos.coords.longitude);
-            // console.log("getUserLocation",data);
-            resolve({'lng': pos.coords.longitude, 'lat': pos.coords.latitude});
-          }).catch((error) => {
 
-            throw  error;
-          });
-
-          // const watch = this.geolocation.watchPosition().subscribe(pos => {
-          //   console.log('lat: ' + pos.coords.latitude + ', lon: ' + pos.coords.longitude);
-          // });
-          //
-          // // to stop watching
-          // watch.unsubscribe();
 
         });
 
-        // LocationPlugin.getLocation(data => {
-        //   console.log("getUserLocation",data);
-        //   resolve({'lng': data.longitude, 'lat': data.latitude});
-        // }, msg => {
-        //   alert(msg.indexOf('缺少定位权限') == -1 ? ('错误消息：' + msg) : '缺少定位权限，请在手机设置中开启');
-        //   this.warn('getUserLocation:' + msg);
-        // });
-      } else {
-        this.warn('getUserLocation:非手机环境,即测试环境返回固定坐标');
-        // resolve(false);
-        resolve({'lng': 113.03731600000003, 'lat': 28.139282});
-      }
-    });
   }
+
 
   /**
    * 地图导航

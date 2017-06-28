@@ -9,6 +9,7 @@ import {AngularInview} from 'ionicInView';
 import {ScreenOrientation} from "@ionic-native/screen-orientation";
 import * as $ from 'jquery'
 import {CoursePage} from "../course/course";
+import {NativeService} from "../../providers/mapUtil";
 
 @Component({
   selector: 'page-senglish',
@@ -20,14 +21,15 @@ export class SpecialEnglishPage {
   actionSheet: ActionSheet;
 
 
-  specialCourses: any[] = [
-    {book_id:1,title:"动感音标",courseTimeSpan:9,content:"this is 动感音标",logo:"assets/img/logos/se.png",videoIntroduction:"assets/video/sample.mp4"},
-    {book_id:2,title:"酷玩单词",courseTimeSpan:9,content:"this is 酷玩单词",logo:"assets/img/th.jpg",videoIntroduction:"assets/video/sample.mp4"},
-    {book_id:3,title:"魅力语法",courseTimeSpan:9,content:"this is 魅力语法",logo:"assets/img/nonnonbiyori.jpg",videoIntroduction:"assets/video/sample1.mp4"},
-    {book_id:4,title:"嘻哈语法",courseTimeSpan:9,content:"this is 嘻哈语法",logo:"assets/img/nonobiyori.jpg",videoIntroduction:"assets/video/sample2.mp4"}];
+  specialCourses:any = [];
+  // specialCourses: any[] = [
+  //   {book_id:1,title:"动感音标",courseTimeSpan:9,content:"this is 动感音标",logo:"assets/img/logos/se.png",videoIntroduction:"assets/video/sample.mp4"},
+  //   {book_id:2,title:"酷玩单词",courseTimeSpan:9,content:"this is 酷玩单词",logo:"assets/img/th.jpg",videoIntroduction:"assets/video/sample.mp4"},
+  //   {book_id:3,title:"魅力语法",courseTimeSpan:9,content:"this is 魅力语法",logo:"assets/img/nonnonbiyori.jpg",videoIntroduction:"assets/video/sample1.mp4"},
+  //   {book_id:4,title:"嘻哈语法",courseTimeSpan:9,content:"this is 嘻哈语法",logo:"assets/img/nonobiyori.jpg",videoIntroduction:"assets/video/sample2.mp4"}];
 
 
-currentPlayingVideo : any;
+  currentPlayingVideo : any;
 
   constructor(
     public actionSheetCtrl: ActionSheetController,
@@ -38,11 +40,14 @@ currentPlayingVideo : any;
     public inAppBrowser: InAppBrowser,
     public userData: UserData,
     private screenOrientation: ScreenOrientation,
+    public nativeSevice:NativeService
     // private videoPlayer: VideoPlayer
   ) {
     // console.log("Passed params", navParams.data);
 
   }
+
+
 
   onFullScreen(state) {
       // get current
@@ -59,14 +64,16 @@ currentPlayingVideo : any;
 
   addVideoControl(){
     var self = this;
-    var video =  $(' #specengVideo');
-    console.log("addVideoControl",video)
-    video.bind('webkitfullscreenchange mozfullscreenchange fullscreenchange', function(e) {
-      var state =  document.webkitIsFullScreen;
-      var event = state ? 'FullscreenOn' : 'FullscreenOff';
-      // Now do something interesting
-      console.log('Event: ' + event);
-      self.onFullScreen(state);
+    $(document).ready(function() {
+      var video = $(' #specengVideo');
+      console.log("addVideoControl", video)
+      video.bind('webkitfullscreenchange mozfullscreenchange fullscreenchange', function (e) {
+        var state = document.webkitIsFullScreen;
+        var event = state ? 'FullscreenOn' : 'FullscreenOff';
+        // Now do something interesting
+        console.log('Event: ' + event);
+        self.onFullScreen(state);
+      });
     });
   }
 
@@ -90,6 +97,20 @@ currentPlayingVideo : any;
 
   ionViewDidEnter(){
     this.addVideoControl();
+
+    if(this.specialCourses.length < 1){
+      console.log("ionViewDidEnter initlize courses")
+      this.nativeSevice.showLoading("正在加载...");
+      // this.specialCourses = this.userData.findCourses();
+      this.userData.findCourses().then( result => {
+        this.nativeSevice.hideLoading();
+        if(result != null && typeof result != "undefined"){
+          this.specialCourses = result;
+          console.log("init specialCourses",result);
+        }
+      })
+    }
+
   }
 
   ionViewDidLeave() {
@@ -106,7 +127,6 @@ currentPlayingVideo : any;
     //
     // this.currentPlayingVideo = specialEnglishBooks.index;
     console.log("videoPlayed",specialEnglishBooks);
-
   }
 
 

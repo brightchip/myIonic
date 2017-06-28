@@ -544,6 +544,131 @@ export class UserData {
 
   }
 
+  findCourses():Promise<any>{
+    var courseList = []
+    return this.dbHelper.getBooks().then( (books) => {
+      if(typeof  books != "undefined" && books != null && books.length > 1) {
+        console.log("findCourses from local cache", books)
+        courseList = this.tools.deepClone(books);
+        return courseList;
+      }else {
+        return this.retriveBookList().then(booksNew => {
+
+          if(typeof  booksNew != "undefined" && booksNew != null && booksNew.length > 1) {
+            console.log("findCourses",booksNew)
+            for(let i =0;i<booksNew.length;i++) {
+              //add to local database
+              this.dbHelper.updateBook(booksNew[i]);//update local user table
+              // this.dbHelper.updateBook(booksNew[i]);//update local user table
+              // if (booksNew[i].state == 1 || booksNew[i].state == 2) {
+              //   this.dbHelper.updateBook(booksNew[i]);//update local user table
+              // }else if(booksNew[i].state == 4){
+              //   this.dbHelper.deleteItem("tb_book",booksNew[i]);//update local user table
+              // }
+            }
+            console.log("findCourses from remote server",  booksNew)
+            courseList = this.tools.deepClone(booksNew);
+            return courseList;
+          }
+        })
+      }
+
+    }).catch( err => {
+
+    })
+  }
+
+  findLessons(book_name):Promise<any>{
+    var lessonList = []
+    return this.dbHelper.getLessons(book_name).then( (lessonListOld) => {
+      if(typeof  lessonListOld != "undefined" && lessonListOld != null && lessonListOld.length > 1) {
+        console.log("getLessons of", book_name, lessonListOld)
+        lessonList = this.tools.deepClone(lessonListOld);
+        return lessonList;
+      }
+      return this.retriveLessonList(book_name).then( lessonListNew => {
+        if(typeof  lessonListNew != "undefined" && lessonListNew != null && lessonListNew.length > 1) {
+          console.log("getLessons from remote server",  lessonListNew)
+
+          for(let i =0;i<lessonListNew.length;i++){
+
+            // if(resData[i].state == 1 || resData[i].state == 2){
+              this.dbHelper.updateLesson(lessonListNew[i]);//update local user table
+            // }else if(resData[i].state == 4){
+            //   this.dbHelper.deleteItem("tb_lesson",resData[i]);//update local user table
+            // }
+
+          }
+          lessonList = this.tools.deepClone(lessonListOld);
+          return lessonList;
+        }
+      })
+
+      // return lessonList;
+    }).catch(e => {
+      throw e;
+    })
+  }
+
+  retriveBookList():Promise<any>{
+    let headers = new Headers();
+    headers.append('Authorization', this.auth.token);
+    console.log("retriveBookList", this.BASE_URL + "retriveBookList"  , {headers: headers});
+    return this.httpTools.sendGet(this.BASE_URL + "retriveBookList" , {headers: headers})
+      .toPromise()
+      .then(resData => {
+        console.log("retriveBookList res data ?", resData);
+
+        return resData.data;
+      }, error => {
+        console.log("Oooops!" + error);
+        // console.log("retriveLessonList failed");
+        throw  error;
+      });
+  }
+
+  retriveLessonList(book_name):Promise<any>{
+    let headers = new Headers();
+    headers.append('Authorization', this.auth.token);
+    console.log("retriveLessonList", this.BASE_URL + "retriveLessonList" + "?book_name=" + book_name , {headers: headers});
+    return this.httpTools.sendGet(this.BASE_URL + "retriveLessonList" + "?book_name=" + book_name, {headers: headers})
+      .toPromise()
+      .then(resData => {
+        console.log("retriveLessonList res data ?", resData);
+
+        return resData.data;
+      }, error => {
+        console.log("Oooops!" + error);
+        // console.log("retriveLessonList failed");
+        throw  error;
+      });
+  }
+
+  retriveVocabularyList(lesson_id):Promise<any>{
+    let headers = new Headers();
+    headers.append('Authorization', this.auth.token);
+    console.log("retriveVocabularyList", this.BASE_URL + "retriveVocabularyList" + "?lesson_id=" + lesson_id , {headers: headers});
+    return this.httpTools.sendGet(this.BASE_URL + "retriveVocabularyList" + "?lesson_id=" + lesson_id, {headers: headers})
+      .toPromise()
+      .then(resData => {
+        console.log("retriveVocabularyList res data ?", resData);
+        // for(let i =0;i<resData.length;i++){
+        //
+        //   if(resData[i].state == 1 || resData[i].state == 2){
+        //     this.dbHelper.updateVocabulary(resData[i]);//update local user table
+        //   }else if(resData[i].state == 4){
+        //     this.dbHelper.deleteItem("tb_vocabulary",resData[i]);//update local user table
+        //   }
+        // }
+
+        return resData.data;
+      }, error => {
+        console.log("Oooops!" + error);
+        // console.log("retriveLessonList failed");
+        throw  error;
+      });
+  }
+
   findVocabulary(lesson_id): Promise<any>{
     console.log("findVocabulary",lesson_id);
     var vocabularys = []

@@ -5,6 +5,8 @@ import { InAppBrowser } from '@ionic-native/in-app-browser';
 
 import { ConferenceData } from '../../providers/conference-data';
 import {LessonPage} from "../lesson/lesson";
+import {UserData} from "../../providers/user-data";
+import {NativeService} from "../../providers/mapUtil";
 
 @Component({
   selector: 'page-course',
@@ -33,9 +35,10 @@ export class CoursePage {
   constructor(
               public  navCtrl:NavController,
               public  navParams: NavParams,
-              public confData: ConferenceData,
+              public userData: UserData,
               public config: Config,
               public inAppBrowser: InAppBrowser,
+              public nativeSevice:NativeService
               ) {
 
     this.selectedCourse =   this.navParams.get('course');
@@ -51,6 +54,20 @@ export class CoursePage {
     this.myLessonList.push(this.myLesson);
     this.myLessonList.push(this.myLesson);
 
+  }
+
+  ionViewDidEnter(){
+    this.nativeSevice.showLoading("正在加载...");
+
+    this.userData.findLessons(this.selectedCourse.book_name).then( result => {
+      if(result != null && typeof result != "undefined"){
+        this.myLessonList = result;
+        console.log("init myLessonList",this.myLessonList);
+      }
+      this.nativeSevice.hideLoading();
+    }).catch( e=> {
+      this.nativeSevice.hideLoading();
+    })
   }
 
   gotoLesson(lesson:any){

@@ -19,11 +19,11 @@
       <ion-item class="book" detail-push  (click)="gotoSpecialCourse(_specialEnglishBooks)">
         <ion-thumbnail item-left>
           <img *ngIf="_specialEnglishBooks"
-               src="{{_specialEnglishBooks.logo}}" >
+               src="{{_specialEnglishBooks.book_profile}}" >
         </ion-thumbnail>
-        <h2 >    {{_specialEnglishBooks.title}}</h2>
-        <p>课时:{{_specialEnglishBooks.courseTimeSpan}}</p>
-        <p>特效:{{_specialEnglishBooks.content}}</p>
+        <h2 >    {{_specialEnglishBooks.book_name}}</h2>
+        <p>课时:{{_specialEnglishBooks.timespan}}</p>
+        <p>特效:{{_specialEnglishBooks.book_remark}}</p>
       </ion-item>
 
     <!--<hr >-->

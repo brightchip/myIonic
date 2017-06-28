@@ -12,14 +12,14 @@
   <div class="student">
     <ion-row class="vacabulary-main" >
 
-      <ion-col col-2 >
-        <button class="bt-updatecard" *ngIf="currentIndex > 0" disabled={{disableArrowButton}} #backArrow  clear (click)="slides.slidePrev(1000)">
-          <img width="40" height="40"  src="assets/icon/backward.png" />
-        </button>
-      </ion-col>
+      <!--<ion-col col-2 >-->
+        <!--<button class="bt-updatecard" *ngIf="currentIndex > 0" disabled={{disableArrowButton}} #backArrow  clear (click)="slides.slidePrev(1000)">-->
+          <!--<img width="40" height="40"  src="assets/icon/backward.png" />-->
+        <!--</button>-->
+      <!--</ion-col>-->
 
-      <ion-col col-8>
-        <ion-slides #slides (ionSlideDidChange)="slideChanged()"  >
+      <ion-col >
+        <ion-slides #slides (ionSlideDidChange)="slideChanged()" (ionSlideReachEnd)="readyForSubmit()" >
           <ion-slide *ngFor="let _vacabulary of vacabularys">
             <ion-card class="vocabulary-card" (click)="playSampleAudio()">
               <ion-card-header>
@@ -34,11 +34,11 @@
         </ion-slides>
       </ion-col>
 
-      <ion-col col-2 >
-        <button class="bt-updatecard"  *ngIf="currentIndex < vacabularys.length-1"  disabled={{disableArrowButton}}  clear (click)="slides.slideNext(1000)">
-          <img width="40" height="40" src="assets/icon/forward.png" />
-        </button>
-      </ion-col>
+      <!--<ion-col col-2 >-->
+        <!--<button class="bt-updatecard"  *ngIf="currentIndex < vacabularys.length-1"  disabled={{disableArrowButton}}  clear (click)="slides.slideNext(1000)">-->
+          <!--<img width="40" height="40" src="assets/icon/forward.png" />-->
+        <!--</button>-->
+      <!--</ion-col>-->
 
     </ion-row>
 
@@ -52,6 +52,7 @@
       <div>
         <button class="bt-recorder"  (click)="testAudio()" disabled={{disablePlayButton}}>
           <img width="60" height="60" class="input-img" [src]="playButtonIcon" />
+          试听
           <!--<ion-icon name={{testButtonIcon}}></ion-icon>-->
         </button>
       </div>
@@ -67,8 +68,8 @@
       </div>
 
       <div>
-        <button class="bt-submit"  (click)="submitHomework()" disabled={{disablePlayButton}}>
-          提交作业
+        <button class="bt-submit"  (click)="nextStep()" disabled={{disableNextButton}}>
+          {{nextSubmitText}}
         </button>
       </div>
 

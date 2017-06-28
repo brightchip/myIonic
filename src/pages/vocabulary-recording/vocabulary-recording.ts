@@ -18,6 +18,8 @@ export class VocabularyRecordingPage {
   PAUSE_ICON: string = "assets/icon/pause.png";
   PLAY_ICON: string = "assets/icon/testaudio.png";
 
+  dirExist = false;
+
   private currentIndex: number = 0;
   disableRecordButton:boolean = null;
   lesson_id:number = 1;
@@ -30,11 +32,14 @@ export class VocabularyRecordingPage {
   isPlaying:boolean = null;
   TEXTHOLD = "按住下面按钮录音"
   TEXTCANCEL = "释放手指取消录音"
-  TEXTSLIDE = "向上滑动取消录音"
+  TEXTSLIDE = "录音中..."
+  TEXT_SUBMIT = "提交"
+  TEXT_NEXT = "下一个"
   RESUME_RECORD_ICON: string = "assets/icon/rec.png";
   proptText = this.TEXTHOLD;
   disablePlayButton:boolean = true;
   disableArrowButton:boolean = null;
+  disableNextButton:boolean = true;
   vacabularys :any = [];
   rootDir;
   audioDir:string = Enums.AUDIO_DIR_NAME;
@@ -43,6 +48,8 @@ export class VocabularyRecordingPage {
   btRecorder:any;
   playIndex:number = 0;
   audioPaths:any;
+
+  nextSubmitText = this.TEXT_NEXT
 
 
   onStatusUpdate = (status) => console.log(status);
@@ -83,14 +90,18 @@ export class VocabularyRecordingPage {
 
   ionViewDidEnter(){
     this.nativeSevice.showLoading("正在加载...")
+
     if(this.btRecorder == null || typeof this.btRecorder == "undefined") {
       this.addAudioInput();
       this.playSampleAudio()
       // self.isHasInit = true
     }
+    this.disableNextButton = true;
+    this.slides.lockSwipes(true);
     this.initVocabularyFiles().then( _ => {
       this.nativeSevice.hideLoading();
     })
+
   }
 
   slideChanged() {
@@ -98,9 +109,14 @@ export class VocabularyRecordingPage {
       this.currentIndex = this.slides.getActiveIndex();
       console.log("vacabularyUpdated", this.currentIndex);
       this.playSampleAudio();
-
     }
 
+  }
+
+  readyForSubmit(){
+    console.log("readyForSubmit")
+    this.nextSubmitText = this.TEXT_SUBMIT;
+    this.disableNextButton = null;
   }
 
   initVocabularyFiles() : Promise<any>{
@@ -138,15 +154,26 @@ export class VocabularyRecordingPage {
 
 
 
-  submitHomework(){
-    // this.disablePlayButton = true;
-    // this.disableArrowButton = true;
-    this.disableRecordButton = true;
-    this.userData.submitHomework(this.vacabularys,this.userData.userInfo.phone,this.lesson_id).then( (success) => {
-      // this.disablePlayButton = null;
-      this.disableRecordButton = null;
-      console.log("lesson:submitHomework",success);
-    })
+  nextStep(){
+    // this.disableNextButton = true;
+    if(this.currentIndex < this.vacabularys.length - 1){//go to next
+      this.disableNextButton = true;
+      this.slides.lockSwipes(false);
+      this.slides.slideNext();
+      this.slides.lockSwipes(true);
+      console.log("go to next word")
+    }else {
+      // this.disablePlayButton = true;
+      // this.disableArrowButton = true;
+      this.disableRecordButton = true;
+      this.userData.submitHomework(this.vacabularys,this.userData.userInfo.phone,this.lesson_id).then( (success) => {
+        // this.disablePlayButton = null;
+        this.disableRecordButton = null;
+        console.log("lesson:submitHomework",success);
+      })
+    }
+
+
   }
 
   addAudioInput(){
@@ -158,7 +185,7 @@ export class VocabularyRecordingPage {
 
 
         var touchStart = function (event) {
-          console.log("touchStart",self)
+          // console.log("touchStart",self)
 
           self.startPauseRecord(true);
           self.proptText = self.TEXTSLIDE;
@@ -170,21 +197,21 @@ export class VocabularyRecordingPage {
           self.proptText = self.TEXTHOLD;
           console.log("touchEnd", self.proptText)
         }
-        var touchMove = function (event) {
-
-          // console.log("touchMove x:", event.changedTouches[0].pageX + ', y: ' + event.changedTouches[0].pageY);
-          if (event.changedTouches[0].pageY < 570 ) {
-            self.proptText = self.TEXTSLIDE;
-
-          } else {
-            self.proptText = self.TEXTCANCEL;
-          }
-
-        }
+        // var touchMove = function (event) {
+        //
+        //   // console.log("touchMove x:", event.changedTouches[0].pageX + ', y: ' + event.changedTouches[0].pageY);
+        //   if (event.changedTouches[0].pageY < 570 ) {
+        //     self.proptText = self.TEXTSLIDE;
+        //
+        //   } else {
+        //     self.proptText = self.TEXTCANCEL;
+        //   }
+        //
+        // }
 
         this.btRecorder.addEventListener("touchstart", touchStart, false);
         this.btRecorder.addEventListener("touchend", touchEnd, false);
-        this.btRecorder.addEventListener("touchmove", touchMove, false);
+        // this.btRecorder.addEventListener("touchmove", touchMove, false);
 
         console.log("lesson page", "addAudioInput", this.btRecorder,"add events");
       }
@@ -194,47 +221,73 @@ export class VocabularyRecordingPage {
   startPauseRecord(record) {
     let fileName = this.createFileName();
     console.log('startPauseRecord' + record);
-    if(!record) {
-      if(this.recorder == null || typeof this.recorder == "undefined"){
-        return;
+    if(!record) {//stop record
+     this.stopRecord();
+    }
+    else {
+      console.log("lesson:startRecord");
+      if(this.dirExist){
+        this.startRecord(this.rootDir,this.audioDir,fileName);
+      }else {
+        // console.log("lesson:stopRecord", this.recordButtonIcon);
+        this.file.checkDir(this.rootDir, this.audioDir).then((exist) =>{
+          console.log('Directory exists');
+          this.dirExist = true;
+          this.startRecord(this.rootDir,this.audioDir,fileName)
+        }).catch( err => {
+          console.log("directory not exist",err)
+          console.log("lesson:createDir",this.rootDir + this.audioDir)
+          this.file.createDir(this.rootDir, this.audioDir, true).then(() => {
+            this.dirExist = true;
+            this.startRecord(this.rootDir,this.audioDir,fileName)
+          }).catch((err) => {
+            console.error("error during creating directory", err)
+            this.nativeSevice.showToast(err,2000);
+          });
+        })
       }
+
+    }
+  }
+
+  stopRecord(){
+    if(this.recorder == null || typeof this.recorder == "undefined"){
+      console.log("recorder is null when try to stop recording")
+      return;
+    }
+    try {
       this.recorder.stopRecord();
       console.log("lesson:stopRecord");
       this.recordButtonIcon = this.START_RECORD_ICON;
       this.isRecording = false;
       this.disablePlayButton = null;
       this.disableArrowButton = null;
+      this.disableNextButton = null;
       console.log("lesson:stopRecord", this.recordButtonIcon);
-    }else {
-      console.log("lesson:startRecord");
-      // console.log("lesson:stopRecord", this.recordButtonIcon);
-      this.file.checkDir(this.rootDir, this.audioDir).then((exist) =>{
-        console.log('Directory exists');
-        this.startRecord(this.rootDir,this.audioDir,fileName)
-      }).catch( err => {
-        console.log("directory not exist",err)
-        console.log("lesson:createDir",this.rootDir + this.audioDir)
-        this.file.createDir(this.rootDir, this.audioDir, true).then(() => {
-          this.startRecord(this.rootDir,this.audioDir,fileName)
-        }).catch((err) => {
-          console.error("error during creating directory", err)
-          this.nativeSevice.showToast(err,2000);
-        });
-      })
+    }catch (e){
+      console.error("stopRecord",e)
+      this.recordButtonIcon = this.START_RECORD_ICON;
+      this.isRecording = false;
+      // this.disablePlayButton = null;
+      this.disableArrowButton = null;
+      this.nativeSevice.showToast("录音发生错误")
+
     }
+
   }
 
   startRecord(rootDir,audioDir,fileName){
     // console.log("lesson:startPauseRecord",rootDir  + audioDir  + "/" + fileName);
     try {
-      this.vacabularys[this.currentIndex].audio = rootDir + audioDir + "/" + fileName;
-      console.log("lesson:startRecord",this.vacabularys[this.currentIndex].audio);
-      this.isRecording = true;
       this.disablePlayButton = true;
       this.disableArrowButton = true;
-      this.recordButtonIcon = this.RESUME_RECORD_ICON;
+      this.vacabularys[this.currentIndex].audio = rootDir + audioDir + "/" + fileName;
+      console.log("lesson:startRecord",this.vacabularys[this.currentIndex].audio);
       this.recorder = this.media.create(this.vacabularys[this.currentIndex].audio);
       this.recorder.startRecord();
+      this.isRecording = true;
+      this.recordButtonIcon = this.RESUME_RECORD_ICON;
+
     }
     catch (e) {
       this.recordButtonIcon = this.START_RECORD_ICON;
