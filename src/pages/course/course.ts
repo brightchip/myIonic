@@ -77,7 +77,7 @@ export class CoursePage {
   }
 
   gotoLesson(lesson:any){
-    this.navCtrl.push(LessonPage,{lesson:lesson,course_id:this.selectedCourse.book_id });
+    this.navCtrl.push(LessonPage,{lesson:lesson,course:this.selectedCourse });
   }
 
 

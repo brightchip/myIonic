@@ -26,6 +26,10 @@ import {VocabularySelectingPage} from "../vocabulary-selecting/vocabulary-select
 })
 export class LessonPage {
   MyUserType = Enums.UserType;
+
+  TEXTBOOK = 0;
+  WORDBOOK = 1;
+
   actionSheet: ActionSheet;
   swiper:any;
   lesson_parts: string = "book";
@@ -39,6 +43,7 @@ export class LessonPage {
   textArea2:string = "";
   arrComments = [];
   lesson:any;
+  rtLessonInfo :any;
   comments:any;
 
   // vacabularys:any[]=[
@@ -48,7 +53,9 @@ export class LessonPage {
   // userInfo: {user_id?:number,user_name?: string, checkinCount?: string,userAvatar?:string,phone?:string,identity?:number} = {};
 
   arrHomework:{};
-  arrCurrentComments:any = [];//original comments array
+  // arrCurrentTextbookComments:any = [];//original comments array
+  // arrCurrentWordbookComments:any = [];//original comments array
+  arrCurrentComments:any ;//original comments array
   // currentUser:any={pessonFrofile:"assets/img/logos/se.png"}
 
   ARROW_DOWN:string = "ios-arrow-down";
@@ -58,6 +65,8 @@ export class LessonPage {
   private showHidenIcon: string = this.ARROW_DOWN;
   isHasInit = false;
   private course_id: any;
+  private currentCourse: any;
+  private part_id = this.TEXTBOOK;
   // randomVocabulary:any;
 
   constructor(
@@ -80,18 +89,50 @@ export class LessonPage {
 
     public alertCtrl:AlertController
   ) {
-    this.lesson =   this.navParams.get('lesson');
-    this.course_id =   this.navParams.get('course_id');
+
+    this.lesson =  this.navParams.get('lesson');
+    this.lesson_id = this.lesson.lesson_id;
+    this.currentCourse =   this.navParams.get('course');
+
+    switch(this.currentCourse.book_name) {
+      case "动感音标":
+        this.course_id = 1;
+        console.log("segmentChanged 1")
+        break;
+      case "酷玩单词":
+        this.course_id = 2;
+        console.log("segmentChanged 2")
+        break;
+      case "魅力语音":
+        this.course_id = 3;
+        break;
+      case "嘻哈语法":
+        this.course_id = 4;
+        break;
+      default:
+        break;
+    }
     console.log("Passed params", navParams.data,this.course_id);
   }
 
   ionViewDidEnter(){
-  console.log("lesson:ionViewDidEnter")
-    if(this.arrCurrentComments.length <= 0){
-      this.getComments();
-    }
-    this.addVideoControl();
+    console.log("lesson:ionViewDidEnter")
+    this.initCurrentPage();
 
+    this.addVideoControl();
+  }
+
+  private initCurrentPage() {
+    console.log("initCurrentPage",this.lesson_parts);
+    if(this.lesson_parts == "book"){
+      if(this.arrCurrentComments[this.TEXTBOOK].length <= 0){
+        this.getComments(this.TEXTBOOK);
+      }
+    }else if(this.lesson_parts == "exercise"){
+      if(this.arrCurrentComments[this.WORDBOOK].length <= 0){
+        this.getComments(this.WORDBOOK);
+      }
+    }
 
   }
 
@@ -115,117 +156,47 @@ export class LessonPage {
     this.lisenEvents();
   }
 
-  getComments(){
+  getComments(part_id){
     if(typeof this.lesson_id == "undefined"){
       console.log("getcommets","lesson unknow")
     }else {
-      this.userData.retriveComments(this.userData.userInfo.phone,this.lesson_id).then( (data) =>{
-        this.arrCurrentComments = this.tools.deepClone(data);
+      this.userData.retriveComments(this.userData.userInfo.phone,this.lesson_id,part_id).then( (data) =>{
+        this.arrCurrentComments[part_id] = this.tools.deepClone(data);
 
-        console.log("init arrCurrentComments",this.arrCurrentComments);
+        console.log("init arrCurrentComments",part_id,this.arrCurrentComments[part_id] );
 
-        this.comments =  this.handleComments(data);
+        this.comments[part_id] =  this.handleComments(data);
         this.isLoadingComment = false;
         this.isPosting = false;
 
         // this.ngZone.run( () => {
-          this.lesson.comments = this.comments.length
+        this.rtLessonInfo[part_id].comments_acount = this.comments[part_id].length;
         // });
 
 
-        console.log("lesson:getComments this.comments", this.comments);
+        console.log("lesson:getComments ",part_id, this.comments[part_id]);
       }).catch( err => {
-        this.comments =  this.handleComments([]);
+        this.comments[part_id] =  this.handleComments([]);
         this.isLoadingComment = false;
         this.isPosting = false;
       })
     }
   }
 
-  private handleComments(comments: any) {
 
-    this.noComments = false;
 
-    if(comments.length <= 0){
-      console.log("handleComments no comments")
-      this.noComments = true;
-    }
-    console.log("handleComments",comments)
-    let arrHeadComments = [];
-    let arrSubComments = [];
-    let i;
-    //seperate two types of comments
-    let self = this;
-    for (i = 0; i < comments.length ; i++) {
-      let tempComment = comments[i];
-
-      tempComment.isReplying = false;
-      // console.log("lesson:handleComments tempComment.likes",tempComment.likes)
-
-      tempComment.comment_date = this.timestampToDate(comments[i].comment_date)
-
-      tempComment.showHidenText = tempComment.showReply ? "Hide Reply" : "Show Reply"
-      tempComment.showHidenIcon = tempComment.showReply ? self.ARROW_UP : self.ARROW_DOWN
-
-      tempComment.likeButtonColor = "badge";
-      tempComment.likeClicked = false;
-
-      // tempComment.emojitext: string;
-
-      let arrLikes = tempComment.likes;
-
-      if(arrLikes != null){
-        // console.log("handleComments",tempComment.likes,this.userInfo.user_id,arrLikes.contains(this.userInfo.user_id))
-        let userId = (this.userData.userInfo.user_id).toString();
-
-        if(arrLikes.indexOf(parseInt(userId)) > -1 )  {
-          tempComment.likeButtonColor = "danger";
-          tempComment.likeClicked = true;
-          // console.log("handleComments likeClicked comment",tempComment)
-        }
-      }else {
-        // console.log("handleComments like Inclicked comment",tempComment)
-      }
-
-      if (tempComment.reply_which_comment < 0) {
-        arrHeadComments.push(tempComment);
-      } else {
-        arrSubComments.push(tempComment);
-      }
-    }
-    // console.log("handleComments arrHeadComments",arrHeadComments)
-    // console.log("handleComments arrSubComments",arrSubComments)
-    for (i = 0; i < arrHeadComments.length ; i++) {
-      // console.log("lesson:handleComments:comment_id", arrHeadComments[i].comment_id)
-      //combine sub one into head one
-      let subCommentsArray = [];
-      for(let j = 0;j < arrSubComments.length;j++){
-        // console.log("lesson:handleComments.reply_which_comment", arrSubComments[j].reply_which_comment)
-        if(arrSubComments[j].reply_which_comment + "" == "" + arrHeadComments[i].comment_id){
-          subCommentsArray.push(arrSubComments[j]);
-        }
-      }
-      arrHeadComments[i].subComments = subCommentsArray;
-    }
-
-    return arrHeadComments;
-  }
-
-  updateCommentSession(tempComment){
-
-      this.arrCurrentComments.unshift(tempComment);
-      let tempComments = this.tools.deepClone(this.arrCurrentComments);
-
-      this.comments = this.handleComments(tempComments);
-
+  updateCommentSession(tempComment,part_id){
+      this.arrCurrentComments[part_id].unshift(tempComment);
+      let tempComments = this.tools.deepClone(this.arrCurrentComments[part_id]);
+      this.comments[part_id] = this.handleComments(tempComments);
   }
 
   thumbUp(){
     console.log("lesson","thumbUp")
   }
 
-  updateComments(commentUpdate){
-      this.arrCurrentComments.forEach(function (comment) {
+  updateComments(commentUpdate,part_id){
+      this.arrCurrentComments[part_id].forEach(function (comment) {
         if(comment.comment_id == commentUpdate.comment_id){
           comment.likes = commentUpdate.likes;
           comment.likes_amount = commentUpdate.likes_amount;
@@ -245,7 +216,7 @@ export class LessonPage {
       }
 
       this.userData.thumbUp(this.userData.userInfo.user_id, comment.comment_id, "tb_comment").then( (comment) => {
-        let eventObj = {eventType:"likeComment",eventData:comment,client_id:this.userData.userInfo.user_id};
+        let eventObj = {eventType:"likeComment",eventData:{comment:comment,part_id:this.part_id},client_id:this.userData.userInfo.user_id};
         this.webSocket.sendData(eventObj);
 
       }).catch( err => {
@@ -266,7 +237,7 @@ export class LessonPage {
 
     let self = this;
 
-    this.arrCurrentComments.forEach(function (comment) {
+    this.arrCurrentComments[this.part_id].forEach(function (comment) {
       if(comment.comment_id == commentId){
         comment.showReply = !comment.showReply
         comment.showHidenText = comment.showReply ? "Hide Reply" : "Show Reply"
@@ -287,14 +258,16 @@ export class LessonPage {
 
 
   segmentChanged(event){
-    if(this.lesson_parts == "vocabulary"){
+    if(this.lesson_parts == "book"){
+      this.part_id = this.TEXTBOOK;
+    } else if(this.lesson_parts == "exercise"){
+      this.part_id = this.WORDBOOK;
+    } else  if(this.lesson_parts == "vocabulary"){
       let self = this;
       console.log("segmentChanged",this.course_id)
       switch(this.course_id){
         case 1:
-                 console.log("segmentChanged 1")
-
-
+          console.log("segmentChanged 1")
 
           break;
         case 2:
@@ -380,13 +353,13 @@ export class LessonPage {
     let tmp = {under_which_user:comment.user_id,reply_which_comment:parentComment.comment_id,user_id:this.userData.userInfo.user_id,comment:commentContent,lesson_id:this.lesson_id,comment_date:new Date()};
     console.log("postCommentUnderComment", tmp )
 
-    this.userData.postComment(tmp)
+    this.userData.postComment(tmp,this.part_id)
       .then( (comment) => {
         console.log("postCommentUnderComment:result",comment);
         if(comment != null){
           this.textArea2 = "";
 
-          this.updateCommentSession(comment);
+          this.updateCommentSession(comment,this.part_id);
           comment.isReplying = false;
         }
       }).catch( (err) => {
@@ -403,15 +376,15 @@ export class LessonPage {
     this.isPosting = true;
 
     let tmp = {under_which_user:-1,reply_which_comment:-1,user_id:this.userData.userInfo.user_id,comment:this.textArea1,lesson_id:this.lesson_id,comment_date:new Date()};
-    console.log("postComment", tmp,this.userData.userInfo )
+    console.log("postComment", tmp,this.userData.userInfo)
 
-    this.userData.postComment(tmp)
+    this.userData.postComment(tmp,this.part_id)
       .then( (comment) => {
         console.log("postComment:result",comment);
         if(comment != null){
           this.textArea1 = "";
 
-          this.updateCommentSession(comment);
+          this.updateCommentSession(comment,this.part_id);
           this.isPosting = false;
         }
 
@@ -439,17 +412,18 @@ export class LessonPage {
   private lisenEvents() {
     this.events.subscribe("updateComment", (data) => {
       console.log("lisenEvents:updateComment",data)
+      // data.comments
       if(data != null){
-        this.updateCommentSession(data);
+        this.updateCommentSession(data.comment,data.part_id);
       }
     });
 
-    this.events.subscribe("likeComment", (comment) => {
-      console.log("lisenEvents:likeComment",comment)
-      if(comment != null){
-        this.updateComments(comment);
+    this.events.subscribe("likeComment", (data) => {
+      console.log("lisenEvents:likeComment",data)
+      if(data.comment != null && data.part_id >= 0 && data.part_id <= 1){
+        this.updateComments(data.comment,data.part_id);
         let tempComments = this.tools.deepClone(this.arrCurrentComments);
-        this.comments = this.handleComments(tempComments);
+        this.comments[data.part_id] = this.handleComments(tempComments);
       }
     });
 
@@ -464,6 +438,76 @@ export class LessonPage {
     };
 
     this.navCtrl.push(ViewAccountPage,{userinfo: userInfo});
+  }
+
+  //get useable comments structure
+  private handleComments(comments: any) {
+
+    this.noComments = false;
+
+    if(comments.length <= 0){
+      console.log("handleComments no comments")
+      this.noComments = true;
+    }
+    console.log("handleComments",comments)
+    let arrHeadComments = [];
+    let arrSubComments = [];
+    let i;
+    //seperate two types of comments
+    let self = this;
+    for (i = 0; i < comments.length ; i++) {
+      let tempComment = comments[i];
+
+      tempComment.isReplying = false;
+      // console.log("lesson:handleComments tempComment.likes",tempComment.likes)
+
+      tempComment.comment_date = this.timestampToDate(comments[i].comment_date)
+
+      tempComment.showHidenText = tempComment.showReply ? "Hide Reply" : "Show Reply"
+      tempComment.showHidenIcon = tempComment.showReply ? self.ARROW_UP : self.ARROW_DOWN
+
+      tempComment.likeButtonColor = "badge";
+      tempComment.likeClicked = false;
+
+      // tempComment.emojitext: string;
+
+      let arrLikes = tempComment.likes;
+
+      if(arrLikes != null){
+        // console.log("handleComments",tempComment.likes,this.userInfo.user_id,arrLikes.contains(this.userInfo.user_id))
+        let userId = (this.userData.userInfo.user_id).toString();
+
+        if(arrLikes.indexOf(parseInt(userId)) > -1 )  {
+          tempComment.likeButtonColor = "danger";
+          tempComment.likeClicked = true;
+          // console.log("handleComments likeClicked comment",tempComment)
+        }
+      }else {
+        // console.log("handleComments like Inclicked comment",tempComment)
+      }
+
+      if (tempComment.reply_which_comment < 0) {
+        arrHeadComments.push(tempComment);
+      } else {
+        arrSubComments.push(tempComment);
+      }
+    }
+    // console.log("handleComments arrHeadComments",arrHeadComments)
+    // console.log("handleComments arrSubComments",arrSubComments)
+    for (i = 0; i < arrHeadComments.length ; i++) {
+      // console.log("lesson:handleComments:comment_id", arrHeadComments[i].comment_id)
+      //combine sub one into head one
+      let subCommentsArray = [];
+      for(let j = 0;j < arrSubComments.length;j++){
+        // console.log("lesson:handleComments.reply_which_comment", arrSubComments[j].reply_which_comment)
+        if(arrSubComments[j].reply_which_comment + "" == "" + arrHeadComments[i].comment_id){
+          subCommentsArray.push(arrSubComments[j]);
+        }
+      }
+      arrHeadComments[i].subComments = subCommentsArray;
+    }
+
+    return arrHeadComments;
   }
 
   public timestampToDate(unix_timestamp){
@@ -497,5 +541,6 @@ export class LessonPage {
 // Will display time in 10:30:23 format
     return dateLabel;
   }
+
 
 }

@@ -248,7 +248,7 @@ export class UserData {
     //    this.download("2333.jpg")
   }
 
-  postComment(tmp):Promise<any> {
+  postComment(tmp,part_id):Promise<any> {
     let headers = new Headers();
     headers.append('Authorization', this.auth.token);
 
@@ -262,7 +262,7 @@ export class UserData {
         // if(data.success){
           let comment = this.tools.handleResCommentData(data.data)
 
-        let eventObj = {eventType:"updateComment",eventData:comment[0],client_id:this.userInfo.user_id};
+        let eventObj = {eventType:"updateComment",eventData:{comments:comment[0],part_id:part_id},client_id:this.userInfo.user_id};
         this.websocket.sendData(eventObj);
 
         return comment[0]
@@ -425,11 +425,11 @@ export class UserData {
           });
   }
 
-  retriveComments(phone,lesson_id) : Promise<any>{
+  retriveComments(phone,lesson_id,part_id) : Promise<any>{
         let headers = new Headers();
         headers.append('Authorization', this.auth.token);
-        console.log("getComments", this.BASE_URL + "getComments" + "?lesson_id=" + lesson_id + "&phone=" + phone, {headers: headers});
-        return this.httpTools.sendGet(this.BASE_URL + "getComments" + "?lesson_id=" + lesson_id + "&phone=" + phone, {headers: headers})
+        console.log("getComments", this.BASE_URL + "getComments" + "?lesson_id=" + lesson_id + "&phone=" + phone + "&part_id=" + part_id, {headers: headers});
+        return this.httpTools.sendGet(this.BASE_URL + "getComments" + "?lesson_id=" + lesson_id + "&phone=" + phone + "&part_id=" + part_id, {headers: headers})
           .toPromise()
           .then(resData => {
             console.log("getComments res data ?", resData);
