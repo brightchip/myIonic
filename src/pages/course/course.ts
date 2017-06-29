@@ -26,9 +26,10 @@ export class CoursePage {
   // myLesson:Lesson =  new Lesson("lesson1","assets/video/sample.mp4","comments",3,"homework","vocabulary work");
 
   title;
+  showNothing = null;
 
 
-  myLessonList:any[]=[this.myLesson,this.myLesson];
+  myLessonList:any[]=[];
   private selectedCourse: any;
 
 
@@ -42,7 +43,7 @@ export class CoursePage {
               ) {
 
     this.selectedCourse =   this.navParams.get('course');
-    this.title = this.selectedCourse.title;
+    this.title = this.selectedCourse.book_name;
     console.log("Passed params", navParams.data);
     // this.myLesson = new Lesson("lesson1","assets/video/sample.mp4","comments",3,"homework","vocabulary work");
     // this.myLesson = new Lesson();
@@ -51,22 +52,27 @@ export class CoursePage {
     // this.myLesson.likes = 3;
     // this.myLesson.homeWork = "homework";
     // this.myLesson.vocabularyWork = "vocabulary work";
-    this.myLessonList.push(this.myLesson);
-    this.myLessonList.push(this.myLesson);
+    // this.myLessonList.push(this.myLesson);
+    // this.myLessonList.push(this.myLesson);
+    this.showNothing = null;
 
   }
 
   ionViewDidEnter(){
     this.nativeSevice.showLoading("正在加载...");
 
-    this.userData.findLessons(this.selectedCourse.book_name).then( result => {
+    this.userData.findLessons(this.selectedCourse).then( result => {
       if(result != null && typeof result != "undefined"){
         this.myLessonList = result;
         console.log("init myLessonList",this.myLessonList);
       }
+      if(this.myLessonList.length < 1){
+        this.showNothing = true;
+      }
       this.nativeSevice.hideLoading();
     }).catch( e=> {
       this.nativeSevice.hideLoading();
+      this.showNothing = true;
     })
   }
 

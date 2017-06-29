@@ -21,4 +21,13 @@ page-course {
     padding-left: 0;
     padding-right: 0;
   }
+
+  .nothing-found{
+    height: 30%;
+    margin-top: 40%;
+    width: 100%;
+    //background-color: red;
+    color: color($colors,warning);
+    text-align: center;
+  }
 }

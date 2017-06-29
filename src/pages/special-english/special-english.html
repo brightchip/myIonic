@@ -43,7 +43,7 @@
       <video #specengVideo class="video"  (play)="videoPlayed(_specialEnglishBooks)"
               (click)="toggleVideo(_specialEnglishBooks.index)"
         controls="controls" preload="metadata"  class="videoPlayer"
-        (viewport-leave)="playVideo()" (viewport-enter)="pauseVideo()"><source src="{{_specialEnglishBooks.videoIntroduction}}" type="video/mp4"/>
+        (viewport-leave)="playVideo()" (viewport-enter)="pauseVideo()"><source src="{{_specialEnglishBooks.intro_video}}" type="video/mp4"/>
       </video>
     </div>
 

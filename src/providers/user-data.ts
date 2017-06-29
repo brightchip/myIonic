@@ -578,31 +578,33 @@ export class UserData {
     })
   }
 
-  findLessons(book_name):Promise<any>{
+  findLessons(bookInfo):Promise<any>{
     var lessonList = []
-    return this.dbHelper.getLessons(book_name).then( (lessonListOld) => {
+    return this.dbHelper.getLessons(bookInfo.book_id).then( (lessonListOld) => {
       if(typeof  lessonListOld != "undefined" && lessonListOld != null && lessonListOld.length > 1) {
-        console.log("getLessons of", book_name, lessonListOld)
+        console.log("getLessons of", bookInfo.book_id, lessonListOld)
         lessonList = this.tools.deepClone(lessonListOld);
         return lessonList;
-      }
-      return this.retriveLessonList(book_name).then( lessonListNew => {
-        if(typeof  lessonListNew != "undefined" && lessonListNew != null && lessonListNew.length > 1) {
-          console.log("getLessons from remote server",  lessonListNew)
+      }else {
+        return this.retriveLessonList(bookInfo.book_id).then( lessonListNew => {
+          if(typeof  lessonListNew != "undefined" && lessonListNew != null && lessonListNew.length > 1) {
 
-          for(let i =0;i<lessonListNew.length;i++){
 
-            // if(resData[i].state == 1 || resData[i].state == 2){
+            for(let i =0;i<lessonListNew.length;i++){
+
+              // if(resData[i].state == 1 || resData[i].state == 2){
               this.dbHelper.updateLesson(lessonListNew[i]);//update local user table
-            // }else if(resData[i].state == 4){
-            //   this.dbHelper.deleteItem("tb_lesson",resData[i]);//update local user table
-            // }
+              // }else if(resData[i].state == 4){
+              //   this.dbHelper.deleteItem("tb_lesson",resData[i]);//update local user table
+              // }
 
+            }
+            lessonList = this.tools.deepClone(lessonListNew);
+            console.log("getLessons from remote server",  lessonList)
+            return lessonList;
           }
-          lessonList = this.tools.deepClone(lessonListOld);
-          return lessonList;
-        }
-      })
+        })
+      }
 
       // return lessonList;
     }).catch(e => {
@@ -622,16 +624,16 @@ export class UserData {
         return resData.data;
       }, error => {
         console.log("Oooops!" + error);
-        // console.log("retriveLessonList failed");
+
         throw  error;
       });
   }
 
-  retriveLessonList(book_name):Promise<any>{
+  retriveLessonList(book_id):Promise<any>{
     let headers = new Headers();
     headers.append('Authorization', this.auth.token);
-    console.log("retriveLessonList", this.BASE_URL + "retriveLessonList" + "?book_name=" + book_name , {headers: headers});
-    return this.httpTools.sendGet(this.BASE_URL + "retriveLessonList" + "?book_name=" + book_name, {headers: headers})
+    console.log("retriveLessonList", this.BASE_URL + "retriveLessonList" + "?book_id=" + book_id , {headers: headers});
+    return this.httpTools.sendGet(this.BASE_URL + "retriveLessonList" + "?book_id=" + book_id, {headers: headers})
       .toPromise()
       .then(resData => {
         console.log("retriveLessonList res data ?", resData);

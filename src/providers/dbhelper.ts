@@ -37,7 +37,7 @@ export class DBHelper {
         this.createTable("CREATE TABLE IF NOT EXISTS tb_chat (id INTEGER PRIMARY KEY AUTOINCREMENT, sender_id INTEGER, receiver_id INTEGER,chatdatas VARCHAR(255))");
         this.createTable("CREATE TABLE IF NOT EXISTS tb_lesson (id INTEGER PRIMARY KEY AUTOINCREMENT, lesson_id INTEGER,created_date DATETIME, lesson_name TEXT,teacher_id INTEGER,modified_date DATETIME,lesson_order INTEGER,book_id INTEGER,vocabulary VARCHAR(255))");
         this.createTable("CREATE TABLE IF NOT EXISTS tb_vocabulary (id INTEGER PRIMARY KEY AUTOINCREMENT, vocabulary_id INTEGER,word TEXT,mean TEXT, pronunciation TEXT,lesson_id INTEGER,explain TEXT,explain_img TEXT,audio TEXT,audio_url TEXT)");
-        this.createTable("CREATE TABLE IF NOT EXISTS tb_book (id INTEGER PRIMARY KEY AUTOINCREMENT, book_id  INTEGER,book_name TEXT,book_profile TEXT, book_author TEXT,book_remark TEXT,timespan INTEGER,created_date DATETIME,modified_date DATETIME)");
+        this.createTable("CREATE TABLE IF NOT EXISTS tb_book (id INTEGER PRIMARY KEY AUTOINCREMENT, book_id  INTEGER,book_name TEXT,book_profile TEXT, book_author TEXT,book_remark TEXT,timespan INTEGER,created_date DATETIME,modified_date DATETIME,intro_video TEXT)");
         this.createTable("CREATE TABLE IF NOT EXISTS tb_vocabulary_result (id INTEGER PRIMARY KEY AUTOINCREMENT, lesson_id  INTEGER,wrong_times INTEGER,created_date DATETIME)");
 
 
@@ -345,12 +345,12 @@ export class DBHelper {
         .then( (lessonInfoOld) => {
           let query = "";
           if(lessonInfoOld.length <0){
-            query = "INSERT INTO tb_book(book_id,book_name,book_profile, book_author,book_remark,timespan,created_date) values($1, $2, $3, $4,$5,$6,$7)";
+            query = "INSERT INTO tb_book(book_id,book_name,book_profile, book_author,book_remark,timespan,created_date,intro_video) values($1, $2, $3, $4,$5,$6,$7,$8)";
           }else {
-            query = "UPDATE tb_book SET book_id=$1,book_name=$2,book_profile=$3,book_author=$4,book_remark=$5,timespan=$6,modified_date=$7 where lesson_id=$1"
+            query = "UPDATE tb_book SET book_id=$1,book_name=$2,book_profile=$3,book_author=$4,book_remark=$5,timespan=$6,modified_date=$7,intro_video=$8 where lesson_id=$1"
           }
 
-          this.db.executeSql( query, [bookInfo.book_id,bookInfo.book_name,bookInfo.book_profile,bookInfo.book_author,bookInfo.book_remark,bookInfo.timespan,bookInfo.modified_date])
+          this.db.executeSql( query, [bookInfo.book_id,bookInfo.book_name,bookInfo.book_profile,bookInfo.book_author,bookInfo.book_remark,bookInfo.timespan,bookInfo.modified_date,bookInfo.intro_video])
             .then(function(res) {
 
               return true;
@@ -367,13 +367,13 @@ export class DBHelper {
 
   }
 
-  getLessons(book_name: any):Promise<any> {
+  getLessons(book_id: any):Promise<any> {
     return this.platform.ready().then(() => {
       if(!this.nativeServic.isMobile()){
         return [];
       }
-      let query = "SELECT * FROM tb_lesson where book_name=$1 ORDER BY lesson_order";
-      return this.db.executeSql(query,[book_name])
+      let query = "SELECT * FROM tb_lesson where book_id=$1 ORDER BY lesson_order";
+      return this.db.executeSql(query,[book_id])
         .then(function (res) {
           let lessons = [];
           if (res.rows.length > 0) {

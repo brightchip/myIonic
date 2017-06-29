@@ -11,7 +11,9 @@
 
 <ion-content>
   <ion-item *ngFor="let lesson of this.myLessonList" (click)="gotoLesson(lesson)">
-    {{lesson.lessonName}}
+    {{lesson.lesson_name}}
   </ion-item>
+
+  <div class="nothing-found" *ngIf="showNothing">该课程还在建工中!</div>
 </ion-content>
 
