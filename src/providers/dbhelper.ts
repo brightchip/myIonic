@@ -39,15 +39,12 @@ export class DBHelper {
         this.createTable("CREATE TABLE IF NOT EXISTS tb_vocabulary (id INTEGER PRIMARY KEY AUTOINCREMENT, vocabulary_id INTEGER,word TEXT,mean TEXT, pronunciation TEXT,lesson_id INTEGER,explain TEXT,explain_img TEXT,audio TEXT,audio_url TEXT)");
         this.createTable("CREATE TABLE IF NOT EXISTS tb_book (id INTEGER PRIMARY KEY AUTOINCREMENT, book_id  INTEGER,book_name TEXT,book_profile TEXT, book_author TEXT,book_remark TEXT,timespan INTEGER,created_date DATETIME,modified_date DATETIME,intro_video TEXT)");
         this.createTable("CREATE TABLE IF NOT EXISTS tb_vocabulary_result (id INTEGER PRIMARY KEY AUTOINCREMENT, lesson_id  INTEGER,wrong_times INTEGER,created_date DATETIME)");
-
-
       }, (error) => {
         console.error("Unable to open database", error);
       });
     }).catch( err => {
-      console.error(err);
+      console.error("create table",err);
     })
-
   }
 
   getUserInfo(user_id):Promise<any>{
@@ -341,7 +338,7 @@ export class DBHelper {
       if(!this.nativeServic.isMobile()){
         return;
       }
-      return this.getLessonInfo(bookInfo.book_id)
+      return this.getBookInfo(bookInfo.book_id)
         .then( (lessonInfoOld) => {
           let query = "";
           if(lessonInfoOld.length <0){
@@ -398,25 +395,24 @@ export class DBHelper {
     return this.platform.ready().then(() => {
       if(!this.nativeServic.isMobile()){
         return [];
-      }
+      }else{
         let query = "SELECT * FROM tb_book";
-        return this.db.executeSql(query)
+        console.log("getBooks",query);
+        return this.db.executeSql(query,[])
           .then(function (res) {
             let books = [];
             if (res.rows.length > 0) {
               books = res.rows;
               console.log("SELECTED -> " + res.rows);
-
             } else {
               console.log("No results found");
-
             }
-
             return books;
           }, function (err) {
             // console.error(err);
             throw err;
           });
+      }
     }).catch( err => {
       // console.error(err);
       throw err;
@@ -492,7 +488,7 @@ export class DBHelper {
         return;
       }
       console.log("deleteItem",query)
-      return this.db.executeSql(query)
+      return this.db.executeSql(query,[])
         .then(function (res) {
 
           return true;

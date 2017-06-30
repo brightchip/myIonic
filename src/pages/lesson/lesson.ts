@@ -41,10 +41,10 @@ export class LessonPage {
   // @ViewChild ("btRecorder") btRecorder:any;
   textArea1:string = "";
   textArea2:string = "";
-  arrComments = [];
+  arrComments = [[],[]];
   lesson:any;
-  rtLessonInfo :any;
-  comments:any;
+  rtLessonInfo :any = [{likes:[],views:0,likeButtonColor:"badge",likeClicked:false},{likes:[],views:0,likeButtonColor:"badge",likeClicked:false}];
+  comments:any = [[],[]];
 
   // vacabularys:any[]=[
   //   {pronunciation:"a-in-z",word:"Anz",mean:"安银子",audio:"",sampleAudio:"http://api.wordnik.com/v4/audioFile.mp3/3e7145666db9d2ddd47fb6402d26bb263abaf8b4c98ed5337bf0b16ed4d35cb1"},
@@ -55,7 +55,7 @@ export class LessonPage {
   arrHomework:{};
   // arrCurrentTextbookComments:any = [];//original comments array
   // arrCurrentWordbookComments:any = [];//original comments array
-  arrCurrentComments:any ;//original comments array
+  arrCurrentComments:any = [[],[]];//original comments array
   // currentUser:any={pessonFrofile:"assets/img/logos/se.png"}
 
   ARROW_DOWN:string = "ios-arrow-down";
@@ -117,18 +117,23 @@ export class LessonPage {
 
   ionViewDidEnter(){
     console.log("lesson:ionViewDidEnter")
+    this.updateLessonInfo();
     this.initCurrentPage();
 
     this.addVideoControl();
   }
 
   private initCurrentPage() {
-    console.log("initCurrentPage",this.lesson_parts);
+    // for(let i = 0;i< 2;i++){
+
+    // }
     if(this.lesson_parts == "book"){
-      if(this.arrCurrentComments[this.TEXTBOOK].length <= 0){
-        this.getComments(this.TEXTBOOK);
-      }
+      console.log("initCurrentPage",this.lesson_parts);
+        if(this.arrCurrentComments[this.TEXTBOOK].length <= 0){
+          this.getComments(this.TEXTBOOK);
+        }
     }else if(this.lesson_parts == "exercise"){
+      console.log("initCurrentPage",this.lesson_parts);
       if(this.arrCurrentComments[this.WORDBOOK].length <= 0){
         this.getComments(this.WORDBOOK);
       }
@@ -145,8 +150,11 @@ export class LessonPage {
     this.userData.getDefaultUserData().then( (userInfo) =>{
       console.log("lesson: init", this.userData.userInfo);
       this.userData.getHomeworkData().then( (homeworkData) => {
-        this.arrHomework = homeworkData;
-        console.log("init:homeworkData", this.arrHomework);
+        if(homeworkData != null){
+          this.arrHomework = homeworkData;
+          console.log("init:homeworkData", this.arrHomework);
+        }
+
       });
 
     });
@@ -170,10 +178,8 @@ export class LessonPage {
         this.isPosting = false;
 
         // this.ngZone.run( () => {
-        this.rtLessonInfo[part_id].comments_acount = this.comments[part_id].length;
+        // this.rtLessonInfo[part_id].comments_acount = this.comments[part_id].length;
         // });
-
-
         console.log("lesson:getComments ",part_id, this.comments[part_id]);
       }).catch( err => {
         this.comments[part_id] =  this.handleComments([]);
@@ -181,6 +187,38 @@ export class LessonPage {
         this.isPosting = false;
       })
     }
+  }
+
+  updateLessonInfo(){
+    this.userData.updateLessonInfo(this.lesson_id).then( (lesson) =>{
+      if(typeof lesson != "undefined" && lesson != null){
+        if(lesson.textbook_likes != null){
+          this.rtLessonInfo[this.TEXTBOOK].likes = lesson.textbook_likes;
+        }
+        if(lesson.wordbook_likes != null){
+          this.rtLessonInfo[this.WORDBOOK].likes = lesson.wordbook_likes;
+        }
+        if(lesson.textbook_views != null){
+          this.rtLessonInfo[this.TEXTBOOK].views = lesson.textbook_views;
+        }
+        if(lesson.wordbook_views != null){
+          this.rtLessonInfo[this.WORDBOOK].views = lesson.wordbook_views;
+        }
+
+        for(let i =0;i<2;i++){
+          if(this.rtLessonInfo[i].likes != null){
+            if( this.rtLessonInfo[i].likes.indexOf(parseInt(this.userData.userInfo.user_id)) > -1 )  {
+              this.rtLessonInfo[i].likeButtonColor = "danger";
+              this.rtLessonInfo[i].likeClicked = true;
+            }
+          }
+
+        }
+        console.log("updateLessonInfo",lesson, this.rtLessonInfo);
+        // this.lesson = lesson;
+      }
+
+    })
   }
 
 
@@ -203,6 +241,47 @@ export class LessonPage {
           return;
         }
     });
+  }
+
+
+  viewCourse(part_id){
+    console.log("viewCourse", part_id);
+
+    // if (this.rtLessonInfo[part_id].likeClicked) {
+    //   console.log("likeComment click likeClicked");
+    //   this.tools.presentErrorAlert("失败","已经赞过!");
+    //   return;
+    // }
+
+    this.userData.viewCourse(this.userData.userInfo.user_id,this.lesson.lesson_id, part_id).then( () => {
+      // let eventObj = {eventType:"likeCourse",eventData:{lesson:lesson,part_id:this.part_id},client_id:this.userData.userInfo.user_id};
+      // this.webSocket.sendData(eventObj);
+      console.log("viewCourse success")
+    }).catch( err => {
+      console.error("viewCourse",err)
+    })
+  }
+
+  likeCourse(part_id){
+    console.log("likeVideo", part_id);
+
+    if (this.rtLessonInfo[part_id].likeClicked) {
+      console.log("likeComment click likeClicked");
+      this.tools.presentErrorAlert("失败","已经赞过!");
+      return;
+    }
+
+    this.userData.thumbUpCourse(this.userData.userInfo.user_id,this.lesson.lesson_id, part_id, "tb_lesson").then( (lesson) => {
+      let eventObj = {eventType:"likeCourse",eventData:{lesson:lesson,part_id:this.part_id},client_id:this.userData.userInfo.user_id};
+      this.webSocket.sendData(eventObj);
+
+    }).catch( err => {
+      console.error("likeCourse",err)
+    })
+    this.rtLessonInfo[part_id].likeClicked = true;
+    this.rtLessonInfo[part_id].likeButtonColor = "danger";
+    // this.rtLessonInfo[part_id].likes_amount++;
+    this.rtLessonInfo[part_id].likes.push(this.userData.userInfo.user_id);
   }
 
   likeComment(comment){
@@ -262,6 +341,7 @@ export class LessonPage {
       this.part_id = this.TEXTBOOK;
     } else if(this.lesson_parts == "exercise"){
       this.part_id = this.WORDBOOK;
+      this.initCurrentPage();
     } else  if(this.lesson_parts == "vocabulary"){
       let self = this;
       console.log("segmentChanged",this.course_id)
@@ -330,6 +410,7 @@ export class LessonPage {
       console.log('Event: ' + event);
       self.onFullScreen(state);
     });
+
   }
 
   replyComment(comment){
@@ -350,10 +431,10 @@ export class LessonPage {
 
     let commentContent = "@ " + comment.user_name + " " + this.textArea2;
 
-    let tmp = {under_which_user:comment.user_id,reply_which_comment:parentComment.comment_id,user_id:this.userData.userInfo.user_id,comment:commentContent,lesson_id:this.lesson_id,comment_date:new Date()};
+    let tmp = {under_which_user:comment.user_id,reply_which_comment:parentComment.comment_id,user_id:this.userData.userInfo.user_id,comment:commentContent,lesson_id:this.lesson_id,comment_date:new Date(),part_id:this.part_id};
     console.log("postCommentUnderComment", tmp )
 
-    this.userData.postComment(tmp,this.part_id)
+    this.userData.postComment(tmp)
       .then( (comment) => {
         console.log("postCommentUnderComment:result",comment);
         if(comment != null){
@@ -375,10 +456,10 @@ export class LessonPage {
 
     this.isPosting = true;
 
-    let tmp = {under_which_user:-1,reply_which_comment:-1,user_id:this.userData.userInfo.user_id,comment:this.textArea1,lesson_id:this.lesson_id,comment_date:new Date()};
+    let tmp = {under_which_user:-1,reply_which_comment:-1,user_id:this.userData.userInfo.user_id,comment:this.textArea1,lesson_id:this.lesson_id,comment_date:new Date(),part_id:this.part_id};
     console.log("postComment", tmp,this.userData.userInfo)
 
-    this.userData.postComment(tmp,this.part_id)
+    this.userData.postComment(tmp)
       .then( (comment) => {
         console.log("postComment:result",comment);
         if(comment != null){

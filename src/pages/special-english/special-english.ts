@@ -110,7 +110,6 @@ export class SpecialEnglishPage {
         }
       })
     }
-
   }
 
   ionViewDidLeave() {

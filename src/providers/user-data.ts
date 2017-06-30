@@ -248,7 +248,7 @@ export class UserData {
     //    this.download("2333.jpg")
   }
 
-  postComment(tmp,part_id):Promise<any> {
+  postComment(tmp):Promise<any> {
     let headers = new Headers();
     headers.append('Authorization', this.auth.token);
 
@@ -262,7 +262,7 @@ export class UserData {
         // if(data.success){
           let comment = this.tools.handleResCommentData(data.data)
 
-        let eventObj = {eventType:"updateComment",eventData:{comments:comment[0],part_id:part_id},client_id:this.userInfo.user_id};
+        let eventObj = {eventType:"updateComment",eventData:{comments:comment[0],part_id:tmp.part_id},client_id:this.userInfo.user_id};
         this.websocket.sendData(eventObj);
 
         return comment[0]
@@ -425,6 +425,25 @@ export class UserData {
           });
   }
 
+  updateLessonInfo(lesson_id) {
+    let headers = new Headers();
+    headers.append('Authorization', this.auth.token);
+    console.log("updateLessonInfo", this.BASE_URL + "retriveCourseInfo" + "?lesson_id=" + lesson_id , {headers: headers});
+    return this.httpTools.sendGet(this.BASE_URL + "updateLessonInfo" + "?lesson_id=" + lesson_id , {headers: headers})
+      .toPromise()
+      .then(resData => {
+        console.log("updateLessonInfo res data ?", resData);
+        let data = resData;
+
+        return data.data;
+      }, error => {
+        // console.log("Oooops!" + error);
+        console.log("updateLessonInfo failed",error);
+
+        throw  error;
+      });
+  }
+
   retriveComments(phone,lesson_id,part_id) : Promise<any>{
         let headers = new Headers();
         headers.append('Authorization', this.auth.token);
@@ -442,6 +461,53 @@ export class UserData {
 
             throw  error;
           });
+  }
+
+
+  viewCourse(user_id: any, lesson_id: number | any, part_id: any) {
+    let headers = new Headers();
+    headers.append('Authorization', this.auth.token);
+
+    let viewData = {user_id: user_id, lesson_id: lesson_id,part_id:part_id}
+    var reqData = JSON.stringify(viewData);
+    console.log("viewCourse", this.BASE_URL + "viewCourse", reqData, {headers: headers});
+    return  this.httpTools.sendPost(this.BASE_URL + "viewCourse", reqData, {headers: headers})
+      .toPromise()
+      .then(resData => {
+        let data = JSON.parse(resData._body);  //1
+        console.log("success viewCourse", data);
+
+        return (data.data);
+      }, error => {
+
+        this.tools.presentToast(" 更新失败！");
+        console.log("user:viewCourse failed", error);
+        throw (error);
+        // this.presentErrorAlert("注册失败！","请检查网络")
+      });
+  }
+
+  thumbUpCourse(user_id,liked_id,part_id,table_name) :Promise<any> {
+    let headers = new Headers();
+    headers.append('Authorization', this.auth.token);
+
+    let likeData = {user_id: user_id, liked_id: liked_id,part_id:part_id, table_name: table_name}
+    var reqData = JSON.stringify(likeData);
+    console.log("thumbUpCourse", this.BASE_URL + "thumbUpCourse", reqData, {headers: headers});
+    return  this.httpTools.sendPost(this.BASE_URL + "thumbUpCourse", reqData, {headers: headers})
+      .toPromise()
+      .then(resData => {
+        let data = JSON.parse(resData._body);  //1
+        console.log("success thumbUpCourse", data);
+
+        return (data.data);
+      }, error => {
+
+        this.tools.presentToast(" 更新失败！");
+        console.log("user:thumbUpCourse failed", error);
+        throw (error);
+        // this.presentErrorAlert("注册失败！","请检查网络")
+      });
   }
 
   thumbUp(user_id,liked_id,table_name) :Promise<any> {
@@ -547,13 +613,12 @@ export class UserData {
   findCourses():Promise<any>{
     var courseList = []
     return this.dbHelper.getBooks().then( (books) => {
+      console.log("findCourses from local cache", books)
       if(typeof  books != "undefined" && books != null && books.length > 1) {
-        console.log("findCourses from local cache", books)
         courseList = this.tools.deepClone(books);
         return courseList;
       }else {
         return this.retriveBookList().then(booksNew => {
-
           if(typeof  booksNew != "undefined" && booksNew != null && booksNew.length > 1) {
             console.log("findCourses",booksNew)
             for(let i =0;i<booksNew.length;i++) {
@@ -574,7 +639,7 @@ export class UserData {
       }
 
     }).catch( err => {
-
+      console.error("findCourses",err)
     })
   }
 
@@ -757,5 +822,6 @@ export class UserData {
       newFileName =  this.userInfo.phone + "_" + n + ".mp3";
     return newFileName;//this.vacabularys[this.currentIndex].word;
   }
+
 
 }

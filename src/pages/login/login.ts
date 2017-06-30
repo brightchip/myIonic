@@ -25,8 +25,11 @@ export class LoginPage {
     this.listenToLoginEvents();
 
     this.storage.get('loginusername').then((value) => {
-      this.login.phone = value
-      console.log("loginusername", this.login)
+      if(value != null){
+        this.login.phone = value
+        console.log("loginusername", this.login)
+      }
+
     })
 
     this.storage.get('savePassword').then((value) => {

@@ -3,7 +3,7 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>{{lesson.lesson_name}}</ion-title>
+    <ion-title>{{currentCourse.book_name}}</ion-title>
   </ion-navbar>
 </ion-header>
 
@@ -25,21 +25,27 @@
   <ion-col no-padding class="lesson-content" [ngSwitch]="lesson_parts">
 
     <ion-list  *ngSwitchCase="'book'">
-      <video  controls="controls" preload="metadata"  class="videoPlayer">
+      <video  controls="controls" preload="metadata"  class="videoPlayer"(play)="viewCourse(TEXTBOOK)">
         <source src="{{lesson.textbook_video}}" type="video/mp4"/>
       </video>
 
       <ion-row>
         <ion-col>
-          <button ion-button icon-left clear small (click)="thumbUp()">
+          <button ion-button icon-left clear small (click)="likeCourse(TEXTBOOK)" [color]="rtLessonInfo[TEXTBOOK].likeButtonColor">
             <ion-icon name="thumbs-up"></ion-icon>
-            <div>{{rtLessonInfo[TEXTBOOK].likes}}</div>
+            <div>{{rtLessonInfo[TEXTBOOK].likes.length}}</div>
           </button>
         </ion-col>
         <ion-col>
           <button ion-button icon-left clear small>
             <ion-icon name="text"></ion-icon>
-            <div>{{rtLessonInfo[TEXTBOOK].comments_acount}}</div>
+            <div>{{comments[TEXTBOOK].length }}</div>
+          </button>
+        </ion-col>
+        <ion-col>
+          <button ion-button icon-left clear small>
+            <ion-icon name="eye"></ion-icon>
+            <div>{{rtLessonInfo[TEXTBOOK].views}}</div>
           </button>
         </ion-col>
       </ion-row>
@@ -63,7 +69,7 @@
             <ion-spinner  name="bubbles" ></ion-spinner>
           </div>
 
-          <p class="no-comments" *ngIf="rtLessonInfo[TEXTBOOK].comments_acount < 1">还没有人评论,Be The First!</p>
+          <p class="no-comments" *ngIf="comments[TEXTBOOK].length < 1">还没有人评论,Be The First!</p>
 
           <div class="comment-content" *ngFor="let _comment of comments[TEXTBOOK]">
           <!--<ion-list>-->
@@ -159,21 +165,27 @@
     </ion-list>
 
     <ion-list *ngSwitchCase="'exercise'">
-      <video  controls="controls" preload="metadata"  class="videoPlayer">
-        <source src="{{lesson.textbook_video}}" type="video/mp4"/>
+      <video  controls="controls" preload="metadata"  class="videoPlayer" (play)="viewCourse(WORDBOOK)">
+        <source src="{{lesson.wordbook_video}}" type="video/mp4"/>
       </video>
 
       <ion-row>
         <ion-col>
-          <button ion-button icon-left clear small (click)="thumbUp()">
+          <button ion-button icon-left clear small (click)="likeCourse(WORDBOOK)" [color]="rtLessonInfo[WORDBOOK].likeButtonColor">
             <ion-icon name="thumbs-up"></ion-icon>
-            <div>{{rtLessonInfo[TEXTBOOK].likes}}</div>
+            <div>{{rtLessonInfo[WORDBOOK].likes.length}}</div>
           </button>
         </ion-col>
         <ion-col>
           <button ion-button icon-left clear small>
             <ion-icon name="text"></ion-icon>
-            <div>{{rtLessonInfo[TEXTBOOK].comments_acount}}</div>
+            <div>{{comments[WORDBOOK].length}}</div>
+          </button>
+        </ion-col>
+        <ion-col>
+          <button ion-button icon-left clear small>
+            <ion-icon name="eye"></ion-icon>
+            <div>{{rtLessonInfo[WORDBOOK].views}}</div>
           </button>
         </ion-col>
       </ion-row>
@@ -197,7 +209,7 @@
             <ion-spinner  name="bubbles" ></ion-spinner>
           </div>
 
-          <p class="no-comments" *ngIf="rtLessonInfo[WORDBOOK].comments_acount < 1">还没有人评论,Be The First!</p>
+          <p class="no-comments" *ngIf="comments[WORDBOOK].length < 1">还没有人评论,Be The First!</p>
 
           <div class="comment-content" *ngFor="let _comment of comments[WORDBOOK]">
             <!--<ion-list>-->
