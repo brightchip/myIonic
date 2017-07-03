@@ -15,6 +15,7 @@ export class DBHelper {
   hasInitialized = false;
   db:any;
 
+  // vacabularys = [];
   vacabularys:any[] =
     [{vocabulary_id:1,pronunciation:"a-in-z",word:"Anz",mean:"安银子",audio:"",audio_url:"http://api.wordnik.com/v4/audioFile.mp3/3e7145666db9d2ddd47fb6402d26bb263abaf8b4c98ed5337bf0b16ed4d35cb1",img_url:"assets/img/speakers/bear.jpg",recite_count:0,recite_wrong_times:0},
     {vocabulary_id:2,pronunciation:"bi-sho-jo",word:"lion",mean:"美少女",audio:"",audio_url:"http://api.wordnik.com/v4/audioFile.mp3/841109043745af50f206ca38d712e66b46c3d26075fcf28c575ed1b7cd99adee",img_url:"assets/img/speakers/lion.jpg",recite_count:0,recite_wrong_times:0},
@@ -36,7 +37,7 @@ export class DBHelper {
         this.createTable("CREATE TABLE IF NOT EXISTS tb_user (id INTEGER PRIMARY KEY AUTOINCREMENT, user_id INTEGER UNIQUE, avatar TEXT,user_name TEXT,phone TEXT)");
         this.createTable("CREATE TABLE IF NOT EXISTS tb_chat (id INTEGER PRIMARY KEY AUTOINCREMENT, sender_id INTEGER, receiver_id INTEGER,chatdatas VARCHAR(255))");
         this.createTable("CREATE TABLE IF NOT EXISTS tb_lesson (id INTEGER PRIMARY KEY AUTOINCREMENT, lesson_id INTEGER,created_date DATETIME, lesson_name TEXT,teacher_id INTEGER,modified_date DATETIME,lesson_order INTEGER,book_id INTEGER,vocabulary VARCHAR(255))");
-        this.createTable("CREATE TABLE IF NOT EXISTS tb_vocabulary (id INTEGER PRIMARY KEY AUTOINCREMENT, vocabulary_id INTEGER,word TEXT,mean TEXT, pronunciation TEXT,lesson_id INTEGER,explain TEXT,explain_img TEXT,audio TEXT,audio_url TEXT)");
+        this.createTable("CREATE TABLE IF NOT EXISTS tb_vocabulary (id INTEGER PRIMARY KEY AUTOINCREMENT, vocabulary_id INTEGER,word TEXT,mean TEXT, pronunciation TEXT,lesson_id INTEGER,explain TEXT,explain_img TEXT,audio TEXT,audio_url TEXT,recite_wrong_times INTEGER DEFAULT 0)");
         this.createTable("CREATE TABLE IF NOT EXISTS tb_book (id INTEGER PRIMARY KEY AUTOINCREMENT, book_id  INTEGER,book_name TEXT,book_profile TEXT, book_author TEXT,book_remark TEXT,timespan INTEGER,created_date DATETIME,modified_date DATETIME,intro_video TEXT)");
         this.createTable("CREATE TABLE IF NOT EXISTS tb_vocabulary_result (id INTEGER PRIMARY KEY AUTOINCREMENT, lesson_id  INTEGER,wrong_times INTEGER,created_date DATETIME)");
       }, (error) => {
@@ -49,6 +50,11 @@ export class DBHelper {
 
   getUserInfo(user_id):Promise<any>{
     return this.platform.ready().then(() => {
+
+      if(!this.nativeServic.isMobile()){
+        return {};
+      }
+
       let query = "SELECT * FROM tb_user WHERE user_id = ?";
       return this.db.executeSql(query, [user_id])
         .then(function (res) {
@@ -73,7 +79,11 @@ export class DBHelper {
 
   getVocabularys(lesson_id):Promise<any>{
     return this.platform.ready().then(() => {
-      // return this.vacabularys;
+
+      if(!this.nativeServic.isMobile()){
+        return this.vacabularys;
+      }
+
       let query = "SELECT * FROM tb_vocabulary WHERE lesson_id = ?";
       return this.db.executeSql(query, [lesson_id])
         .then(function (res) {
@@ -98,8 +108,12 @@ export class DBHelper {
 
   getCoolPlayVocabularys(lesson_id):Promise<any>{
     return this.platform.ready().then(() => {
-      // return this.vacabularys;
-        let query = "SELECT * FROM tb_vocabulary WHERE lesson_id = ?";
+
+      if(!this.nativeServic.isMobile()){
+        return [];
+      }
+
+      let query = "SELECT * FROM tb_vocabulary WHERE lesson_id = ?";
         return this.db.executeSql(query, [lesson_id])
           .then(function (res) {
             let vocabulary = [];
@@ -125,10 +139,9 @@ export class DBHelper {
     console.log("getRandomRows")
     return this.platform.ready().then(() => {
       if(!this.nativeServic.isMobile()){
-        let tmp =  [this.vacabularys[0],this.vacabularys[3],this.vacabularys[5],vocabulary]
-        return this.shuffle(tmp);
-      }
 
+        return [];
+      }
 
       let query = "SELECT *  FROM tb_vocabulary ORDER BY RAND() LIMIT 3 WHERE vocabulary_id != ?";
       return this.db.executeSql(query, [vocabulary.vocabulary_id])
@@ -144,11 +157,15 @@ export class DBHelper {
           return vocabularies;
         }, function (err) {
           // console.error(err);
-          throw err;
+          // throw err;
+          let tmp =  [this.vacabularys[0],this.vacabularys[3],this.vacabularys[5],vocabulary]
+          return this.shuffle(tmp);
         });
     }).catch( err => {
       // console.error(err);
-      throw err;
+      // throw err;
+      let tmp =  [this.vacabularys[0],this.vacabularys[3],this.vacabularys[5],vocabulary]
+      return this.shuffle(tmp);
     })
   }
 

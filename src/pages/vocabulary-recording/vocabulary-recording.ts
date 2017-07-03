@@ -137,6 +137,9 @@ export class VocabularyRecordingPage {
 
   playSampleAudio(){
     try {
+      if(this.vacabularys.length < 1 ){
+        return;
+      }
       this.disableRecordButton = true;
       console.log("lesson:playSampleAudio", this.vacabularys[this.currentIndex].sampleAudio);
 
@@ -175,8 +178,6 @@ export class VocabularyRecordingPage {
         console.log("lesson:submitHomework",success);
       })
     }
-
-
   }
 
   addAudioInput(){
@@ -185,11 +186,8 @@ export class VocabularyRecordingPage {
       this.btRecorder = document.getElementById("bt-recorder");
 
       if (this.btRecorder != null && typeof this.btRecorder != "undefined") {
-
-
         var touchStart = function (event) {
           // console.log("touchStart",self)
-
           self.startPauseRecord(true);
           self.proptText = self.TEXTSLIDE;
           console.log("touchStart", self.proptText)
@@ -211,11 +209,9 @@ export class VocabularyRecordingPage {
         //   }
         //
         // }
-
         this.btRecorder.addEventListener("touchstart", touchStart, false);
         this.btRecorder.addEventListener("touchend", touchEnd, false);
         // this.btRecorder.addEventListener("touchmove", touchMove, false);
-
         console.log("lesson page", "addAudioInput", this.btRecorder,"add events");
       }
     });
@@ -234,11 +230,11 @@ export class VocabularyRecordingPage {
       }else {
         // console.log("lesson:stopRecord", this.recordButtonIcon);
         this.file.checkDir(this.rootDir, this.audioDir).then((exist) =>{
-          console.log('Directory exists');
+          // console.log('Directory exists');
           this.dirExist = true;
           this.startRecord(this.rootDir,this.audioDir,fileName)
         }).catch( err => {
-          console.log("directory not exist",err)
+          // console.log("directory not exist",err)
           console.log("lesson:createDir",this.rootDir + this.audioDir)
           this.file.createDir(this.rootDir, this.audioDir, true).then(() => {
             this.dirExist = true;
@@ -299,7 +295,7 @@ export class VocabularyRecordingPage {
       this.disableArrowButton = null;
 
       this.nativeSevice.showToast('Error on recording start.' );
-      console.log("startRecord:Error",e)
+      console.error("startRecord:Error",e)
     }
   }
 

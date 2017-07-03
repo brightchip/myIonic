@@ -33,13 +33,11 @@
           </ion-slide>
         </ion-slides>
       </ion-col>
-
       <!--<ion-col col-2 >-->
         <!--<button class="bt-updatecard"  *ngIf="currentIndex < vacabularys.length-1"  disabled={{disableArrowButton}}  clear (click)="slides.slideNext(1000)">-->
           <!--<img width="40" height="40" src="assets/icon/forward.png" />-->
         <!--</button>-->
       <!--</ion-col>-->
-
     </ion-row>
 
     <div class="avatar" text-center>
@@ -49,15 +47,15 @@
     <p class="record-text">{{proptText}}</p>
 
     <div class="voice-recorder" padding>
-      <div>
+      <div class="bt-box">
         <button class="bt-recorder"  (click)="testAudio()" disabled={{disablePlayButton}}>
           <img width="60" height="60" class="input-img" [src]="playButtonIcon" />
-          试听
           <!--<ion-icon name={{testButtonIcon}}></ion-icon>-->
         </button>
+        <p class="bt-info">试听</p>
       </div>
 
-      <div>
+      <div class="bt-box">
         <button #btRecorder id="bt-recorder"  disabled={{disableRecordButton}} class="bt-recorder" >
           <img width="60" height="60" class="input-img"  [src]="recordButtonIcon" />
         </button>
@@ -67,7 +65,7 @@
         <!--</button>-->
       </div>
 
-      <div>
+      <div class="bt-box">
         <button class="bt-submit"  (click)="nextStep()" disabled={{disableNextButton}}>
           {{nextSubmitText}}
         </button>

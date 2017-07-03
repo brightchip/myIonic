@@ -552,12 +552,12 @@ export class UserData {
           });
   }
 
-  submitHomework(audioFiles,phone,lesson_id) :Promise<boolean>{
+  submitHomework(audioFiles,user_id,lesson_id) :Promise<boolean>{
     console.log("submitHomework","total " + audioFiles.length + "words Pronounciation");
     // let  transfer0 = new Transfer();
     // let url = 'http://192.168.0.112:3000/userRouter/uploadAudio';
     // let   fileTransfer :TransferObject  = transfer0.create();
-    return  this.tools.uploadMultiFiles(audioFiles,this.BASE_URL,phone,lesson_id).then( (data) => {
+    return  this.tools.uploadMultiFiles(audioFiles,this.BASE_URL,user_id,lesson_id).then( (data) => {
       if(data != null){
         this.updateRemoteVacabularyTable(data.phone,data.arrayFileName,data.lesson_id);
       }
@@ -740,28 +740,53 @@ export class UserData {
     console.log("findVocabulary",lesson_id);
     var vocabularys = []
     return this.dbHelper.getVocabularys(lesson_id).then( (vocabularysOld) => {
-
-      console.log("findVocabulary from local cache", vocabularysOld)
       if(typeof  vocabularysOld != "undefined" && vocabularysOld != null && vocabularysOld.length > 1) {
-        vocabularys = this.tools.deepClone(vocabularysOld);
-        return vocabularys;
+        console.log("findVocabulary from local cache", vocabularysOld)
+        for (let i = 0; i < vocabularysOld.length; i++) {
+          console.log("findVocabulary process", vocabularysOld[i])
+          var vocabulary = {
+            vocabulary_id: vocabularysOld[i].vocabulary_id,
+            word: vocabularysOld[i].word,
+            pronunciation: vocabularysOld[i].pronunciation,
+            explain: vocabularysOld[i].explain,
+            sampleAudio: vocabularysOld[i].audio,
+            explain_img:vocabularysOld[i].explain_img,
+            userAudio:""
+          };
+          vocabularys.push(vocabulary);
+          // if (!this.tools.checkRemoteFileUrl(vocabularysOld[i].audio)) {
+          //   console.log("findVocabulary process", vocabularysOld[i], "local file not found try to download from remote serve")
+          //   let audio = this.tools.getAudioUrl(this.createFileName())
+          //   vocabulary.sampleAudio = audio;
+          //   this.tools.downloadFileFromSpecifiedLink(vocabularysOld[i].audio_url, audio);
+          // }
+        }
       }else {
-        // for (let i = 0; i < vocabularysOld.length; i++) {
-        //   var vocabulary = {vocabulary_id:vocabularysOld[i].vocabulary_id,word:vocabularysOld[i].word,pronunciation: vocabularysOld[i].pronunciation,mean:vocabularysOld[i].mean,sampleAudio:vocabularysOld[i].audio};
-        //   console.log("findVocabulary process" ,vocabularysOld[i])
-        //   if (!this.tools.checkRemoteFileUrl(vocabularysOld[i].audio)) {
-        //     console.log("findVocabulary process" , vocabularysOld[i],"local file not found try to download from remote serve")
-        //     let audio = this.tools.getAudioUrl(this.createFileName())
-        //     vocabulary.sampleAudio = audio;
-        //     this.tools.downloadFileFromSpecifiedLink(vocabularysOld[i].audio_url, audio);
-        //   }
         this.retriveVocabularyList(lesson_id).then( data => {
+
           if(typeof  data != "undefined" && data != null && data.length > 1) {
-            for(let i =0;i<data.length;i++){
+            for (let i = 0; i < data.length; i++) {
+              console.log("findVocabulary process", data[i])
               this.dbHelper.updateVocabulary(data[i]);//update local user table
+              var vocabulary = {
+                vocabulary_id: data[i].vocabulary_id,
+                word: data[i].word,
+                pronunciation: data[i].pronunciation,
+                explain: data[i].explain,
+                sampleAudio: data[i].audio,
+                explain_img:data[i].explain_img,
+                userAudio:""
+              };
+              vocabularys.push(vocabulary);
+
+              // if (!this.tools.checkRemoteFileUrl(vocabularysOld[i].audio)) {
+              //   console.log("findVocabulary process", vocabularysOld[i], "local file not found try to download from remote serve")
+              //   let audio = this.tools.getAudioUrl(this.createFileName())
+              //   vocabulary.sampleAudio = audio;
+              //   this.tools.downloadFileFromSpecifiedLink(vocabularysOld[i].audio_url, audio);
+              // }
             }
-            vocabularys = this.tools.deepClone(data);
-            console.log("getLessons from remote server",  vocabularys)
+            console.log("findVocabulary from remote server",  vocabularys)
             return vocabularys;
           }
         })
@@ -778,26 +803,72 @@ export class UserData {
     console.log("findCoolPlayVocabulary",lesson_id);
     var vocabularys = []
   return  this.dbHelper.getCoolPlayVocabularys(lesson_id).then( (vocabularysOld) => {
-      if(typeof  vocabularysOld != "undefined" && vocabularysOld != null) {
+
+      if(typeof  vocabularysOld != "undefined" && vocabularysOld != null && vocabularysOld.length > 1) {
           console.log("findCoolPlayVocabulary of" , lesson_id,vocabularysOld,vocabularysOld.length)
+
           for (let i = 0; i < vocabularysOld.length; i++) {
+
               this.dbHelper.getRandomRows(vocabularysOld[i]).then( (randoms) => {
-              var vocabulary = {wrongAnswer:null,correctAnswer:null,vocabulary_id:vocabularysOld[i].vocabulary_id,word:vocabularysOld[i].word,pronunciation: vocabularysOld[i].pronunciation,mean:vocabularysOld[i].mean,img_url:vocabularysOld[i].img_url,sampleAudio:vocabularysOld[i].audio,randoms:randoms,need_recite_count:1,recite_wrong_times:vocabularysOld[i].recite_wrong_times};
+              var vocabulary = {wrongAnswer:null,
+                correctAnswer:null,
+                vocabulary_id:vocabularysOld[i].vocabulary_id,
+                word:vocabularysOld[i].word,
+                pronunciation: vocabularysOld[i].pronunciation,
+                explain:vocabularysOld[i].explain,
+                explain_img:vocabularysOld[i].explain_img,
+                sampleAudio:vocabularysOld[i].audio,
+                randoms:randoms,
+                need_recite_count:1,
+                recite_wrong_times:vocabularysOld[i].recite_wrong_times};
               console.log("findCoolPlayVocabulary process" , vocabularysOld[i])
-              if (!this.tools.checkRemoteFileUrl(vocabularysOld[i].audio)) {
-                console.log("findVocabulary process" ,vocabularysOld[i],"local file not found try to download from remote serve")
-                let audio = this.tools.getAudioUrl(this.createFileName())
-                vocabulary.sampleAudio = audio;
-                this.tools.downloadFileFromSpecifiedLink(vocabularysOld[i].audio_url, audio);
-              }
+              // if (!this.tools.checkRemoteFileUrl(vocabularysOld[i].audio)) {
+              //   console.log("findVocabulary process" ,vocabularysOld[i],"local file not found try to download from remote serve")
+              //   let audio = this.tools.getAudioUrl(this.createFileName())
+              //   vocabulary.sampleAudio = audio;
+              //   this.tools.downloadFileFromSpecifiedLink(vocabularysOld[i].audio_url, audio);
+              // }
                 vocabularys.push(vocabulary);
                 console.log("findVocabulary find a vocabulary" , vocabulary)
             })
+
           }
       }else {
+        this.retriveVocabularyList(lesson_id).then( data => {
+          for (let i = 0; i < data.length; i++) {
+
+            this.dbHelper.getRandomRows(data[i]).then((randoms) => {
+              var vocabulary = {
+                wrongAnswer: null,
+                correctAnswer: null,
+                vocabulary_id: data[i].vocabulary_id,
+                word: data[i].word,
+                pronunciation: data[i].pronunciation,
+                explain: data[i].explain,
+                explain_img: data[i].explain_img,
+                sampleAudio: data[i].audio,
+                randoms: randoms, need_recite_count: 1,
+                recite_wrong_times: data[i].recite_wrong_times
+              };
+              console.log("findCoolPlayVocabulary from remote server process", data[i])
+              // if (!this.tools.checkRemoteFileUrl(data[i].audio)) {
+              //   console.log("findVocabulary  from remote server  process", data[i], "local file not found try to download from remote serve")
+              //   let audio = this.tools.getAudioUrl(this.createFileName())
+              //   vocabulary.sampleAudio = audio;
+              //   this.tools.downloadFileFromSpecifiedLink(vocabularysOld[i].audio_url, audio);
+              // }
+              vocabularys.push(vocabulary);
+              // console.log("findVocabulary find a vocabulary", vocabulary)
+            })
+          }
+        })
       }
     return vocabularys;
     })
+
+  }
+
+  parseVocabularyData(data){
 
   }
 

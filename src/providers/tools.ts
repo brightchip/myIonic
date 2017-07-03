@@ -205,7 +205,7 @@ export class Tools{
     });
   }
 
-  uploadMultiFiles(audioFiles,baseUrl,phone,lesson_id):Promise<any>{
+  uploadMultiFiles(audioFiles,baseUrl,user_id,lesson_id):Promise<any>{
     var promises = [];
     var arrayFileName = [];
 
@@ -233,7 +233,7 @@ export class Tools{
     return   Promise.all(promises).then(data => {
       this.presentToast('submitHomework succesful uploaded.');
 
-      return {phone:phone,arrayFileName:arrayFileName,lesson_id:lesson_id};
+      return {phone:user_id,arrayFileName:arrayFileName,lesson_id:lesson_id};
     }, err => {
       this.presentToast('submitHomework Error while uploading file.');
       console.log("submitHomework", "Error while uploading file " + err);
