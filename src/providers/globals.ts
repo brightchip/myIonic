@@ -3,8 +3,8 @@
 //
 // 'use strict';
 
-export const baseUrl = 'http://192.168.0.107:3000';
-export const wsUrl = 'ws://192.168.0.107:3000';
+export const baseUrl = 'http://192.168.0.227:3000';
+export const wsUrl = 'ws://192.168.0.227:3000';
 
 export const IMAGE_DIR_NAME = 'user_data';
 export const AUDIO_DIR_NAME = 'audios';

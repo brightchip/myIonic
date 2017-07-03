@@ -158,9 +158,7 @@ export class LessonPage {
       });
 
     });
-
     this.isLoadingComment = true;
-
     this.lisenEvents();
   }
 
@@ -367,15 +365,15 @@ export class LessonPage {
   }
 
   startDubbing(){
-    this.navCtrl.push(VideoDubbingPage);
+    this.navCtrl.push(VideoDubbingPage,{lesson:this.lesson });
   }
 
   startVocabularyRecording(){
-    this.navCtrl.push(VocabularyRecordingPage);
+    this.navCtrl.push(VocabularyRecordingPage,{lesson:this.lesson });
   }
 
   startImgSelectiong(){
-    this.navCtrl.push(VocabularySelectingPage);
+    this.navCtrl.push(VocabularySelectingPage,{lesson:this.lesson });
   }
 
 

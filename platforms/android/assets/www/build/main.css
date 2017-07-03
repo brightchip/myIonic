@@ -64820,6 +64820,7 @@ page-lesson ion-content .lesson-content ion-list .comments .comment-content .rep
 
 page-lesson ion-content .lesson-content ion-list .comments .comment-content .reply-div .bt-sub {
   float: right;
+  text-align: center;
 }
 
 page-lesson ion-content .lesson-content ion-list .comments .comment-content .reply-div .bt-reply {
@@ -64894,6 +64895,21 @@ page-lesson ion-content .lesson-content ion-list page-lesson img {
 page-lesson ion-content .bt-start-dub {
   height: auto;
   width: 100px;
+  margin-left: 35%;
+  background-color: transparent;
+}
+
+page-lesson ion-content .info {
+  width: 100%;
+  margin-top: 50%;
+  text-align: center;
+  color: #478aff;
+}
+
+page-lesson ion-content .bt-text {
+  width: 100%;
+  text-align: center;
+  color: #478aff;
 }
 
 page-user .logo {

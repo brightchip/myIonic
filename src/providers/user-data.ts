@@ -740,24 +740,34 @@ export class UserData {
     console.log("findVocabulary",lesson_id);
     var vocabularys = []
     return this.dbHelper.getVocabularys(lesson_id).then( (vocabularysOld) => {
-      if(typeof  vocabularysOld != "undefined" && vocabularysOld != null) {
-        console.log("findVocabulary of" , lesson_id,vocabularysOld,vocabularysOld.length)
-        for (let i = 0; i < vocabularysOld.length; i++) {
-          var vocabulary = {vocabulary_id:vocabularysOld[i].vocabulary_id,word:vocabularysOld[i].word,pronunciation: vocabularysOld[i].pronunciation,mean:vocabularysOld[i].mean,sampleAudio:vocabularysOld[i].audio};
-          console.log("findVocabulary process" ,vocabularysOld[i])
-          if (!this.tools.checkRemoteFileUrl(vocabularysOld[i].audio)) {
-            console.log("findVocabulary process" , vocabularysOld[i],"local file not found try to download from remote serve")
-            let audio = this.tools.getAudioUrl(this.createFileName())
-            vocabulary.sampleAudio = audio;
-            this.tools.downloadFileFromSpecifiedLink(vocabularysOld[i].audio_url, audio);
-          }
 
-
-          vocabularys.push(vocabulary);
-          console.log("findVocabulary find a vocabulary" + vocabulary)
-        }
+      console.log("findVocabulary from local cache", vocabularysOld)
+      if(typeof  vocabularysOld != "undefined" && vocabularysOld != null && vocabularysOld.length > 1) {
+        vocabularys = this.tools.deepClone(vocabularysOld);
+        return vocabularys;
       }else {
-
+        // for (let i = 0; i < vocabularysOld.length; i++) {
+        //   var vocabulary = {vocabulary_id:vocabularysOld[i].vocabulary_id,word:vocabularysOld[i].word,pronunciation: vocabularysOld[i].pronunciation,mean:vocabularysOld[i].mean,sampleAudio:vocabularysOld[i].audio};
+        //   console.log("findVocabulary process" ,vocabularysOld[i])
+        //   if (!this.tools.checkRemoteFileUrl(vocabularysOld[i].audio)) {
+        //     console.log("findVocabulary process" , vocabularysOld[i],"local file not found try to download from remote serve")
+        //     let audio = this.tools.getAudioUrl(this.createFileName())
+        //     vocabulary.sampleAudio = audio;
+        //     this.tools.downloadFileFromSpecifiedLink(vocabularysOld[i].audio_url, audio);
+        //   }
+        this.retriveVocabularyList(lesson_id).then( data => {
+          if(typeof  data != "undefined" && data != null && data.length > 1) {
+            for(let i =0;i<data.length;i++){
+              this.dbHelper.updateVocabulary(data[i]);//update local user table
+            }
+            vocabularys = this.tools.deepClone(data);
+            console.log("getLessons from remote server",  vocabularys)
+            return vocabularys;
+          }
+        })
+          // vocabularys.push(vocabulary);
+          // console.log("findVocabulary find a vocabulary" + vocabulary)
+        // }
       }
       return vocabularys;
     })

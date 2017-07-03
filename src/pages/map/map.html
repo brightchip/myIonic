@@ -3,7 +3,7 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>Map</ion-title>
+    <ion-title>地图</ion-title>
   </ion-navbar>
 </ion-header>
 
@@ -11,7 +11,7 @@
 
   <ion-item class="map-control">
     <ion-icon class="map-icon" name="search" item-left (click)="search(targetPosition)"></ion-icon>
-    <input id="tipinput" placeholder="Enter your address" class="input" [(ngModel)]="targetPosition" type="text"/>
+    <input id="tipinput" placeholder="输出你想要搜索的地方" class="input" [(ngModel)]="targetPosition" type="text"/>
     <!--<ion-input class="input" id="tipinput">{{targetPosition}}</ion-input>-->
     <!--<button ion-button class="bt-search" (click)="search()" item-right>Search</button>-->
   </ion-item>

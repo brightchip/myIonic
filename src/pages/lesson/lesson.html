@@ -309,21 +309,36 @@
       <div [ngSwitch]="course_id">
 
         <div  *ngSwitchCase="1">
-        <!--recording audio and send to teacher-->
-          <!--sadsadsadsa{{course_id}}-->
           <div class="student"*ngIf="userData.userInfo.identity == MyUserType.student">
-            <button class="bt-start-dub" (click)="startVocabularyRecording()">开始作业</button>
+            <p class="info">空旷旷,马上点击下面按钮开始作业吧</p>
+            <button class="bt-start-dub" (click)="startVocabularyRecording()">
+              <img width="60" height="60" class="input-img"  src="assets/img/start.png" />
+            </button>
+            <p class="bt-text">录音练习</p>
+          </div>
+          <div class="student"*ngIf="userData.userInfo.identity == MyUserType.teacher">
+            <p class="info">还没有学生提交作业</p>
+            <!--<button class="bt-start-dub" (click)="startVocabularyRecording()">-->
+              <!--<img width="60" height="60" class="input-img"  src="assets/img/start.png" />-->
+            <!--</button>-->
+            <!--<p class="bt-text">录音练习</p>-->
           </div>
         </div>
 
         <div *ngSwitchCase="2">
-          <button class="bt-start-dub" (click)="startImgSelectiong()">开始选图</button>
+          <p class="info">空旷旷,马上点击下面按钮开始作业吧</p>
+          <button class="bt-start-dub" (click)="startImgSelectiong()">
+            <img width="60" height="60" class="input-img"  src="assets/img/start.png" />
+          </button>
+          <p class="bt-text">听词选图</p>
         </div>
 
         <div *ngSwitchCase="3">
-          <!--going back is even worst{{course_id}}-->
-          <!--<video src="assets/video/sample2.mp4" ></video>-->
-          <button class="bt-start-dub" (click)="startDubbing()">配音</button>
+          <p class="info">空旷旷,马上点击下面按钮开始作业吧</p>
+          <button class="bt-start-dub" (click)="startDubbing()">
+            <img width="60" height="60" class="input-img"  src="assets/img/start.png" />
+          </button>
+          <p class="bt-text">配音</p>
         </div>
 
       </div>

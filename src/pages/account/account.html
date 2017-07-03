@@ -3,7 +3,7 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>Account</ion-title>
+    <ion-title>账号信息</ion-title>
   </ion-navbar>
 </ion-header>
 
@@ -13,10 +13,10 @@
     <h2>{{userData.userInfo.user_name}}</h2>
 
     <ion-list inset>
-      <button ion-item (click)="updatePicture()">Update Picture</button>
-      <button ion-item (click)="changeUsername()">Change Username</button>
-      <button ion-item (click)="support()">Support</button>
-      <button ion-item (click)="logout()">Logout</button>
+      <button ion-item (click)="updatePicture()">更改头像</button>
+      <button ion-item (click)="changeUsername()">更改呢称</button>
+      <button ion-item (click)="support()">支持我们</button>
+      <button ion-item (click)="logout()">登出</button>
     </ion-list>
   </div>
 </ion-content>

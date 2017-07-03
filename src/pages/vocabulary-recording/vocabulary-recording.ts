@@ -6,6 +6,7 @@ import { File  } from '@ionic-native/file';
 import * as $ from 'jquery'
 import * as Enums from "../../providers/globals";
 import {Tools} from "../../providers/tools";
+import {NavParams} from "ionic-angular";
 
 @Component({
   selector: 'vocabulary-recording',
@@ -22,7 +23,7 @@ export class VocabularyRecordingPage {
 
   private currentIndex: number = 0;
   disableRecordButton:boolean = null;
-  lesson_id:number = 1;
+  // lesson_id:number = 1;
   samplePlayer: MediaObject ;
   playButtonText:string = "Play";
   playButtonIcon:string = this.PLAY_ICON
@@ -73,9 +74,11 @@ export class VocabularyRecordingPage {
       console.log('play finish.' + this.testButtonIcon + this.isPlaying + this.disableRecordButton);
     });
   }
+  private lesson: any;
 
   constructor(
     public nativeSevice:NativeService,
+    public  navParams: NavParams,
     public userData:UserData,
     public media: MediaPlugin,
     private ngZone: NgZone,
@@ -83,6 +86,8 @@ export class VocabularyRecordingPage {
     public file: File,
   ) {
     this.rootDir = this.tools.getRootDir();
+
+    this.lesson =  this.navParams.get('lesson');
 
 
     console.log("rootDir", this.rootDir);
@@ -120,9 +125,7 @@ export class VocabularyRecordingPage {
   }
 
   initVocabularyFiles() : Promise<any>{
-    // for(let i=0;i<this.vacabularys.length;i++){
-    // }
-    return this.userData.findVocabulary(this.lesson_id).then( result => {
+    return this.userData.findVocabulary(this.lesson.lesson_id).then( result => {
       if(result != null && typeof result != "undefined"){
         this.vacabularys = result;
         console.log("initVocabularyFiles",this.vacabularys);
@@ -166,7 +169,7 @@ export class VocabularyRecordingPage {
       // this.disablePlayButton = true;
       // this.disableArrowButton = true;
       this.disableRecordButton = true;
-      this.userData.submitHomework(this.vacabularys,this.userData.userInfo.phone,this.lesson_id).then( (success) => {
+      this.userData.submitHomework(this.vacabularys,this.userData.userInfo.user_id,this.lesson.lesson_id).then( (success) => {
         // this.disablePlayButton = null;
         this.disableRecordButton = null;
         console.log("lesson:submitHomework",success);

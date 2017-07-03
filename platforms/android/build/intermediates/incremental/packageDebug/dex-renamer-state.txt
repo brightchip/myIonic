@@ -1,4 +1,4 @@
-#Fri Jun 30 16:30:33 CST 2017
+#Mon Jul 03 09:53:38 CST 2017
 base.0=E\:\\Development\\Projects\\Cordova\\Ionic\\Myionicapp\\platforms\\android\\build\\intermediates\\transforms\\dex\\debug\\folders\\1000\\1f\\main
 renamed.0=classes.dex
 file.0=E\:\\Development\\Projects\\Cordova\\Ionic\\Myionicapp\\platforms\\android\\build\\intermediates\\transforms\\dex\\debug\\folders\\1000\\1f\\main\\classes.dex

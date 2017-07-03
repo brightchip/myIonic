@@ -73,23 +73,23 @@ export class DBHelper {
 
   getVocabularys(lesson_id):Promise<any>{
     return this.platform.ready().then(() => {
-      return this.vacabularys;
-    //   let query = "SELECT * FROM tb_vocabulary WHERE lesson_id = ?";
-    //   return this.db.executeSql(query, [lesson_id])
-    //     .then(function (res) {
-    //       let vocabulary = [];
-    //       if (res.rows.length > 0) {
-    //         vocabulary = res.rows;
-    //         console.log("SELECTED -> " + res.rows);
-    //       } else {
-    //         console.log("No results found");
-    //       }
-    //
-    //       return vocabulary;
-    //     }, function (err) {
-    //       // console.error(err);
-    //       throw err;
-    //     });
+      // return this.vacabularys;
+      let query = "SELECT * FROM tb_vocabulary WHERE lesson_id = ?";
+      return this.db.executeSql(query, [lesson_id])
+        .then(function (res) {
+          let vocabulary = [];
+          if (res.rows.length > 0) {
+            vocabulary = res.rows;
+            console.log("SELECTED -> " + res.rows);
+          } else {
+            console.log("No results found");
+          }
+
+          return vocabulary;
+        }, function (err) {
+          // console.error(err);
+          throw err;
+        });
     }).catch( err => {
       // console.error(err);
       throw err;
@@ -98,23 +98,23 @@ export class DBHelper {
 
   getCoolPlayVocabularys(lesson_id):Promise<any>{
     return this.platform.ready().then(() => {
-      return this.vacabularys;
-      //   let query = "SELECT * FROM tb_vocabulary WHERE lesson_id = ?";
-      //   return this.db.executeSql(query, [lesson_id])
-      //     .then(function (res) {
-      //       let vocabulary = [];
-      //       if (res.rows.length > 0) {
-      //         vocabulary = res.rows;
-      //         console.log("SELECTED -> " + res.rows);
-      //       } else {
-      //         console.log("No results found");
-      //       }
-      //
-      //       return vocabulary;
-      //     }, function (err) {
-      //       // console.error(err);
-      //       throw err;
-      //     });
+      // return this.vacabularys;
+        let query = "SELECT * FROM tb_vocabulary WHERE lesson_id = ?";
+        return this.db.executeSql(query, [lesson_id])
+          .then(function (res) {
+            let vocabulary = [];
+            if (res.rows.length > 0) {
+              vocabulary = res.rows;
+              console.log("SELECTED -> " + res.rows);
+            } else {
+              console.log("No results found");
+            }
+
+            return vocabulary;
+          }, function (err) {
+            // console.error(err);
+            throw err;
+          });
     }).catch( err => {
       // console.error(err);
       throw err;
@@ -124,35 +124,40 @@ export class DBHelper {
   getRandomRows(vocabulary):Promise<any>{
     console.log("getRandomRows")
     return this.platform.ready().then(() => {
-     let tmp =  [this.vacabularys[0],this.vacabularys[3],this.vacabularys[5],vocabulary]
+      if(!this.nativeServic.isMobile()){
+        let tmp =  [this.vacabularys[0],this.vacabularys[3],this.vacabularys[5],vocabulary]
+        return this.shuffle(tmp);
+      }
 
-      return this.shuffle(tmp);
 
-    //   let query = "SELECT *  FROM tb_vocabulary ORDER BY RAND() LIMIT 3 WHERE vocabulary_id != ?";
-    //   return this.db.executeSql(query, [vocabulary_id])
-    //     .then(function (res) {
-    //       let vocabularies = {};
-    //       if (res.rows.length > 0) {
-    //         vocabularies = res.rows;
-    //         console.log("SELECTED -> " + vocabularies);
-    //       } else {
-    //         console.log("No results found");
-    //       }
-    //
-    //       return vocabularies;
-    //     }, function (err) {
-    //       // console.error(err);
-    //       throw err;
-    //     });
-    // }).catch( err => {
-    //   // console.error(err);
-    //   throw err;
+      let query = "SELECT *  FROM tb_vocabulary ORDER BY RAND() LIMIT 3 WHERE vocabulary_id != ?";
+      return this.db.executeSql(query, [vocabulary.vocabulary_id])
+        .then(function (res) {
+          let vocabularies = {};
+          if (res.rows.length > 0) {
+            vocabularies = res.rows;
+            console.log("SELECTED -> " + vocabularies);
+          } else {
+            console.log("No results found");
+          }
+
+          return vocabularies;
+        }, function (err) {
+          // console.error(err);
+          throw err;
+        });
+    }).catch( err => {
+      // console.error(err);
+      throw err;
     })
   }
 
   getVocabulary(vocabulary_id):Promise<any>{
     console.log("getVocabulary")
     return this.platform.ready().then(() => {
+      if(!this.nativeServic.isMobile()){
+        return;
+      }
       let query = "SELECT * FROM tb_vocabulary WHERE vocabulary_id=$1";
       return this.db.executeSql(query, [vocabulary_id])
         .then(function (res) {
@@ -178,6 +183,9 @@ export class DBHelper {
   getTestResult(lesson_id) {
     console.log("getTestResult,update in local sqlite")
     return this.platform.ready().then(() => {
+      if(!this.nativeServic.isMobile()){
+        return;
+      }
       let query = "SELECT * FROM tb_vocabulary_result  WHERE lesson_id=$1 ORDER BY created_date DESC";
       return  this.db.executeSql( query, [lesson_id])
         .then(function(res) {
@@ -196,6 +204,9 @@ export class DBHelper {
   addTestResult(result: { lesson_id: number; created_date: Date; wrong_times: (number | any) }) {
     console.log("addTestResult",result)
     return this.platform.ready().then(() => {
+        if(!this.nativeServic.isMobile()){
+          return;
+        }
          let query = "INSERT INTO tb_vocabulary_result (lesson_id,created_date,wrong_times) VALUES ($1,$2,$3)";
           this.db.executeSql( query, [result.lesson_id,result.created_date,result.wrong_times])
             .then(function(res) {
@@ -213,6 +224,9 @@ export class DBHelper {
   updateVocabulary(vocabulary):Promise<any>{
     console.log("updateVocabulary,update in local sqlite")
     return this.platform.ready().then(() => {
+        if(!this.nativeServic.isMobile()){
+          return;
+        }
       return this.getUserInfo(vocabulary.vocabulary_id)
         .then( (vocabularyOld) => {
           let query = "";
@@ -282,14 +296,11 @@ export class DBHelper {
 
   shuffle(array) {
     let currentIndex = array.length, temporaryValue, randomIndex;
-
     // While there remain elements to shuffle...
     while (0 !== currentIndex) {
-
       // Pick a remaining element...
       randomIndex = Math.floor(Math.random() * currentIndex);
       currentIndex -= 1;
-
       // And swap it with the current element.
       temporaryValue = array[currentIndex];
       array[currentIndex] = array[randomIndex];

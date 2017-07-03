@@ -18,7 +18,7 @@
         <!--</button>-->
       <!--</ion-col>-->
 
-      <ion-col >
+      <ion-col>
         <ion-slides #slides (ionSlideDidChange)="slideChanged()" (ionSlideReachEnd)="readyForSubmit()" >
           <ion-slide *ngFor="let _vacabulary of vacabularys">
             <ion-card class="vocabulary-card" (click)="playSampleAudio()">
