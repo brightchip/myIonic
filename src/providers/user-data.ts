@@ -268,6 +268,7 @@ export class UserData {
         return comment[0]
       }, error => {
         console.log("Oooops!" + error);
+        this.handleError(error);
         return null;
       });
   }
@@ -318,6 +319,7 @@ export class UserData {
         }, error => {
           this.tools.presentErrorAlert("签到失败","请检查网络")
           console.log("dailyCheckin" ,"err " , error);
+          this.handleError(error);
           throw (error);
 
         })
@@ -397,6 +399,7 @@ export class UserData {
           }, error => {
             console.log("user:updateUserInfo failed",error);
             this.tools.presentToast(" 更新失败！");
+            this.handleError(error);
             throw (error);
             // this.presentToast(" 更新失败！");
             // this.presentErrorAlert("注册失败！","请检查网络")
@@ -420,6 +423,7 @@ export class UserData {
           }, error => {
             console.log("Oooops!" + error);
             console.log("retriveUserInfo failed");
+            this.handleError(error);
             return {};
             // return;
           });
@@ -439,7 +443,7 @@ export class UserData {
       }, error => {
         // console.log("Oooops!" + error);
         console.log("updateLessonInfo failed",error);
-
+        this.handleError(error);
         throw  error;
       });
   }
@@ -458,9 +462,25 @@ export class UserData {
           }, error => {
             console.log("Oooops!" + error);
             console.log("getComments failed");
-
+            this.handleError(error);
             throw  error;
           });
+  }
+
+
+  findCity(url) : Promise<any>{
+    console.log("findCity",url);
+    return this.httpTools.sendGet(url, {})
+      .toPromise()
+      .then(resData => {
+        console.log("findCity res data ?", resData);
+        let data = resData;
+
+        return data;
+      }, error => {
+        console.log("findCity failed",error);;
+        throw  error;
+      });
   }
 
 
@@ -482,6 +502,7 @@ export class UserData {
 
         this.tools.presentToast(" 更新失败！");
         console.log("user:viewCourse failed", error);
+        this.handleError(error);
         throw (error);
         // this.presentErrorAlert("注册失败！","请检查网络")
       });
@@ -505,6 +526,7 @@ export class UserData {
 
         this.tools.presentToast(" 更新失败！");
         console.log("user:thumbUpCourse failed", error);
+        this.handleError(error);
         throw (error);
         // this.presentErrorAlert("注册失败！","请检查网络")
       });
@@ -528,9 +550,34 @@ export class UserData {
 
             this.tools.presentToast(" 更新失败！");
             console.log("user:thumbUp failed", error);
+            this.handleError(error);
             throw (error);
             // this.presentErrorAlert("注册失败！","请检查网络")
           });
+  }
+
+  retriveStudentHomework(lesson_id,user_id):Promise<any>{
+    let headers = new Headers();
+    headers.append('Authorization', this.auth.token);
+
+    console.log("retriveStudentHomework", this.BASE_URL + "getHomework" + "?lesson_id=" + lesson_id + "&user_id=" + user_id , {headers: headers});
+    return this.httpTools.sendGet(this.BASE_URL + "getHomework" + "?lesson_id=" + lesson_id + "&user_id=" + user_id , {headers: headers})
+      .toPromise()
+      .then(resData => {
+        console.log("retriveStudentHomework data ? ", resData);
+
+        return resData.data;
+      }, error => {
+        console.log("retriveStudentHomework failed", error);
+        this.handleError(error);
+        throw  error;
+      });
+  }
+
+  findTestResult(lesson_id):Promise<any>{
+    return this.dbHelper.getTestResult(lesson_id).then( data => {
+      return data;
+    })
   }
 
   retriveHomework(lesson_id): Promise<any>{
@@ -544,10 +591,12 @@ export class UserData {
             console.log("retriveHomework data ? ", resData);
             let data = resData;
             let arrHomeworkCollection = data;
+            this.tools.downloadAllhomeworks(arrHomeworkCollection)
 
-            return this.tools.downloadAllhomeworks(arrHomeworkCollection);
+            return data.data;
           }, error => {
             console.log("retriveHomework failed", error);
+            this.handleError(error);
             throw  error;
           });
   }
@@ -559,15 +608,15 @@ export class UserData {
     // let   fileTransfer :TransferObject  = transfer0.create();
     return  this.tools.uploadMultiFiles(audioFiles,this.BASE_URL,user_id,lesson_id).then( (data) => {
       if(data != null){
-        this.updateRemoteVacabularyTable(data.phone,data.arrayFileName,data.lesson_id);
+        this.updateRemoteVacabularyTable(data.user_id,data.arrayFileName,data.lesson_id);
       }
 
     })
   }
 
-  updateRemoteVacabularyTable(phone,arrayFileName,lesson_id) {
+  updateRemoteVacabularyTable(user_id,arrayFileName,lesson_id) {
 
-        let myLesson = {phone: phone, vacabulary_pronunciation: arrayFileName, lesson_id: lesson_id}
+        let myLesson = {user_id: user_id, vacabulary_pronunciation: arrayFileName, lesson_id: lesson_id}
         var reqData = JSON.stringify(myLesson);
         let headers = new Headers();
         headers.append('Authorization', this.auth.token);
@@ -582,6 +631,7 @@ export class UserData {
           }, error => {
             this.tools.presentToast(" 更新失败！");
             console.log("user:update failed", error);
+            this.handleError(error);
             throw (error);
             // this.presentErrorAlert("注册失败！","请检查网络")
           });
@@ -605,6 +655,7 @@ export class UserData {
       }, error => {
         console.log("user:updateUserAvatar failed",error);
         this.tools.presentToast(" 更新失败！");
+        this.handleError(error);
         throw (error);
       });
 
@@ -689,7 +740,7 @@ export class UserData {
         return resData.data;
       }, error => {
         console.log("Oooops!" + error);
-
+        this.handleError(error);
         throw  error;
       });
   }
@@ -707,6 +758,7 @@ export class UserData {
       }, error => {
         console.log("Oooops!" + error);
         // console.log("retriveLessonList failed");
+        this.handleError(error);
         throw  error;
       });
   }
@@ -732,6 +784,8 @@ export class UserData {
       }, error => {
         console.log("Oooops!" + error);
         // console.log("retriveLessonList failed");
+           this.handleError(error);
+
         throw  error;
       });
   }
@@ -797,6 +851,11 @@ export class UserData {
       return vocabularys;
     })
 
+  }
+
+  loginExpaired(){
+    this.events.publish('login:expaired');
+    console.log("login expaired");
   }
 
   findCoolPlayVocabulary(lesson_id) : Promise<any>{
@@ -883,16 +942,18 @@ export class UserData {
       .toPromise()
       .then(resData => {
         console.log("translate audio",resData)
-      }).catch( err => {
-      console.error("translate audio",err)
+      }).catch( error => {
+      this.handleError(error);
+      console.error("translate audio",error)
     })
 
     this.httpTools.sendGet(pronuciationUrl,{headers:headers})
       .toPromise()
       .then(resData => {
         console.log("translate pronunciation",resData)
-      }).catch( err => {
-      console.error("translate pronunciation",err)
+      }).catch( error => {
+      this.handleError(error);
+      console.error("translate pronunciation",error)
     })
   }
 
@@ -904,5 +965,12 @@ export class UserData {
     return newFileName;//this.vacabularys[this.currentIndex].word;
   }
 
+
+  private handleError(error: any) {
+    console.error("handle error",error);
+    if(error.status == 401){
+      this.loginExpaired();
+    }
+  }
 
 }

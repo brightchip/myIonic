@@ -25,6 +25,16 @@ hr.style-four {
   }
 }
 
+ion-segment{
+  color: #30d05f;
+  background-color: #0a86d4;
+  text-color:   #30d05f;
+  ion-segment-button  {
+    color: #30d05f;
+    text-color:   #30d05f;
+  }
+}
+
 
 .platform-android {
   ion-tabs.withNavbar {

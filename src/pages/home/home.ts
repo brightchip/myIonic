@@ -7,6 +7,9 @@ import {UserData} from "../../providers/user-data";
 
 import {Tools} from "../../providers/tools";
 import {MapPage} from "../map/map";
+import {BookControl} from "../../providers/book-control";
+import {CoursePage} from "../course/course";
+import {SchoolListPage} from "../schools/schools";
 
 
 @Component({
@@ -35,6 +38,7 @@ export class HomePage {
   public navCtrl: NavController,
   public events: Events,
   public tools:Tools,
+  public bookControl:BookControl,
   public userData: UserData)
   {
     // this.content.addCssClass("scroll");,private app: App
@@ -46,6 +50,7 @@ export class HomePage {
   ionViewDidEnter() {
     // the root left menu should be disabled on the tutorial page
     this.init();
+
     if(typeof this.slides == "undefined"){
       console.log("home","undefined slides");
       return;
@@ -55,10 +60,11 @@ export class HomePage {
         console.log("home","startAutoplay slides");
         // this.slides.slideNext(1000);
         this.slides.slideTo(1, 500);
+        console.log("init home recommend courses")
+
         // this.slides.update();
 
       }, 3);
-
     }
     catch(err){
       console.error("home",err);
@@ -73,6 +79,11 @@ export class HomePage {
 
   slideAuto(){
     // console.log("HomePage::slideAuto" );
+  }
+
+  gotoSpecialCourse(_specialEnglishBooks){
+    console.log("gotoOnlineCourse");
+    this.navCtrl.push(CoursePage,{course:_specialEnglishBooks });
   }
 
   slideChanged(slider: Slides){
@@ -122,7 +133,7 @@ export class HomePage {
       case 7:
         //schools recommending
         console.log("goto mappage")
-        this.navCtrl.push(MapPage);
+        this.navCtrl.push(SchoolListPage);
         break;
       default:
         break;
@@ -186,6 +197,10 @@ export class HomePage {
       this.updateUI(this.userData.userInfo.hasChecin);
     }).catch( err => {
       // this.checkin();
+    })
+
+    this.bookControl.loadCourses().then( (data) => {
+      this.MyRecommedCourses = this.bookControl.specialCourses;
     })
 
 

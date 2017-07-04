@@ -14,6 +14,10 @@ export class DBHelper {
   public testVar: string;
   hasInitialized = false;
   db:any;
+  externalDb :any;
+  CITY_DB_DIR:string = "assets/data/china-city-master"
+  CITY_DB_FILE:string = "city.db"
+
 
   // vacabularys = [];
   vacabularys:any[] =
@@ -30,6 +34,7 @@ export class DBHelper {
     platform.ready().then(() => {
       StatusBar.styleDefault();
       this.db = new SQLite();
+      this.externalDb = new SQLite();
       this.db.openDatabase({
         name: "data.db",
         location: "default"
@@ -81,7 +86,7 @@ export class DBHelper {
     return this.platform.ready().then(() => {
 
       if(!this.nativeServic.isMobile()){
-        return this.vacabularys;
+        return [];
       }
 
       let query = "SELECT * FROM tb_vocabulary WHERE lesson_id = ?";
@@ -139,7 +144,6 @@ export class DBHelper {
     console.log("getRandomRows")
     return this.platform.ready().then(() => {
       if(!this.nativeServic.isMobile()){
-
         return [];
       }
 
@@ -206,7 +210,7 @@ export class DBHelper {
       let query = "SELECT * FROM tb_vocabulary_result  WHERE lesson_id=$1 ORDER BY created_date DESC";
       return  this.db.executeSql( query, [lesson_id])
         .then(function(res) {
-          return res.rows.item(0);
+          return res.rows.item;
         }, function (err) {
           // console.error(err);
           throw err;
@@ -372,7 +376,7 @@ export class DBHelper {
           if(lessonInfoOld.length <0){
             query = "INSERT INTO tb_book(book_id,book_name,book_profile, book_author,book_remark,timespan,created_date,intro_video) values($1, $2, $3, $4,$5,$6,$7,$8)";
           }else {
-            query = "UPDATE tb_book SET book_id=$1,book_name=$2,book_profile=$3,book_author=$4,book_remark=$5,timespan=$6,modified_date=$7,intro_video=$8 where lesson_id=$1"
+            query = "UPDATE tb_book SET book_id=$1,book_name=$2,book_profile=$3,book_author=$4,book_remark=$5,timespan=$6,modified_date=$7,intro_video=$8 where book_id=$1"
           }
 
           this.db.executeSql( query, [bookInfo.book_id,bookInfo.book_name,bookInfo.book_profile,bookInfo.book_author,bookInfo.book_remark,bookInfo.timespan,bookInfo.modified_date,bookInfo.intro_video])
@@ -531,4 +535,101 @@ export class DBHelper {
       // throw err;
     })
   }
+
+  getAllProvinces() :Promise<any>{
+   return this.platform.ready().then(() => {
+      let cities = []
+     return   this.externalDb .openDatabase({
+       name: this.CITY_DB_FILE,
+       location: this.CITY_DB_DIR
+      }).then(() => {
+        let query = "SELECT * FROM province";
+        return this.externalDb.executeSql(query, [])
+          .then(function (res) {
+            if (res.rows.length > 0) {
+              cities =   res.rows.item;
+              console.log("SELECTED -> " + cities);
+            } else {
+              console.log("No results found");
+            }
+
+            return cities;
+          }, function (err) {
+            // console.error(err);
+            throw err;
+          });
+      }, (error) => {
+        console.error("Unable to open database", error);
+        throw error;
+      });
+    }).catch( err => {
+      console.error("create table",err);
+      throw err;
+    })
+  }
+
+  getAllCities() :Promise<any>{
+    return this.platform.ready().then(() => {
+      let cities = []
+      return   this.externalDb .openDatabase({
+        name: this.CITY_DB_FILE,
+        location: this.CITY_DB_DIR
+      }).then(() => {
+        let query = "SELECT * FROM city";
+        return this.externalDb.executeSql(query, [])
+          .then(function (res) {
+            if (res.rows.length > 0) {
+              cities =   res.rows.item;
+              console.log("SELECTED -> " + cities);
+            } else {
+              console.log("No results found");
+            }
+
+            return cities;
+          }, function (err) {
+            // console.error(err);
+            throw err;
+          });
+      }, (error) => {
+        console.error("Unable to open database", error);
+        throw error;
+      });
+    }).catch( err => {
+      console.error("create table",err);
+      throw err;
+    })
+  }
+
+  getAllSubCities() :Promise<any>{
+    return this.platform.ready().then(() => {
+      let cities = []
+      return   this.externalDb .openDatabase({
+        name: this.CITY_DB_FILE,
+        location: this.CITY_DB_DIR
+      }).then(() => {
+        let query = "SELECT * FROM country";
+        return this.externalDb.executeSql(query, [])
+          .then(function (res) {
+            if (res.rows.length > 0) {
+              cities =   res.rows.item;
+              console.log("SELECTED -> " + cities);
+            } else {
+              console.log("No results found");
+            }
+
+            return cities;
+          }, function (err) {
+            // console.error(err);
+            throw err;
+          });
+      }, (error) => {
+        console.error("Unable to open database", error);
+        throw error;
+      });
+    }).catch( err => {
+      console.error("create table",err);
+      throw err;
+    })
+  }
+
 }

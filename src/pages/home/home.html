@@ -72,11 +72,11 @@
       <!--<p>November 5, 1955</p>-->
     <!--</ion-item>-->
 
-    <img *ngIf="_recommedCourse" src="{{_recommedCourse.course_img}}" (click)="gotoCourse(_recommedCourse)">
+    <img *ngIf="_recommedCourse" src="{{_recommedCourse.book_profile}}" (click)="gotoSpecialCourse(_recommedCourse)">
 
     <ion-card-content no-padding>
-      <h2>{{_recommedCourse.title}}</h2>
-      <p>{{_recommedCourse.course_content}}</p>
+      <h2>{{_recommedCourse.book_name}}</h2>
+      <p>{{_recommedCourse.book_remark}}</p>
     </ion-card-content>
 
     <!--<ion-row>-->

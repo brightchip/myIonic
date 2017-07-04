@@ -57,6 +57,9 @@ import { VideoDubbingPage} from "../pages/video-dubbing/video-dubbing";
 import {ProgressBarComponent} from "../components/progress-bar/progress-bar";
 import {VocabularyRecordingPage} from "../pages/vocabulary-recording/vocabulary-recording";
 import {VocabularySelectingPage} from "../pages/vocabulary-selecting/vocabulary-selecting";
+import {BookControl} from "../providers/book-control";
+import {SchoolListPage} from "../pages/schools/schools";
+import {SchoolDetailPage} from "../pages/school-detail/school-detail";
 // import { BackgroundGeolocation } from '@ionic-native/background-geolocation';
 // import {AngularInview} from 'angular-inview';
 
@@ -91,7 +94,10 @@ import {VocabularySelectingPage} from "../pages/vocabulary-selecting/vocabulary-
     VideoDubbingPage,
     ProgressBarComponent,
     VocabularyRecordingPage,
-    VocabularySelectingPage
+    VocabularySelectingPage,
+    SchoolListPage,
+    SchoolDetailPage
+
   ],
   imports: [
     IonicModule.forRoot(ConferenceApp),
@@ -107,9 +113,7 @@ import {VocabularySelectingPage} from "../pages/vocabulary-selecting/vocabulary-
     HomePage,
     MapPage,
     PopoverPage,
-
     SignupPage,
-
     TabsPage,
     TutorialPage,
     SupportPage,
@@ -127,7 +131,10 @@ import {VocabularySelectingPage} from "../pages/vocabulary-selecting/vocabulary-
     ChatListPage,
     VideoDubbingPage,
     VocabularyRecordingPage,
-    VocabularySelectingPage
+    VocabularySelectingPage,
+    SchoolListPage,
+    SchoolDetailPage
+
   ],
   providers: [
     ConferenceData,
@@ -155,6 +162,8 @@ import {VocabularySelectingPage} from "../pages/vocabulary-selecting/vocabulary-
     ImagePicker,
     ScreenOrientation,
     Geolocation,
+    BookControl,
+
 
     // Lessons
     // AngularInview

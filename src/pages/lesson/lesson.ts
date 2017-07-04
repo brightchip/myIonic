@@ -67,6 +67,10 @@ export class LessonPage {
   private course_id: any;
   private currentCourse: any;
   private part_id = this.TEXTBOOK;
+  private submittedHomework: any = {};
+  private testResults: any = [];
+  dubVideos: any =[];
+  viewState = 0;
   // randomVocabulary:any;
 
   constructor(
@@ -74,7 +78,7 @@ export class LessonPage {
     public actionSheetCtrl: ActionSheetController,
     public navCtrl: NavController,
     public  navParams: NavParams,
-
+    public ngZong:NgZone,
     public tools: Tools,
 
     public confData: ConferenceData,
@@ -117,6 +121,7 @@ export class LessonPage {
 
   ionViewDidEnter(){
     console.log("lesson:ionViewDidEnter")
+    this.viewState = 0;
     this.updateLessonInfo();
     this.initCurrentPage();
 
@@ -219,8 +224,6 @@ export class LessonPage {
     })
   }
 
-
-
   updateCommentSession(tempComment,part_id){
       this.arrCurrentComments[part_id].unshift(tempComment);
       let tempComments = this.tools.deepClone(this.arrCurrentComments[part_id]);
@@ -240,7 +243,6 @@ export class LessonPage {
         }
     });
   }
-
 
   viewCourse(part_id){
     console.log("viewCourse", part_id);
@@ -333,7 +335,6 @@ export class LessonPage {
     console.log("pickEmoji",event.char);
   }
 
-
   segmentChanged(event){
     if(this.lesson_parts == "book"){
       this.part_id = this.TEXTBOOK;
@@ -346,10 +347,12 @@ export class LessonPage {
       switch(this.course_id){
         case 1:
           console.log("segmentChanged 1")
+          this.getHomeworks();
 
           break;
         case 2:
           console.log("segmentChanged 2")
+          this.getTestResult();
 
           break;
         case 3:
@@ -587,6 +590,32 @@ export class LessonPage {
     }
 
     return arrHeadComments;
+  }
+
+  getHomeworks(){
+    this.userData.retriveStudentHomework(this.lesson_id,this.userData.userInfo.user_id).then(audioArray => {
+      console.log("getHomeworks",audioArray);
+      if(typeof  audioArray != "undefined" && audioArray != null ) {
+        console.log("getHomeworks available");
+        this.ngZong.run( ()=>{
+          this.submittedHomework = audioArray;
+          this.viewState = 1;
+        })
+
+      }
+
+    })
+  }
+
+  getTestResult(){
+    this.userData.findTestResult(this.lesson_id).then(testResults => {
+      console.log("getTestResult",testResults);
+      if(typeof  testResults != "undefined" && testResults != null && testResults.length > 0) {
+        this.testResults = testResults;
+        this.viewState = 1;
+      }
+      // this.submitState = 1;
+    })
   }
 
   public timestampToDate(unix_timestamp){

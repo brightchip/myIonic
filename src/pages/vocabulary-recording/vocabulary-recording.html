@@ -19,17 +19,36 @@
       <!--</ion-col>-->
 
       <ion-col>
-        <ion-slides #slides (ionSlideDidChange)="slideChanged()" (ionSlideReachEnd)="readyForSubmit()" >
+        <ion-slides #slides (ionSlideDidChange)="slideChanged()"  >
           <ion-slide *ngFor="let _vacabulary of vacabularys">
-            <ion-card class="vocabulary-card" (click)="playSampleAudio()">
-              <ion-card-header>
-                {{_vacabulary.word}} <span>{{_vacabulary.pronunciation}}</span>
-              </ion-card-header>
 
-              <ion-card-content>
-                <p>{{_vacabulary.mean}}</p>
-              </ion-card-content>
-            </ion-card>
+            <div class="vocabulary-box" padding>
+
+              <div>
+                <div class="vocabulary-card" (click)="playSampleAudio()">
+                  <h4>
+                    {{_vacabulary.word}} <span>/{{_vacabulary.pronunciation}}/</span>
+                  </h4>
+
+                  <p>{{_vacabulary.explain}}</p>
+                </div>
+                <!--<div>-->
+                  <!--<button class="bt-recorder"  (click)="playSampleAudio()" disabled={{disablePlayButton}}>-->
+                    <!--<img width="60" height="60" class="input-img" [src]="playButtonIcon" />-->
+                    <!--&lt;!&ndash;<ion-icon name={{testButtonIcon}}></ion-icon>&ndash;&gt;-->
+                  <!--</button>-->
+                <!--</div>-->
+              </div>
+
+
+
+              <div  class="explain-img" >
+                <img width="160" height="160" src="{{_vacabulary.explain_img}}">
+                <!--{{_vacabulary.explain_img}}-->
+              </div>
+
+            </div>
+
           </ion-slide>
         </ion-slides>
       </ion-col>
@@ -40,9 +59,7 @@
       <!--</ion-col>-->
     </ion-row>
 
-    <div class="avatar" text-center>
-      <img width="120" height="120" src="{{userData.userInfo.avatar}}">
-    </div>
+
 
     <p class="record-text">{{proptText}}</p>
 
@@ -71,6 +88,9 @@
         </button>
       </div>
 
+      <!--<div class="toSubmit" *ngIf="recordFinish">-->
+        <!--<button></button>-->
+      <!--</div>-->
     </div>
   </div>
 </ion-content>

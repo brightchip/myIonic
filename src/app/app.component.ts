@@ -18,6 +18,7 @@ import {Auth} from "../providers/auth";
 import {ChatData} from "../providers/chat-data";
 import {DBHelper} from "../providers/dbhelper";
 import {enableProdMode} from '@angular/core';
+import {BookControl} from "../providers/book-control";
 
 
 
@@ -80,8 +81,7 @@ export class ConferenceApp {
     public storage: Storage,
     public toastCtrl:ToastController,
     public dbHelper:DBHelper,
-
-
+    // public bookControl:BookControl,
       // page: PageInterface,
   public splashScreen: SplashScreen
   ) {
@@ -92,9 +92,6 @@ export class ConferenceApp {
     // } else {
     //   // something else
     // }
-
-
-
 
     // Check if the user has already seen the tutorial
     this.storage.get('hasSeenTutorial')
@@ -113,6 +110,7 @@ export class ConferenceApp {
                   // this.chatData.login(this.userData.userInfo.user_id);
                   console.log("token still working")
                   this.websocket.connect();
+                  // this.bookControl.loadCourses();
 
                 }).catch( err =>{
                   console.log("token expired")
@@ -188,6 +186,7 @@ export class ConferenceApp {
       this.rootPage  = (TabsPage);
 
       this.websocket.connect();
+      // this.bookControl.loadCourses();
 
       console.log("app component","login")
     });
@@ -198,6 +197,7 @@ export class ConferenceApp {
       this.nav.setRoot(TabsPage);
 
       this.websocket.connect();
+      // this.bookControl.loadCourses();
 
       console.log("app component","signup")
     });
@@ -207,6 +207,15 @@ export class ConferenceApp {
       this.rootPage  = (LoginPage);
       this.nav.setRoot(LoginPage);
 
+      // this.tools.cleanCache();
+
+      this.websocket.closeConnection();
+    });
+
+    this.events.subscribe('login:expaired',() => {
+      this.rootPage  = (LoginPage);
+      this.nav.setRoot(LoginPage);
+      this.tools.presentToast("登录已过时")
       // this.tools.cleanCache();
 
       this.websocket.closeConnection();

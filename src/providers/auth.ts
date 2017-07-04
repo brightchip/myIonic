@@ -23,7 +23,6 @@ export class Auth{
   }
 
   checkAuthentication():Promise<any>{
-
     //Load token if exists
     return this.storage.get('token').then( (value) => {
       console.log("checkAuthentication local token value",value)

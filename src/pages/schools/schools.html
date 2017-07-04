@@ -1,0 +1,57 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>附近院校</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<!--//news guide-->
+<ion-content  class="schools" padding>
+
+  <ion-row class="city-selector">
+    <ion-item>
+      <ion-label>省份</ion-label>
+    <ion-select [(ngModel)]="province" (ionChange)="onProvinceChange()">
+      <ion-option *ngFor="let _province of provinceList" [value]="_province">{{_province.name}}</ion-option>
+    </ion-select>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>地级市</ion-label>
+      <ion-select [(ngModel)]="city" (ionChange)="onCityChange()">
+        <ion-option *ngFor="let _city of cityList" [value]="_city">{{_city.name}}</ion-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>县级市</ion-label>
+      <ion-select [(ngModel)]="subcity" (ionChange)="onSubCityChange()">
+        <ion-option *ngFor="let _subcity of subCityList" [value]="_subcity">{{_subcity.name}}</ion-option>
+      </ion-select>
+    </ion-item>
+
+  </ion-row>
+
+
+  <div class="school-box" *ngFor="let _school of arrSchool"  (click)="viewSchool(_school)">
+    <div>
+      <img src="{{_school.profile}}" width="150" height="150" class="item-profile"/>
+    </div>
+    <div class="item-info">
+      <div class="title-box">
+        <h4 class="item-title">{{_school.school_name}}</h4>
+      </div>
+
+      <p class="content">{{_school.school_content}}</p>
+      <!--<p class="content">{{_school.activities}}</p>-->
+    </div>
+    <div>
+      <p class="item-distance">{{_school.distance}}</p>
+    </div>
+
+  </div>
+
+
+</ion-content>

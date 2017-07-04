@@ -26,35 +26,37 @@ vocabulary-recording{
 
     }
 
-    ion-col .vocabulary-card {
-      margin-left: auto;
-      margin-right: auto;
-      width: 100%;
-      height: auto;
-      background-color: color($colors,primary);
-
-      ion-card-header {
-        //width:50%;
-        text-align: center;
-        span {
-          //color: #9eeeb6;
-        }
-      }
-
-      ion-card-content {
-        text-align: center;
-      }
-
+    .vocabulary-box{
+      display: flex;
+      flex-direction: column;
+      //background-color: #2ec95c;
     }
+
+
+     .vocabulary-card {
+      width: 100%;
+      height: 30%;
+       float: left;
+      display: flex;
+      flex-direction: column;
+      h4,p{
+        width: 100%;
+        text-align: center;
+      }
+      background-color: color($colors,primary);
+    }
+
+    .explain-img{
+      text-align: center;
+      margin-left: 30%;
+      margin-top:3%;
+      width: 160px;
+      height:160px;
+      //background-color: #0a86d4;
+    }
+
   }
 
-  .avatar {
-    //width:100%;
-    margin-top: 10%;
-    margin-bottom: 10%;
-    //height: 20vh;
-    //background-color: #F4D03F;
-  }
 
   .voice-recorder {
     display: flex;

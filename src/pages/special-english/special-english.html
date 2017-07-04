@@ -3,7 +3,7 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>Special English</ion-title>
+    <ion-title>特色英语</ion-title>
   </ion-navbar>
 </ion-header>
 
@@ -18,8 +18,7 @@
     <!--</ion-item>-->
       <ion-item class="book" detail-push  (click)="gotoSpecialCourse(_specialEnglishBooks)">
         <ion-thumbnail item-left>
-          <img *ngIf="_specialEnglishBooks"
-               src="{{_specialEnglishBooks.book_profile}}" >
+          <img *ngIf="_specialEnglishBooks" src="{{_specialEnglishBooks.book_profile}}" >
         </ion-thumbnail>
         <h2 >    {{_specialEnglishBooks.book_name}}</h2>
         <p>课时:{{_specialEnglishBooks.timespan}}</p>

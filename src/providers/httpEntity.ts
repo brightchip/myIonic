@@ -23,7 +23,11 @@ export class httpEntity{
     return  this.http.post(url,data,  headers) .timeout(5000);
   }
 
-
+  getLocalData(location){
+    this.http.get(location).subscribe(data => {
+      console.log(data);
+    });
+  }
 
 
 

@@ -310,12 +310,26 @@
 
         <div  *ngSwitchCase="1">
           <div class="student"*ngIf="userData.userInfo.identity == MyUserType.student">
-            <p class="info">空旷旷,马上点击下面按钮开始作业吧</p>
-            <button class="bt-start-dub" (click)="startVocabularyRecording()">
-              <img width="60" height="60" class="input-img"  src="assets/img/start.png" />
-            </button>
-            <p class="bt-text">录音练习</p>
+
+            <div [ngSwitch]="viewState">
+
+              <div class="first-enter"  *ngSwitchCase="0">
+                <p class="info">空旷旷,马上点击下面按钮开始作业吧</p>
+                <button class="bt-start-dub" (click)="startVocabularyRecording()">
+                  <img width="60" height="60" class="input-img"  src="assets/img/start.png" />
+                </button>
+                <p class="bt-text">录音练习</p>
+              </div>
+
+              <div class="review" *ngSwitchCase="1">
+                <p class="info">上次作业于{{submittedHomework.created_date}}成功提交</p>
+                <p class="bt-text">来自老师的留言:{{submittedHomework.commentary}} </p>
+              </div>
+
+            </div>
+
           </div>
+
           <div class="student"*ngIf="userData.userInfo.identity == MyUserType.teacher">
             <p class="info">还没有学生提交作业</p>
             <!--<button class="bt-start-dub" (click)="startVocabularyRecording()">-->
@@ -326,19 +340,53 @@
         </div>
 
         <div *ngSwitchCase="2">
-          <p class="info">空旷旷,马上点击下面按钮开始作业吧</p>
-          <button class="bt-start-dub" (click)="startImgSelectiong()">
-            <img width="60" height="60" class="input-img"  src="assets/img/start.png" />
-          </button>
-          <p class="bt-text">听词选图</p>
+
+          <div [ngSwitch]="viewState">
+
+            <div class="first-enter"  *ngSwitchCase="0">
+              <p class="info">空旷旷,马上点击下面按钮开始作业吧</p>
+              <button class="bt-start-dub" (click)="startImgSelectiong()">
+                <img width="60" height="60" class="input-img"  src="assets/img/start.png" />
+              </button>
+              <p class="bt-text">听词选图</p>
+            </div>
+
+            <div class="review" *ngSwitchCase="1">
+              <p class="top-text">共测试{{testResults.length}}次</p>
+              <div *ngFor="let _testResult of testResults">
+                <p class="user-name">{{_testResult.wrong_times}}<span >{{_testResult.comment_date}}</span></p>
+              </div>
+            </div>
+
+          </div>
+
         </div>
 
         <div *ngSwitchCase="3">
-          <p class="info">空旷旷,马上点击下面按钮开始作业吧</p>
-          <button class="bt-start-dub" (click)="startDubbing()">
-            <img width="60" height="60" class="input-img"  src="assets/img/start.png" />
-          </button>
-          <p class="bt-text">配音</p>
+
+          <div [ngSwitch]="viewState">
+
+            <div class="first-enter"  *ngSwitchCase="0">
+              <p class="info">空旷旷,马上点击下面按钮开始作业吧</p>
+              <button class="bt-start-dub" (click)="startDubbing()">
+                <img width="60" height="60" class="input-img"  src="assets/img/start.png" />
+              </button>
+              <p class="bt-text">配音</p>
+            </div>
+
+            <div class="review" *ngSwitchCase="1">
+              <div *ngFor="let _dubVideo of dubVideos">
+                <h4 class="dub-title">{{_dubVideo.dub_title}}</h4>
+                <video  controls="controls" preload="metadata"  class="videoPlayer" >
+                  <source src="{{_dubVideo.video}}" type="video/mp4"/>
+                </video>
+                <p class="video-info">{{_dubVideo.dub_info}}</p>
+
+              </div>
+            </div>
+
+          </div>
+
         </div>
 
       </div>

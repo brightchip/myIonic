@@ -34,7 +34,7 @@ export class VocabularyRecordingPage {
   TEXTHOLD = "按住下面按钮录音"
   TEXTCANCEL = "释放手指取消录音"
   TEXTSLIDE = "录音中..."
-  TEXT_SUBMIT = "提交"
+  TEXT_SUBMIT = "提交作业"
   TEXT_NEXT = "下一个"
   RESUME_RECORD_ICON: string = "assets/icon/rec.png";
   proptText = this.TEXTHOLD;
@@ -94,7 +94,7 @@ export class VocabularyRecordingPage {
   }
 
   ionViewDidEnter(){
-    this.nativeSevice.showLoading("正在加载...")
+    this.nativeSevice.showLoading("正在加载...");
 
     if(this.btRecorder == null || typeof this.btRecorder == "undefined") {
       this.addAudioInput();
@@ -103,17 +103,26 @@ export class VocabularyRecordingPage {
     }
     this.disableNextButton = true;
     this.slides.lockSwipes(true);
-    this.initVocabularyFiles().then( _ => {
+    if(this.vacabularys == null || typeof this.vacabularys == "undefined" || this.vacabularys.length < 1){
+      this.initVocabularyFiles().then( _ => {
+        this.nativeSevice.hideLoading();
+      })
+    }else {
       this.nativeSevice.hideLoading();
-    })
+    }
+
 
   }
+
 
   slideChanged() {
     if(typeof this.slides != "undefined"){
       this.currentIndex = this.slides.getActiveIndex();
       console.log("vacabularyUpdated", this.currentIndex);
       this.playSampleAudio();
+    }
+    if(this.currentIndex >= this.vacabularys.length- 1 ){
+      this.readyForSubmit();
     }
 
   }
@@ -182,7 +191,7 @@ export class VocabularyRecordingPage {
 
   addAudioInput(){
     var self = this;
-    $(document).ready(function() {
+    // $(document).ready(function() {
       this.btRecorder = document.getElementById("bt-recorder");
 
       if (this.btRecorder != null && typeof this.btRecorder != "undefined") {
@@ -214,7 +223,7 @@ export class VocabularyRecordingPage {
         // this.btRecorder.addEventListener("touchmove", touchMove, false);
         console.log("lesson page", "addAudioInput", this.btRecorder,"add events");
       }
-    });
+    // });
   }
 
   startPauseRecord(record) {
@@ -280,9 +289,9 @@ export class VocabularyRecordingPage {
     try {
       this.disablePlayButton = true;
       this.disableArrowButton = true;
-      this.vacabularys[this.currentIndex].audio = rootDir + audioDir + "/" + fileName;
-      console.log("lesson:startRecord",this.vacabularys[this.currentIndex].audio);
-      this.recorder = this.media.create(this.vacabularys[this.currentIndex].audio);
+      this.vacabularys[this.currentIndex].userAudio = rootDir + audioDir + "/" + fileName;
+      console.log("lesson:startRecord",this.vacabularys[this.currentIndex].userAudio);
+      this.recorder = this.media.create(this.vacabularys[this.currentIndex].userAudio);
       this.recorder.startRecord();
       this.isRecording = true;
       this.recordButtonIcon = this.RESUME_RECORD_ICON;
@@ -307,13 +316,16 @@ export class VocabularyRecordingPage {
       // this.isPlaying = null;
       // this.disableRecordButton = null;
       // } else {
+      if(typeof this.vacabularys[this.currentIndex].userAudio != "undefined"){
+        return;
+      }
+
       this.playButtonText = "Playing...";
       this.playButtonIcon = this.PAUSE_ICON;
       this.disableRecordButton = true;
-      console.log("lesson:testAudio", this.vacabularys[this.currentIndex].audio);
+      console.log("lesson:testAudio", this.vacabularys[this.currentIndex].userAudio);
 
-
-      this.testPlayer = this.media.create(this.vacabularys[this.currentIndex].audio, this.onStatusUpdate, this.onSuccess, this.onError);
+      this.testPlayer = this.media.create(this.vacabularys[this.currentIndex].userAudio, this.onStatusUpdate, this.onSuccess, this.onError);
       if (this.testPlayer) {
         console.log("lesson:testAudio", "playing");
         this.testPlayer.play();
@@ -347,8 +359,8 @@ export class VocabularyRecordingPage {
     });
   }
 
-  playAll(audios){
-    this.audioPaths = audios;
+  playAll(audioArray){
+    this.audioPaths = audioArray;
     console.log("lesson:playAll",this.audioPaths);
     if(!this.isPlaying){
       console.log("lesson","start playing..." + this.audioPaths[this.playIndex])
