@@ -8,48 +8,61 @@
 </ion-header>
 
 <!--//news guide-->
-<ion-content  class="schools">
+<ion-content no-padding class="schools">
 
   <div class="top-fixed">
-    <img src="{{school.school_profile}}" />
+    <div class="school-head" >
+      <ion-segment [(ngModel)]="school_parts" (ionChange)="segmentChanged($event)">
+        <ion-segment-button value="preview">
+          学校概览
+        </ion-segment-button>
+        <ion-segment-button value="course">
+          王牌课程
+        </ion-segment-button>
+        <ion-segment-button value="activity">
+          最近活动
+        </ion-segment-button>
+      </ion-segment>
+    </div>
   </div>
 
-  <div class="school-head" >
-    <ion-segment [(ngModel)]="school_parts" (ionChange)="segmentChanged($event)">
-      <ion-segment-button value="preview">
-        学校概览
-      </ion-segment-button>
-      <ion-segment-button value="course">
-        王牌课程
-      </ion-segment-button>
-      <ion-segment-button value="activity">
-        最近活动
-      </ion-segment-button>
-    </ion-segment>
-  </div>
+  <ion-list class="bottom-scroll">
 
-  <ion-col no-padding class="lesson-content" [ngSwitch]="school_parts">
-    <ion-list  *ngSwitchCase="'preview'">
-      <div class="item-info">
-        <div class="title-box">
+    <img class="school-profile" src="{{school.school_profile}}" />
+    <ion-col no-padding class="lesson-content" [ngSwitch]="school_parts">
+      <ion-list  *ngSwitchCase="'preview'">
+        <div class="item-info">
           <h4 class="item-title">{{school.school_name}}</h4>
+          <p class="content">{{school.school_content}}</p>
+          <!--<p class="content">{{_school.activities}}</p>-->
+        </div>
+      </ion-list>
+      <ion-list  *ngSwitchCase="'course'">
+
+        <div class="item-box" *ngFor="let _course of school.courses"  (click)="viewCourse(_course)">
+          <div>
+            <img src="{{_course.course_profile}}"  class="item-profile"/>
+          </div>
+          <div class="item-info">
+            <div class="title-box">
+              <h4 class="item-title">{{_course.coourse_name}}</h4>
+            </div>
+
+            <p class="content">{{_course.content}}</p>
+            <!--<p class="content">{{_school.activities}}</p>-->
+          </div>
+
         </div>
 
-        <p class="content">{{school.content}}</p>
-        <!--<p class="content">{{_school.activities}}</p>-->
-      </div>
-    </ion-list>
-    <ion-list  *ngSwitchCase="'course'">
-      <ion-item *ngFor="let _course of school.courses" >
-        {{_course.lesson_name}}
-      </ion-item>
-    </ion-list>
-    <ion-list  *ngSwitchCase="'activity'">
-      <ion-item *ngFor="let _activity of school.activities" >
-        {{_activity.activity_name}}
-      </ion-item>
-    </ion-list>
-  </ion-col>
+      </ion-list>
+      <ion-list  *ngSwitchCase="'activity'">
+        <ion-item *ngFor="let _activity of school.activities" >
+          {{_activity.activity_name}}
+        </ion-item>
+      </ion-list>
+    </ion-col>
+
+  </ion-list>
 
 
 </ion-content>

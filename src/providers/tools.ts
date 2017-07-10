@@ -7,7 +7,8 @@ import { File  } from '@ionic-native/file';
 import {ScreenOrientation} from "@ionic-native/screen-orientation";
 import {DBHelper} from "./dbhelper";
 import {NativeService} from "./mapUtil";
-
+import {Camera, CameraOptions} from "@ionic-native/camera";
+import {FilePath} from "@ionic-native/file-path";
 /**
  * Created by Winjoy on 5/19/2017.
  */
@@ -39,7 +40,9 @@ export class Tools{
     private transfer: Transfer,
     public  loadingCtrl:LoadingController,
     private screenOrientation: ScreenOrientation,
-    public nativeService:NativeService
+    public nativeService:NativeService,
+    public camera: Camera,
+    private filePath: FilePath
 
   ){
     console.log("tool constructor.......");
@@ -491,6 +494,106 @@ export class Tools{
   isToday(dateStr){
     return (new Date().toDateString()==(new Date(dateStr.replace(/-/g,'/')).toDateString()));
   }
+
+
+
+
+  public takePicture(sourceType,user_id) :Promise<any>{
+
+    if(sourceType === this.camera.PictureSourceType.PHOTOLIBRARY){
+      console.log("take pic from PHOTOLIBRARY");
+      return this.nativeService.getPictureByPhotoLibrary().then(imagePath => {
+        console.log("take pic imagePath",imagePath);
+        return  this.filePath.resolveNativePath(imagePath)
+          .then(filePath => {
+            console.log("take pic resolveNativePath",filePath);
+            if(this.nativeService.isAndroid()){
+              let correctPath = filePath.substr(0, filePath.lastIndexOf('/') + 1);
+              let currentName = imagePath.substring(imagePath.lastIndexOf('/') + 1, imagePath.lastIndexOf('?'));
+              return  this.copyFileToLocalDir(correctPath, currentName, this.createFileName(user_id));
+            }else {
+              console.log("select Picture on ios")
+            }
+
+          });
+      })
+    }else {
+      return  this.nativeService.getPictureByCamera().then(imagePath => {
+
+        if(this.nativeService.isAndroid()) {
+          var currentName = imagePath.substr(imagePath.lastIndexOf('/') + 1);
+          var correctPath = imagePath.substr(0, imagePath.lastIndexOf('/') + 1);
+          return  this.copyFileToLocalDir(correctPath, currentName, currentName);
+        }else {
+          console.log("takePicture on ios")
+        }
+
+      })
+
+    }
+
+  }
+
+
+
+// Copy the image to a local folder
+  private copyFileToLocalDir(namePath, currentName, newFileName):Promise<any>{
+    console.log("copyFileToLocalDir","namePath " + namePath + " currentName " + currentName + "　newFileName "+　newFileName);
+
+   return this.file.checkDir(this.ROOT_DIR, this.IMAGE_DIR_NAME).then((exist) =>{
+      console.log('Directory exists')
+     return  this.copyImage(namePath,currentName,newFileName);
+
+    }).catch((err) => {
+      console.log("directory not exist")
+     return this.file.createDir(this.ROOT_DIR, this.IMAGE_DIR_NAME, true).then(() => {
+       return  this.copyImage(namePath,currentName,newFileName);
+      })
+        .catch((err) => { console.log("error during creating directory", err)  });
+    });
+
+  }
+
+  copyImage(namePath,currentName,newFileName): Promise<any>{
+    console.log('copyImage', namePath,currentName,newFileName);
+
+    return this.file.copyFile(namePath, currentName, this.IMAGE_DIR, newFileName).then(success => {
+      //update image view
+      // var temp = this.userData.userInfo.avatar;
+      let newImgPath = this.pathForImage(newFileName);
+
+      console.log('the image src path:', newImgPath,newFileName);
+      return newFileName;
+
+      // this.presentToast('the image src path:'+ this.avatar)
+    }, error => {
+      this.presentToast('Error while storing file.');
+      throw error;
+    });
+  }
+
+
+  // Create a new name for the image
+  private createFileName(user_id) {
+    // var fileName:string = "default_avatar.jpg"
+    // if(typeof this.userInfo.phone != "undefined"){
+    //   fileName =   this.userInfo.phone + ".jpg";
+    // }
+    var d = new Date(),
+      n = d.getTime(),
+      prefeix = user_id + "_",
+      newFileName = prefeix +  n + ".jpg";
+    return newFileName;
+  }
+// Always get the accurate path to your apps folder
+  public pathForImage(img) {
+    if (img === null) {
+      return '';
+    } else {
+      return this.IMAGE_DIR+ "/" + img;
+    }
+  }
+
 
 
 }

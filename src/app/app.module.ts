@@ -60,6 +60,8 @@ import {VocabularySelectingPage} from "../pages/vocabulary-selecting/vocabulary-
 import {BookControl} from "../providers/book-control";
 import {SchoolListPage} from "../pages/schools/schools";
 import {SchoolDetailPage} from "../pages/school-detail/school-detail";
+import {SchoolSettingsPage} from "../pages/school-settings/school-setting";
+
 // import { BackgroundGeolocation } from '@ionic-native/background-geolocation';
 // import {AngularInview} from 'angular-inview';
 
@@ -96,7 +98,8 @@ import {SchoolDetailPage} from "../pages/school-detail/school-detail";
     VocabularyRecordingPage,
     VocabularySelectingPage,
     SchoolListPage,
-    SchoolDetailPage
+    SchoolDetailPage,
+    SchoolSettingsPage
 
   ],
   imports: [
@@ -133,7 +136,8 @@ import {SchoolDetailPage} from "../pages/school-detail/school-detail";
     VocabularyRecordingPage,
     VocabularySelectingPage,
     SchoolListPage,
-    SchoolDetailPage
+    SchoolDetailPage,
+    SchoolSettingsPage
 
   ],
   providers: [

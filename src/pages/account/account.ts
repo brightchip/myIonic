@@ -24,7 +24,8 @@ export class AccountPage {
   // userInfo: {user_name?: string, checkinCount?: string,avatar?:string,phone?:string} = {};
 
 
-  constructor(public alertCtrl: AlertController, public nav: NavController, public platform:Platform,  public events: Events,public actionSheetCtrl: ActionSheetController, public camera: Camera,public toastCtrl :ToastController, public file: File,private filePath: FilePath,public userData: UserData,public tools:Tools) {
+  constructor(public alertCtrl: AlertController, public nav: NavController, public platform:Platform,  public events: Events,public actionSheetCtrl: ActionSheetController,
+              public camera: Camera,public toastCtrl :ToastController, public file: File,private filePath: FilePath,public userData: UserData,public tools:Tools) {
     // this.listenToErrorEvents();
 
     //initialize platform root directory
@@ -60,15 +61,15 @@ export class AccountPage {
   // clicking Cancel will close the alert and do nothing
   changeUsername() {
     let alert = this.alertCtrl.create({
-      title: 'Change user_name',
+      title: '修改用户名',
       buttons: [
-        'Cancel'
+        '取消'
       ]
     });
     alert.addInput({
       name: 'user_name',
       value: this.userData.userInfo.user_name,
-      placeholder: 'user_name'
+      placeholder: '用户名'
     });
     alert.addButton({
       text: 'Ok',

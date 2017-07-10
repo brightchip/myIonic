@@ -18,6 +18,8 @@ export class SchoolDetailPage {
   school:any = {};
   schoolCourseList:any = [];
 
+  school_parts: string = "preview";
+
 
   constructor(
     public actionSheetCtrl: ActionSheetController,
@@ -32,6 +34,10 @@ export class SchoolDetailPage {
 
 
   ionViewDidEnter(){
+
+  }
+
+  segmentChanged(){
 
   }
 

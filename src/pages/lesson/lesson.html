@@ -8,7 +8,7 @@
 </ion-header>
 
 <ion-content>
-  <div class="lesson-head" >
+  <div class="lesson-head top-fixed" >
     <ion-segment [(ngModel)]="lesson_parts" (ionChange)="segmentChanged($event)">
       <ion-segment-button value="book">
         {{lesson.lesson_name}}
@@ -22,7 +22,7 @@
     </ion-segment>
   </div>
 
-  <ion-col no-padding class="lesson-content" [ngSwitch]="lesson_parts">
+  <ion-col no-padding class="lesson-content bottom-scroll" [ngSwitch]="lesson_parts">
 
     <ion-list  *ngSwitchCase="'book'">
       <video  controls="controls" preload="metadata"  class="videoPlayer"(play)="viewCourse(TEXTBOOK)">
@@ -306,6 +306,7 @@
 
     <ion-list no-padding class="vocabulary" *ngSwitchCase="'vocabulary'" >
 
+      {{course_id}}
       <div [ngSwitch]="course_id">
 
         <div  *ngSwitchCase="1">

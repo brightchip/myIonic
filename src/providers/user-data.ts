@@ -233,20 +233,45 @@ export class UserData {
     this.events.publish('user:logout');
   }
 
-  retriveCourses(): void {
-    //    var reqData = JSON.stringify({test:"222"});
-    // var url = this.BASE_URL + "test" ;
-    // this.httpTools.sendPost(url,reqData).subscribe(
-    //   response => {
-    //     // courses = response.data.children;
-    //     console.log("retriveCourses:response" + response.name);
-    //   },
-    //   err => {
-    //     console.log("retriveCourses:Oops!" + err);
-    //   }
-    // );
-    //    this.download("2333.jpg")
+
+  retriveCourses(school_id):Promise<any> {
+    let headers = new Headers();
+    headers.append('Authorization', this.auth.token);
+
+    console.log("retriveCourses", this.BASE_URL + "retriveCourses" + "?school_id=" + school_id, {headers: headers});
+    return this.httpTools.sendGet(this.BASE_URL + "retriveCourses" + "?school_id=" + school_id, {headers: headers})
+      .toPromise()
+      .then(resData => {
+        console.log("retriveCourses res data ?", resData);
+        let data = resData.data;
+        return data;
+      }, error => {
+        console.error("retriveCourses Oooops!" + error);
+        this.handleError(error);
+        return {};
+      });
   }
+
+
+  retriveActivities(school_id): Promise<any> {
+
+    let headers = new Headers();
+    headers.append('Authorization', this.auth.token);
+
+    console.log("retriveActivities", this.BASE_URL + "retriveActivities" + "?school_id=" + school_id, {headers: headers});
+    return this.httpTools.sendGet(this.BASE_URL + "retriveActivities" + "?school_id=" + school_id, {headers: headers})
+      .toPromise()
+      .then(resData => {
+        console.log("retriveActivities res data ?", resData);
+        let data = resData.data;
+        return data;
+      }, error => {
+        console.error("retriveActivities Oooops!" + error);
+        this.handleError(error);
+        return {};
+      });
+  }
+
 
   postComment(tmp):Promise<any> {
     let headers = new Headers();
@@ -339,6 +364,38 @@ export class UserData {
     return  this.tools.uploadImage(imagePath,fileName);
   }
 
+  updateSchoolProfile(school_id,principal_id,imagePath:string,fileName:string,oldImg) :Promise<boolean> {
+
+   return  this.tools.uploadImage(imagePath,fileName).then( success => {
+     if(!success){
+       this.tools.presentToast(" 更新失败！");
+       return ;
+     }
+      let updateInfo = {school_id:school_id,principal_id:principal_id,school_profile:fileName,old_file:oldImg};
+      var reqData = JSON.stringify(updateInfo);
+      let headers = new Headers();
+      headers.append('Authorization', this.auth.token);
+      headers.append('Content-Type', 'application/json');
+
+      console.log("updateSchoolProfile", this.BASE_URL  + "updateSchoolProfile" , reqData, {headers: headers});
+      return this.httpTools.sendPost(this.BASE_URL + "updateSchoolProfile", reqData, {headers: headers})
+        .toPromise()
+        .then(resData => {
+          let  data =  resData.data;  //1
+          console.log("success updateSchoolProfile",data);
+
+          return (data);
+        }, error => {
+          console.log("user:updateSchoolProfile failed",error);
+          this.tools.presentToast(" 更新失败！");
+          this.handleError(error);
+          throw (error);
+        });
+    })
+  }
+
+
+
   forgetPassword(password) {
 
   }
@@ -406,6 +463,211 @@ export class UserData {
           });
   }
 
+  updateSchoolInfo(schoolinfo):Promise<any>{
+    var reqData = JSON.stringify(schoolinfo);
+    let headers = new Headers();
+    headers.append('Authorization', this.auth.token);
+    headers.append('Content-Type', 'application/json');
+
+    console.log("updateSchoolInfo", this.BASE_URL  + "updateSchoolInfo" , reqData, {headers: headers});
+    return this.httpTools.sendPost(this.BASE_URL + "updateSchoolInfo", reqData, {headers: headers})
+      .toPromise()
+      .then(resData => {
+        let  data =  JSON.parse(resData._body);
+        console.log("success updateSchoolInfo",data);
+        // this.userInfo.user_name = userInfo.user_name;
+        // this.setUserInfo(this.userInfo);
+
+        return (data);
+        // return data;
+      }, error => {
+        console.log("user:updateUserInfo failed",error);
+        this.tools.presentToast(" 更新失败！");
+        this.handleError(error);
+        throw (error);
+        // this.presentToast(" 更新失败！");
+        // this.presentErrorAlert("注册失败！","请检查网络")
+      });
+  }
+
+  addSchoolInfo(schoolinfo):Promise<any>{
+    var reqData = JSON.stringify(schoolinfo);
+    let headers = new Headers();
+    headers.append('Authorization', this.auth.token);
+    headers.append('Content-Type', 'application/json');
+
+    console.log("addSchoolInfo", this.BASE_URL  + "addSchoolInfo" , reqData, {headers: headers});
+    return this.httpTools.sendPost(this.BASE_URL + "addSchoolInfo", reqData, {headers: headers})
+      .toPromise()
+      .then(resData => {
+        let  data =  JSON.parse(resData._body);
+        console.log("success addSchoolInfo",data);
+        // this.userInfo.user_name = userInfo.user_name;
+        // this.setUserInfo(this.userInfo);
+
+        return (data);
+        // return data;
+      }, error => {
+        console.log("user:addSchoolInfo failed",error);
+        this.tools.presentToast(" 更新失败！");
+        this.handleError(error);
+        throw (error);
+        // this.presentToast(" 更新失败！");
+        // this.presentErrorAlert("注册失败！","请检查网络")
+      });
+  }
+
+  addCourseRemotely(courseInfo):Promise<any>{
+    var reqData = JSON.stringify(courseInfo);
+    let headers = new Headers();
+    headers.append('Authorization', this.auth.token);
+    headers.append('Content-Type', 'application/json');
+
+    console.log("addCourseRemotely", this.BASE_URL  + "addCourseRemotely" , reqData, {headers: headers});
+    return this.httpTools.sendPost(this.BASE_URL + "addCourseRemotely", reqData, {headers: headers})
+      .toPromise()
+      .then(resData => {
+
+        let  data =  JSON.parse(resData._body);
+
+        console.log("success addCourseRemotely",data);
+        return (data.data);
+
+      }, error => {
+        console.log("user:addCourseRemotely failed",error);
+        this.tools.presentToast(" 更新失败！");
+        this.handleError(error);
+        throw (error);
+        // this.presentToast(" 更新失败！");
+        // this.presentErrorAlert("注册失败！","请检查网络")
+      });
+  }
+
+  updateCourseRemotely(courseInfo):Promise<any>{
+    var reqData = JSON.stringify(courseInfo);
+    let headers = new Headers();
+    headers.append('Authorization', this.auth.token);
+    headers.append('Content-Type', 'application/json');
+
+    console.log("updateCourseRemotely", this.BASE_URL  + "updateCourseRemotely" , reqData, {headers: headers});
+    return this.httpTools.sendPost(this.BASE_URL + "updateCourseRemotely", reqData, {headers: headers})
+      .toPromise()
+      .then(resData => {
+        let  data =  JSON.parse(resData._body);
+
+        console.log("success updateCourseRemotely",data);
+        return (data.data);
+
+      }, error => {
+        console.log("user:updateCourseRemotely failed",error);
+        this.tools.presentToast(" 更新失败！");
+        this.handleError(error);
+        throw (error);
+        // this.presentToast(" 更新失败！");
+        // this.presentErrorAlert("注册失败！","请检查网络")
+      });
+  }
+
+  removeCourse(courseInfo):Promise<any>{
+    var reqData = JSON.stringify(courseInfo);
+    let headers = new Headers();
+    headers.append('Authorization', this.auth.token);
+    headers.append('Content-Type', 'application/json');
+
+    console.log("removeCourse", this.BASE_URL  + "removeCourse" , reqData, {headers: headers});
+    return this.httpTools.sendPost(this.BASE_URL + "removeCourse", reqData, {headers: headers})
+      .toPromise()
+      .then(resData => {
+        let  data =  JSON.parse(resData._body);
+        console.log("success removeCourse",data);
+        return (data);
+
+      }, error => {
+        console.log("user:removeCourse failed",error);
+        this.tools.presentToast(" 更新失败！");
+        this.handleError(error);
+        throw (error);
+        // this.presentToast(" 更新失败！");
+        // this.presentErrorAlert("注册失败！","请检查网络")
+      });
+  }
+
+  addActivityRemote(activityInfo):Promise<any>{
+    var reqData = JSON.stringify(activityInfo);
+    let headers = new Headers();
+    headers.append('Authorization', this.auth.token);
+    headers.append('Content-Type', 'application/json');
+
+    console.log("addActivityRemote", this.BASE_URL  + "addActivityRemote" , reqData, {headers: headers});
+    return this.httpTools.sendPost(this.BASE_URL + "addActivityRemote", reqData, {headers: headers})
+      .toPromise()
+      .then(resData => {
+        let  data =  JSON.parse(resData._body);
+        console.log("success addActivityRemote",data);
+
+        return (data).data;
+
+      }, error => {
+        console.log("user:addActivityRemote failed",error);
+        this.tools.presentToast(" 更新失败！");
+        this.handleError(error);
+        throw (error);
+        // this.presentToast(" 更新失败！");
+        // this.presentErrorAlert("注册失败！","请检查网络")
+      });
+  }
+
+  updateActivityRemote(activityInfo):Promise<any>{
+    var reqData = JSON.stringify(activityInfo);
+    let headers = new Headers();
+    headers.append('Authorization', this.auth.token);
+    headers.append('Content-Type', 'application/json');
+
+    console.log("updateActivityRemote", this.BASE_URL  + "updateActivityRemote" , reqData, {headers: headers});
+    return this.httpTools.sendPost(this.BASE_URL + "updateActivityRemote", reqData, {headers: headers})
+      .toPromise()
+      .then(resData => {
+        let  data =  JSON.parse(resData._body);
+        console.log("success updateActivityRemote",data);
+
+        return (data).data;
+
+      }, error => {
+        console.log("user:updateActivityRemote failed",error);
+        this.tools.presentToast(" 更新失败！");
+        this.handleError(error);
+        throw (error);
+        // this.presentToast(" 更新失败！");
+        // this.presentErrorAlert("注册失败！","请检查网络")
+      });
+  }
+
+  removeActivity(activityInfo):Promise<any>{
+    var reqData = JSON.stringify(activityInfo);
+    let headers = new Headers();
+    headers.append('Authorization', this.auth.token);
+    headers.append('Content-Type', 'application/json');
+
+    console.log("removeActivity", this.BASE_URL  + "removeActivity" , reqData, {headers: headers});
+    return this.httpTools.sendPost(this.BASE_URL + "removeActivity", reqData, {headers: headers})
+      .toPromise()
+      .then(resData => {
+        let  data =  JSON.parse(resData._body);
+        console.log("success removeActivity",data);
+        return (data);
+
+      }, error => {
+        console.log("user:removeActivity failed",error);
+        this.tools.presentToast(" 更新失败！");
+        this.handleError(error);
+        throw (error);
+        // this.presentToast(" 更新失败！");
+        // this.presentErrorAlert("注册失败！","请检查网络")
+      });
+  }
+
+
+
   retriveUserInfo(user_id: any): Promise<any>{
        let headers = new Headers();
         headers.append('Authorization', this.auth.token);
@@ -428,6 +690,26 @@ export class UserData {
             // return;
           });
   }
+
+  retriveSchoolInfo(user_id: any): Promise<any>{
+    let headers = new Headers();
+    headers.append('Authorization', this.auth.token);
+
+    console.log("retriveSchoolInfo", this.BASE_URL + "retriveSchoolInfo" + "?user_id=" + user_id, {headers: headers});
+    return this.httpTools.sendGet(this.BASE_URL + "retriveSchoolInfo" + "?user_id=" + user_id, {headers: headers})
+      .toPromise()
+      .then(resData => {
+        console.log("retriveSchoolInfo res data ?", resData);
+        let data = resData.data;
+        data.school_profile = this.tools.getAvatar(data.school_profile)
+        return data;
+      }, error => {
+        console.error("retriveSchoolInfo Oooops!" + error);
+        this.handleError(error);
+        return {};
+      });
+  }
+
 
   updateLessonInfo(lesson_id) {
     let headers = new Headers();

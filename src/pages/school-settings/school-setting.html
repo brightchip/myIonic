@@ -1,0 +1,117 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>我的院校</ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content no-padding class="schools">
+
+  <div class="top-fixed">
+    <div class="school-head" >
+      <ion-segment [(ngModel)]="school_parts" (ionChange)="segmentChanged($event)">
+        <ion-segment-button value="preview">
+          学校概览
+        </ion-segment-button>
+        <ion-segment-button value="course">
+          王牌课程
+        </ion-segment-button>
+        <ion-segment-button value="activity">
+          最近活动
+        </ion-segment-button>
+      </ion-segment>
+    </div>
+  </div>
+
+  <ion-list class="bottom-scroll">
+
+      <ion-col no-padding class="lesson-content" [ngSwitch]="school_parts">
+
+      <ion-list  *ngSwitchCase="'preview'">
+        <div class="box-update-profile">
+          <img class="school-profile" src="{{school.school_profile}}" />
+        </div>
+
+        <div class="box-update-info">
+          <h3 class="item-title">{{school.school_name}}</h3>
+          <p class="item-content">{{school.school_content}}</p>
+        </div>
+
+
+      </ion-list>
+
+
+      <ion-list  *ngSwitchCase="'course'">
+
+        <ion-item-sliding #item *ngFor="let _course of school.courses">
+          <ion-item>
+            <div class="item-box" >
+              <div>
+                <img src="assets/icon/course.png"  class="item-profile-small"/>
+              </div>
+              <div class="item-info">
+                <div class="title-box">
+                  <h3 class="item-title"> {{_course.course_name}}</h3>
+                </div>
+                <p class="content">{{_course.course_content}}</p>
+              </div>
+            </div>
+          </ion-item>
+
+          <ion-item-options side="right">
+            <button ion-button (click)="editCourse(_course)">编辑</button>
+            <button ion-button (click)="removeCourse(_course)">删除</button>
+          </ion-item-options>
+
+        </ion-item-sliding>
+
+      </ion-list>
+
+      <ion-list  *ngSwitchCase="'activity'">
+        <ion-item-sliding #item *ngFor="let _activity of school.activities">
+          <ion-item>
+            <div class="item-box" >
+              <div>
+              <img  src="assets/icon/activity.png"  class="item-profile-small"/>
+              </div>
+              <div class="item-info">
+                <div class="title-box">
+                  <h3 class="item-title"> {{_activity.activity_name}}</h3>
+                </div>
+                <p class="content">{{_activity.activity_content}}</p>
+              </div>
+              <div class="item-bagde">
+                <p class="item-distance">{{_activity.created_date}}</p>
+              </div>
+            </div>
+          </ion-item>
+
+          <ion-item-options side="right">
+            <button ion-button (click)="editActivity(_activity)"> 编辑</button>
+            <button ion-button (click)="removeActivity(_activity)">删除</button>
+          </ion-item-options>
+
+        </ion-item-sliding>
+
+      </ion-list>
+
+    </ion-col>
+
+  </ion-list>
+
+
+</ion-content>
+
+<ion-footer>
+
+
+  <button class="cancel" ion-button (click)="cancel()">取消</button>
+  <button class="profile-setting" *ngIf="school_parts == 'preview'" ion-button (click)="updatePicture()">{{school.school_profile != null ? TEXT_MODIFY_PROFILE:TEXT_ADD_PROFILE}}</button>
+  <button class="apply" ion-button (click)="applyChange()">应用</button>
+  <button ion-button class="info-setting" *ngIf="school_parts == 'activity'" (click)="addActivity()">{{TEXT_ADD_ACTIVITY}}</button>
+  <button ion-button class="info-setting" *ngIf="school_parts == 'course'" (click)="addCourse()">{{TEXT_ADD_COURSE}}</button>
+
+</ion-footer>

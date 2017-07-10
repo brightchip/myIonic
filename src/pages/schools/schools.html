@@ -35,23 +35,26 @@
   </ion-row>
 
 
-  <div class="school-box" *ngFor="let _school of arrSchool"  (click)="viewSchool(_school)">
-    <div>
-      <img src="{{_school.profile}}" width="150" height="150" class="item-profile"/>
-    </div>
-    <div class="item-info">
-      <div class="title-box">
-        <h4 class="item-title">{{_school.school_name}}</h4>
+  <ion-list class="school-list">
+    <div class="item-box" *ngFor="let _school of arrSchool"  (click)="viewSchool(_school)">
+      <div>
+        <img src="{{_school.school_profile}}"  class="item-profile"/>
+      </div>
+      <div class="item-info">
+        <div class="title-box">
+          <h4 class="item-title">{{_school.school_name}}</h4>
+        </div>
+
+        <p class="content">{{_school.content}}</p>
+        <!--<p class="content">{{_school.activities}}</p>-->
+      </div>
+      <div class="item-bagde">
+        <p class="item-distance">{{_school.distance}}</p>
       </div>
 
-      <p class="content">{{_school.school_content}}</p>
-      <!--<p class="content">{{_school.activities}}</p>-->
     </div>
-    <div>
-      <p class="item-distance">{{_school.distance}}</p>
-    </div>
+  </ion-list>
 
-  </div>
 
 
 </ion-content>

@@ -1,0 +1,34 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>商城</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<!--//news guide-->
+<ion-content  class="schools" padding>
+
+
+  <ion-list class="school-list">
+    <div class="item-box" *ngFor="let _shop of arrShop"  (click)="viewShop(_shop)">
+      <div>
+        <img src="{{_shop.shop_profile}}"  class="item-profile"/>
+      </div>
+      <div class="item-info">
+        <div class="title-box">
+          <h4 class="item-title">{{_shop.shop_name}}</h4>
+        </div>
+
+        <p class="content">{{_shop.shop_content}}</p>
+        <!--<p class="content">{{_school.activities}}</p>-->
+      </div>
+
+
+    </div>
+  </ion-list>
+
+
+
+</ion-content>

@@ -70,7 +70,8 @@ export class HomePage {
       console.error("home",err);
     }
 
-    // this.userData.retriveHomework(1);
+    // this.userData.
+    // Homework(1);
   }
 
   ionViewWillLeave(){
@@ -128,7 +129,7 @@ export class HomePage {
         break;
       case 6:
         //market
-        this.userData.retriveCourses();
+        // this.userData.retriveCourses();
         break;
       case 7:
         //schools recommending

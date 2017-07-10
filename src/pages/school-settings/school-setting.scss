@@ -1,0 +1,64 @@
+page-school-setting {
+
+
+  .lesson-content {
+    .item-info {
+      margin-left: 20px;
+      max-width: 150px;
+    }
+
+    .item-title {
+      color: color($colors, dark);
+      width: 150px;
+    }
+    .item-content {
+      color: color($colors, badge);
+      //max-width: 40vw;
+    }
+
+  }
+
+  .box-update-profile {
+
+    width: 100vw;
+    background-color:red;
+    height: 30vh;
+
+
+    .school-profile {
+      width: 100vw;
+      height: 30vh;
+      //position: absolute;
+    }
+    .profile-setting {
+      position: fixed;
+      top: 0;
+      right: 0;
+      z-index: 100;
+    }
+  }
+
+
+  .box-update-info{
+    //position: absolute;
+    width: 100vw;
+    //background-color:blue;
+  }
+
+  .info-setting {
+    float: right;
+
+  }
+
+
+  .apply {
+    float: right;
+
+  }
+
+  .cancel {
+    float: left;
+  }
+
+
+}

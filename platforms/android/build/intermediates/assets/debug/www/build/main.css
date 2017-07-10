@@ -69477,6 +69477,77 @@ hr.style-four {
   margin-top: 44px;
 }
 
+ion-segment {
+  color: #30d05f;
+  background-color: #0a86d4;
+  text-color: #30d05f;
+}
+
+ion-segment ion-segment-button {
+  color: #30d05f;
+  text-color: #30d05f;
+}
+
+.top-fixed {
+  width: 100%;
+  background-color: #478aff;
+  position: fixed;
+  top: 20;
+  z-index: 100;
+}
+
+.bottom-scroll {
+  margin-top: 40px;
+}
+
+.item-box {
+  height: auto;
+  width: 100%;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  padding: 20px 0 0 20px;
+  overflow: scroll;
+}
+
+.item-profile {
+  width: 100px;
+  height: 100px;
+}
+
+.item-profile-small {
+  width: 60px;
+  height: 60px;
+}
+
+.item-bagde {
+  width: 60px;
+}
+
+.item-info {
+  margin-left: 20px;
+  max-width: 150px;
+}
+
+.title-box {
+  width: 100%;
+}
+
+.item-title {
+  color: #222;
+  width: 150px;
+}
+
+.item-distance {
+  color: #9F9F9F;
+  font-size: 12px;
+  width: 100%;
+  top: 0;
+}
+
 .platform-android ion-tabs.withNavbar {
   margin-top: 50px;
 }
@@ -70229,52 +70300,97 @@ page-parents .class-card ion-card-content {
   padding-right: 0;
 }
 
-page-schools .scroll-content {
-  background: #EDEDED;
-}
-
-page-schools .school-box {
-  height: 200px;
+page-school-detail .bottom-scroll .school-profile {
   width: 100%;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: row;
-  -ms-flex-direction: row;
-  flex-direction: row;
-  padding: 0 20px;
+  height: 280px;
 }
 
-page-schools .item-info {
+page-school-detail .lesson-content .item-info {
   margin-left: 20px;
   max-width: 150px;
 }
 
-page-schools .title-box {
-  width: 100%;
-}
-
-page-schools .item-title {
+page-school-detail .lesson-content .item-title {
   color: #222;
   width: 150px;
 }
 
-page-schools .item-distance {
+page-school-detail .lesson-content .content {
   color: #9F9F9F;
-  font-size: 12px;
-  width: 100%;
+}
+
+page-school-setting .lesson-content .item-info {
+  margin-left: 20px;
+  max-width: 150px;
+}
+
+page-school-setting .lesson-content .item-title {
+  color: #222;
+  width: 150px;
+}
+
+page-school-setting .lesson-content .item-content {
+  color: #9F9F9F;
+}
+
+page-school-setting .box-update-profile {
+  width: 100vw;
+  background-color: red;
+  height: 30vh;
+}
+
+page-school-setting .box-update-profile .school-profile {
+  width: 100vw;
+  height: 30vh;
+}
+
+page-school-setting .box-update-profile .profile-setting {
+  position: fixed;
   top: 0;
+  right: 0;
+  z-index: 100;
+}
+
+page-school-setting .box-update-info {
+  width: 100vw;
+}
+
+page-school-setting .info-setting {
+  float: right;
+}
+
+page-school-setting .apply {
+  float: right;
+}
+
+page-school-setting .cancel {
+  float: left;
+}
+
+page-schools .scroll-content {
+  background: #EDEDED;
+}
+
+page-schools .school-list {
+  margin-top: 100px;
 }
 
 page-schools .content {
   color: #9F9F9F;
 }
 
+page-schools .city-selector {
+  top: 50px;
+  position: fixed;
+  height: 100px;
+}
+
 page-schools .city-selector ion-item {
   background: #EDEDED;
 }
 
 page-schools .city-selector ion-item {
+  height: 30px;
   width: 100%;
 }
 

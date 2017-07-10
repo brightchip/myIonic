@@ -181,6 +181,11 @@ export class NativeService {
     this.loadingIsOpen = false;
   };
 
+
+  showConfirm(title,message) {
+
+  }
+
   /**
    * 使用cordova-plugin-camera获取照片
    * @param options
@@ -189,7 +194,7 @@ export class NativeService {
   getPicture(options: CameraOptions = {}): Promise<string> {
     let ops: CameraOptions = Object.assign({
       sourceType: this.camera.PictureSourceType.CAMERA,//图片来源,CAMERA:拍照,PHOTOLIBRARY:相册
-      destinationType: this.camera.DestinationType.DATA_URL,//默认返回base64字符串,DATA_URL:base64   FILE_URI:图片路径
+      destinationType: this.camera.DestinationType.FILE_URI,//默认返回base64字符串,DATA_URL:base64   FILE_URI:图片路径
       quality: 100,//图像质量，范围为0 - 100
       allowEdit: true,//选择图片前是否允许编辑
       encodingType: this.camera.EncodingType.JPEG,
@@ -217,7 +222,7 @@ export class NativeService {
     return new Promise((resolve) => {
       this.getPicture(Object.assign({
         sourceType: this.camera.PictureSourceType.CAMERA,
-        destinationType: this.camera.DestinationType.DATA_URL//DATA_URL: 0 base64字符串, FILE_URI: 1图片路径
+        destinationType: this.camera.DestinationType.FILE_URI//DATA_URL: 0 base64字符串, FILE_URI: 1图片路径
       }, options)).then((imgData: string) => {
         resolve(imgData);
       }).catch(err => {
@@ -236,14 +241,18 @@ export class NativeService {
     return new Promise((resolve) => {
       this.getPicture(Object.assign({
         sourceType: this.camera.PictureSourceType.PHOTOLIBRARY,
-        destinationType: this.camera.DestinationType.DATA_URL//DATA_URL: 0 base64字符串, FILE_URI: 1图片路径
+        destinationType: this.camera.DestinationType.FILE_URI//DATA_URL: 0 base64字符串, FILE_URI: 1图片路径
       }, options)).then((imgData: string) => {
+
         resolve(imgData);
       }).catch(err => {
         String(err).indexOf('cancel') != -1 ? this.showToast('取消选择图片', 1500) : this.showToast('获取照片失败');
       });
     });
   };
+
+
+
 
 
   /**

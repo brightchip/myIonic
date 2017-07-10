@@ -2,40 +2,11 @@ page-schools {
   .scroll-content {
     background:color($colors,pagebackground);
   }
-  .school-box{
-    height:200px;
-    width:100%;
-    display:flex;
-    flex-direction:row;
-    padding: 0 20px;
-  }
-  .item-profile{
-    //width: 150px;
+
+  .school-list{
+    margin-top: 100px ;
   }
 
-  .item-info{
-    margin-left: 20px;
-    max-width: 150px;
-  }
-
-  .title-box{
-    //background-color: #0a86d4;
-    width: 100%;
-  }
-
-  .item-title{
-    color:color($colors,dark);
-    width: 150px;
-  }
-  .item-distance{
-    color:color($colors,badge);
-    font-size: 12px;
-    //margin-left: 20px;
-    //float:right;
-    //position: fixed;
-    width: 100%;
-    top: 0;
-  }
   .content{
     color:color($colors,badge);
     //max-width: 40vw;
@@ -43,11 +14,15 @@ page-schools {
 
   .city-selector{
     //padding:5%;
+    top: 50px;
+    position: fixed;
+    height: 100px;
     ion-item{
       background:color($colors,pagebackground);
     }
 
     ion-item{
+      height: 30px;
       width:100%;
     }
   }

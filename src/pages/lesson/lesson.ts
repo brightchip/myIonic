@@ -596,14 +596,13 @@ export class LessonPage {
     this.userData.retriveStudentHomework(this.lesson_id,this.userData.userInfo.user_id).then(audioArray => {
       console.log("getHomeworks",audioArray);
       if(typeof  audioArray != "undefined" && audioArray != null ) {
-        console.log("getHomeworks available");
+
         this.ngZong.run( ()=>{
           this.submittedHomework = audioArray;
           this.viewState = 1;
+          console.log("getHomeworks available",this.submittedHomework,this.viewState);
         })
-
       }
-
     })
   }
 

@@ -2,12 +2,16 @@ import { Component } from '@angular/core';
 import {Events, NavController} from 'ionic-angular';
 import {UserData} from "../../providers/user-data";
 import {AccountPage} from "../account/account";
+import * as Enums from "../../providers/globals";
+import {SchoolSettingsPage} from "../school-settings/school-setting";
+
 
 @Component({
   selector: 'settings',
   templateUrl: 'settings.html'
 })
 export class SettingsPage {
+  MyUserType = Enums.UserType;
   // userInfo: {user_name?: string, checkinCount?: string,userAvatar?:string,phone?:string} = {};
 
   constructor(public navCtrl: NavController,public events: Events,public userData:UserData) {
@@ -65,6 +69,10 @@ export class SettingsPage {
 
   showSetting(){
     this.navCtrl.push(AccountPage);
+  }
+
+  showSchoolSetting(){
+    this.navCtrl.push(SchoolSettingsPage);
   }
 
 

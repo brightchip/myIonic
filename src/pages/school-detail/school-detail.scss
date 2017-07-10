@@ -1,9 +1,28 @@
 page-school-detail {
 
-  .top-fixed{
-    height: 30%;
+
+
+  .bottom-scroll .school-profile{
     width: 100%;
-    background-color: #0a86d4;
+    height: 280px;
+  }
+
+
+  .lesson-content{
+    .item-info{
+      margin-left: 20px;
+      max-width: 150px;
+    }
+
+    .item-title{
+      color:color($colors,dark);
+      width: 150px;
+    }
+    .content{
+      color:color($colors,badge);
+      //max-width: 40vw;
+    }
+
   }
 
 }

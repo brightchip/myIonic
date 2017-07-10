@@ -15,9 +15,12 @@ import {SchoolDetailPage} from "../school-detail/school-detail";
 })
 export class SchoolListPage {
   actionSheet: ActionSheet;
+  course1:any = {course_profile:"assets/img/anime1.jpg",course_name:"A",content:["learn how to write A"]}
+  course2:any = {course_profile:"assets/img/anime2.jpg",course_name:"B",content:["learn how to write B"]}
+  course3:any = {course_profile:"assets/img/anime3.jpg",course_name:"C",content:["learn how to write C"]}
   school:any  = {school_id:1,school_profile:"assets/img/th.jpg",school_name:"s1",distance:"300m",school_content:"school 1 error TS2688: Cannot find type definition file for 'node'. · Issue #213 ",courses:[],activities:[]}
-  school2:any  = {school_id:2,school_profile:"assets/img/nonobiyori.jpg",school_name:"s2",distance:"15m",school_content:"school 2",courses:[],activities:[]}
-  arrSchool:any = [this.school,this.school2]
+  school2:any  = {school_id:2,school_profile:"assets/img/nonobiyori.jpg",school_name:"s2",distance:"15m",school_content:"school 2",courses:[this.course1,this.course2,this.course1,this.course3,this.course2,this.course1],activities:[]}
+  arrSchool:any = [this.school,this.school2,this.school,this.school2]
 
   provinceList:any = [{name:"A"},{name:"B"},{name:"C"}];
   cityList:any = [];

@@ -24,6 +24,7 @@ export enum UserType {  // userType: number= 1;//1-student ,2-parents , 3-teache
    student = 1,
      parent = 2,
    teacher = 3,
+   principal = 50,
    admin = 110
 }
 
