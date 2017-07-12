@@ -81,6 +81,10 @@
         },
         "cordova-plugin-video-editor": {
             "PACKAGE_NAME": "com.ionicframework.myionicapp723480"
+        },
+        "jpush-phonegap-plugin": {
+            "APP_KEY": "9d86e6b9e2b1362e5cfb3d4e",
+            "PACKAGE_NAME": "com.gakuen.iueducation"
         }
     },
     "dependent_plugins": {
@@ -89,6 +93,9 @@
         },
         "es6-promise-plugin": {
             "PACKAGE_NAME": "com.ionicframework.myionicapp723480"
+        },
+        "cordova-plugin-jcore": {
+            "PACKAGE_NAME": "com.gakuen.iueducation"
         }
     }
 }

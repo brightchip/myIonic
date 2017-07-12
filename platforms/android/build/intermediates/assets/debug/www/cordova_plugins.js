@@ -440,6 +440,14 @@ module.exports = [
         "clobbers": [
             "VideoEditorOptions"
         ]
+    },
+    {
+        "id": "jpush-phonegap-plugin.JPushPlugin",
+        "file": "plugins/jpush-phonegap-plugin/www/JPushPlugin.js",
+        "pluginId": "jpush-phonegap-plugin",
+        "clobbers": [
+            "JPush"
+        ]
     }
 ];
 module.exports.metadata = 
@@ -471,7 +479,9 @@ module.exports.metadata =
     "cordova-plugin-screen-orientation": "2.0.1",
     "cordova-plugin-device-orientation": "1.0.7",
     "cordova-plugin-geolocation": "2.4.3",
-    "cordova-plugin-video-editor": "1.1.2"
+    "cordova-plugin-video-editor": "1.1.2",
+    "cordova-plugin-jcore": "1.1.5",
+    "jpush-phonegap-plugin": "3.2.1"
 };
 // BOTTOM OF METADATA
 });

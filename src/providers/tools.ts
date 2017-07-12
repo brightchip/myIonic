@@ -9,6 +9,7 @@ import {DBHelper} from "./dbhelper";
 import {NativeService} from "./mapUtil";
 import {Camera, CameraOptions} from "@ionic-native/camera";
 import {FilePath} from "@ionic-native/file-path";
+
 /**
  * Created by Winjoy on 5/19/2017.
  */
@@ -57,6 +58,8 @@ export class Tools{
     });
     this.fileTransfer = this.transfer.create();
   }
+
+
 
   getRootDir(){
     if (this.platform.is('android')){

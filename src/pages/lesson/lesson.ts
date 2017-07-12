@@ -593,12 +593,16 @@ export class LessonPage {
   }
 
   getHomeworks(){
-    this.userData.retriveStudentHomework(this.lesson_id,this.userData.userInfo.user_id).then(audioArray => {
-      console.log("getHomeworks",audioArray);
-      if(typeof  audioArray != "undefined" && audioArray != null ) {
+    this.userData.retriveStudentHomework(this.lesson_id,this.userData.userInfo.user_id).then(homeworkData => {
+      console.log("getHomeworks",homeworkData);
+      if(typeof  homeworkData != "undefined" && homeworkData != null ) {
 
         this.ngZong.run( ()=>{
-          this.submittedHomework = audioArray;
+          this.submittedHomework = homeworkData;
+
+          let date = new Date(homeworkData.created_date);
+          let today = new Date();
+          this.submittedHomework .created_date = this.tools.dateDiff(date,today);
           this.viewState = 1;
           console.log("getHomeworks available",this.submittedHomework,this.viewState);
         })

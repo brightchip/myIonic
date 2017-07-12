@@ -215,5 +215,23 @@
         },
         "is_top_level": true,
         "variables": {}
+    },
+    "jpush-phonegap-plugin": {
+        "source": {
+            "type": "registry",
+            "id": "jpush-phonegap-plugin@^3.2.1"
+        },
+        "is_top_level": true,
+        "variables": {
+            "API_KEY": "206bb0adb98d8b2fc2c1de7b"
+        }
+    },
+    "cordova-plugin-jcore": {
+        "source": {
+            "type": "registry",
+            "id": "cordova-plugin-jcore"
+        },
+        "is_top_level": false,
+        "variables": {}
     }
 }

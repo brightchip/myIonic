@@ -61,6 +61,8 @@ import {BookControl} from "../providers/book-control";
 import {SchoolListPage} from "../pages/schools/schools";
 import {SchoolDetailPage} from "../pages/school-detail/school-detail";
 import {SchoolSettingsPage} from "../pages/school-settings/school-setting";
+import { JPushPlugin } from '@ionic-native/jpush';
+
 
 // import { BackgroundGeolocation } from '@ionic-native/background-geolocation';
 // import {AngularInview} from 'angular-inview';
@@ -99,7 +101,7 @@ import {SchoolSettingsPage} from "../pages/school-settings/school-setting";
     VocabularySelectingPage,
     SchoolListPage,
     SchoolDetailPage,
-    SchoolSettingsPage
+    SchoolSettingsPage,
 
   ],
   imports: [
@@ -167,8 +169,7 @@ import {SchoolSettingsPage} from "../pages/school-settings/school-setting";
     ScreenOrientation,
     Geolocation,
     BookControl,
-
-
+    JPushPlugin
     // Lessons
     // AngularInview
   ]

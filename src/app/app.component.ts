@@ -19,8 +19,7 @@ import {ChatData} from "../providers/chat-data";
 import {DBHelper} from "../providers/dbhelper";
 import {enableProdMode} from '@angular/core';
 import {BookControl} from "../providers/book-control";
-
-
+import { JPushPlugin } from '@ionic-native/jpush';
 
 export interface PageInterface {
   title: string;
@@ -36,6 +35,7 @@ export interface PageInterface {
 @Component({
   templateUrl: 'app.template.html'
 })
+
 export class ConferenceApp {
   // the root nav is a child of the root app component
   // @ViewChild(Nav) gets a reference to the app's root nav
@@ -81,9 +81,10 @@ export class ConferenceApp {
     public storage: Storage,
     public toastCtrl:ToastController,
     public dbHelper:DBHelper,
+    public jpush: JPushPlugin,
     // public bookControl:BookControl,
       // page: PageInterface,
-  public splashScreen: SplashScreen
+    public splashScreen: SplashScreen
   ) {
     // //noinspection JSAnnotator
     // if (this.platform.is('ios') || this.platform.is('android')) {
@@ -92,6 +93,9 @@ export class ConferenceApp {
     // } else {
     //   // something else
     // }
+
+    this.init();
+
 
     // Check if the user has already seen the tutorial
     this.storage.get('hasSeenTutorial')
@@ -136,6 +140,37 @@ export class ConferenceApp {
     // });
 
     this.listenToLoginEvents();
+
+}
+
+  init(){
+    //初始化极光
+    this.jpush.init().then( _=>{
+      //延迟执行，等极光完全初始化
+      setTimeout(()=>{
+        this.setAlias( "Alias" );
+      },300)
+    }).catch(e => {
+      console.error("init",e);
+    })
+
+    //收到通知时会触发该事件。
+    document.addEventListener("jpush.receiveNotification", function (event) {
+      console.log("receiveNotification",event)
+      alert( JSON.stringify( event ) );
+    }, false);
+
+  }
+
+//绑定别名
+  setAlias( Alias : string ){
+    this.jpush.setAlias( Alias ).then((res)=>{
+      console.log("setAlias",res)
+      alert( JSON.stringify(res) );
+    }).catch((err)=>{
+      alert( JSON.stringify(err) );
+      console.error("setAlias",err)
+    });
   }
 
   dimissToastBar(){

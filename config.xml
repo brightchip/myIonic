@@ -75,4 +75,8 @@
     <plugin name="cordova-plugin-x-toast" spec="^2.6.0" />
     <plugin name="cordova-sqlite-storage" spec="^2.0.4" />
     <plugin name="ionic-plugin-keyboard" spec="~2.2.1" />
+    <plugin name="jpush-phonegap-plugin" spec="^3.2.1">
+        <variable name="API_KEY" value="206bb0adb98d8b2fc2c1de7b" />
+        <variable name="APP_KEY" value="9d86e6b9e2b1362e5cfb3d4e" />
+    </plugin>
 </widget>

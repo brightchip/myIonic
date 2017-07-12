@@ -4,8 +4,16 @@
         "source": "E:\\Development\\Projects\\Cordova\\Ionic\\Myionicapp\\platforms\\android\\res\\drawable-hdpi\\ic_action_next_item.png"
     },
     {
+        "merged": "E:\\Development\\Projects\\Cordova\\Ionic\\Myionicapp\\platforms\\android\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi\\jpush_ic_richpush_actionbar_divider.png",
+        "source": "E:\\Development\\Projects\\Cordova\\Ionic\\Myionicapp\\platforms\\android\\res\\drawable-hdpi\\jpush_ic_richpush_actionbar_divider.png"
+    },
+    {
         "merged": "E:\\Development\\Projects\\Cordova\\Ionic\\Myionicapp\\platforms\\android\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi\\ic_action_previous_item.png",
         "source": "E:\\Development\\Projects\\Cordova\\Ionic\\Myionicapp\\platforms\\android\\res\\drawable-hdpi\\ic_action_previous_item.png"
+    },
+    {
+        "merged": "E:\\Development\\Projects\\Cordova\\Ionic\\Myionicapp\\platforms\\android\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi\\jpush_ic_richpush_actionbar_back.png",
+        "source": "E:\\Development\\Projects\\Cordova\\Ionic\\Myionicapp\\platforms\\android\\res\\drawable-hdpi\\jpush_ic_richpush_actionbar_back.png"
     },
     {
         "merged": "E:\\Development\\Projects\\Cordova\\Ionic\\Myionicapp\\platforms\\android\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi\\ic_action_remove.png",

@@ -306,7 +306,6 @@
 
     <ion-list no-padding class="vocabulary" *ngSwitchCase="'vocabulary'" >
 
-      {{course_id}}
       <div [ngSwitch]="course_id">
 
         <div  *ngSwitchCase="1">
@@ -323,6 +322,7 @@
               </div>
 
               <div class="review" *ngSwitchCase="1">
+
                 <p class="info">上次作业于{{submittedHomework.created_date}}成功提交</p>
                 <p class="bt-text">来自老师的留言:{{submittedHomework.commentary}} </p>
               </div>
@@ -332,11 +332,34 @@
           </div>
 
           <div class="student"*ngIf="userData.userInfo.identity == MyUserType.teacher">
-            <p class="info">还没有学生提交作业</p>
-            <!--<button class="bt-start-dub" (click)="startVocabularyRecording()">-->
-              <!--<img width="60" height="60" class="input-img"  src="assets/img/start.png" />-->
-            <!--</button>-->
-            <!--<p class="bt-text">录音练习</p>-->
+            <div *ngIf="Object.keys(submittedHomework).length <= 0">
+              <p class="info">还没有学生提交作业</p>
+            </div>
+            <div *ngIf="Object.keys(submittedHomework).length > 0">
+              <ion-list>
+                <ion-item>
+                  <div class="item-box" >
+                    <div>
+                      <img  src="assets/icon/activity.png"  class="item-profile-small"/>
+                    </div>
+                    <div class="item-info">
+                      <div class="title-box">
+                        <h3 class="item-title"> {{_activity.activity_name}}</h3>
+                      </div>
+                      <p class="content">{{_activity.activity_content}}</p>
+                    </div>
+                    <div class="item-bagde">
+                      <p class="item-distance">{{_activity.created_date}}</p>
+                    </div>
+                  </div>
+                </ion-item>
+              </ion-list>
+
+            </div>
+          </div>
+
+          <div class="student"*ngIf="userData.userInfo.identity != MyUserType.teacher && userData.userInfo.identity != MyUserType.student">
+            <p class="info">还没有未您创建该页面</p>
           </div>
         </div>
 
@@ -391,9 +414,6 @@
         </div>
 
       </div>
-
-
-
       <!--<div *ngIf="userData.userInfo.identity == MyUserType.teacher">-->
         <!--<ion-item *ngFor="let homework of arrHomework" (click) = "playAll(homework.audios)">-->
           <!--<ion-avatar item-left>-->
@@ -403,7 +423,6 @@
           <!--<h3></h3>-->
         <!--</ion-item>-->
       <!--</div>-->
-
     </ion-list>
 
     <!--<ion-list class="vocabulary" *ngSwitchCase="'vocabulary'" >-->
