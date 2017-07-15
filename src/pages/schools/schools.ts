@@ -7,6 +7,7 @@ import {BookControl} from "../../providers/book-control";
 
 import {UserData} from "../../providers/user-data";
 import {SchoolDetailPage} from "../school-detail/school-detail";
+import {httpEntity} from "../../providers/httpEntity";
 
 
 @Component({
@@ -22,11 +23,15 @@ export class SchoolListPage {
   school2:any  = {school_id:2,school_profile:"assets/img/nonobiyori.jpg",school_name:"s2",distance:"15m",school_content:"school 2",courses:[this.course1,this.course2,this.course1,this.course3,this.course2,this.course1],activities:[]}
   arrSchool:any = [this.school,this.school2,this.school,this.school2]
 
-  provinceList:any = [{name:"A"},{name:"B"},{name:"C"}];
-  cityList:any = [];
-  subCityList:any = [];
-  selectedCity:any = 0;
-  selectedSubCity:any = 0
+  // provinceList:any = [{name:"A"},{name:"B"},{name:"C"}];
+  // cityList:any = [];
+  // subCityList:any = [];
+  // selectedCity:any = 0;
+  // selectedSubCity:any = 0
+
+  cityData: any[]; //城市数据
+  cityName:string = '北京市 北京市 东城区'; //初始化城市名
+  code:string; //城市编码
 
   province:any
 
@@ -38,11 +43,11 @@ export class SchoolListPage {
     public actionSheetCtrl: ActionSheetController,
     public navCtrl: NavController,
     public  navParams: NavParams,
-    public bookControl: BookControl,
+    public httpTool: httpEntity,
     public userData: UserData
   ) {
     console.log("Passed params", navParams.data);
-
+    this.setCityPickerData();
   }
 
   viewSchool(schoolInfo){
@@ -50,28 +55,48 @@ export class SchoolListPage {
     this.navCtrl.push(SchoolDetailPage,{school:schoolInfo})
   }
 
-  onProvinceChange(){
-    console.log("onProvinceChange",this.province)
-    this.cityList = this.province.cities;
-    this.subCityList = [];
 
+  /**
+   * 获取城市数据
+   */
+  setCityPickerData(){
+    this.httpTool.getCitiesData()
+      .then( data => {
+        this.cityData = data;
+      });
   }
 
-  onCityChange(){
-    console.log("onCityChange",this.city)
-    this.subCityList = this.city.cities;
-    // console.log("init",this.provinceList,this.cityList,this.subCityList)
+  /**
+   * 城市选择器被改变时触发的事件
+   * @param event
+   */
+  cityChange(event){
+    console.log(event);
+    this.code = event['region'].value
   }
 
-  onSubCityChange(){
-    console.log("onSubCityChange",this.subcity)
-  }
+  // onProvinceChange(){
+  //   console.log("onProvinceChange",this.province)
+  //   this.cityList = this.province.cities;
+  //   this.subCityList = [];
+  //
+  // }
+  //
+  // onCityChange(){
+  //   console.log("onCityChange",this.city)
+  //   this.subCityList = this.city.cities;
+  //   // console.log("init",this.provinceList,this.cityList,this.subCityList)
+  // }
+  //
+  // onSubCityChange(){
+  //   console.log("onSubCityChange",this.subcity)
+  // }
 
   ionViewDidEnter(){
-    this.userData.findCity(this.CITY_JSON).then( data=>{
-      this.provinceList = data;
-
-    })
+    // this.userData.findCity(this.CITY_JSON).then( data=>{
+    //   this.provinceList = data;
+    //
+    // })
     // this.bookControl.loadCityList();
   }
 

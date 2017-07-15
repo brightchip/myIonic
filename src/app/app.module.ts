@@ -6,10 +6,7 @@ import { AboutPage } from '../pages/about/about';
 import { PopoverPage } from '../pages/about-popover/about-popover';
 import { AccountPage } from '../pages/account/account';
 import { LoginPage } from '../pages/login/login';
-
 import { SignupPage } from '../pages/signup/signup';
-
-
 import { TabsPage } from '../pages/tabs/tabs';
 import { TutorialPage } from '../pages/tutorial/tutorial';
 import { SupportPage } from '../pages/support/support';
@@ -61,7 +58,11 @@ import {BookControl} from "../providers/book-control";
 import {SchoolListPage} from "../pages/schools/schools";
 import {SchoolDetailPage} from "../pages/school-detail/school-detail";
 import {SchoolSettingsPage} from "../pages/school-settings/school-setting";
-import { JPushPlugin } from '@ionic-native/jpush';
+import {IonJPushModule} from "ionic2-jpush";
+import {CityPickerModule} from "ionic2-city-picker";
+import {MarketPage} from "../pages/markets/markets";
+import {Helper} from "../providers/Helper";
+import {JPush} from "ionic3-jpush";
 
 
 // import { BackgroundGeolocation } from '@ionic-native/background-geolocation';
@@ -102,12 +103,16 @@ import { JPushPlugin } from '@ionic-native/jpush';
     SchoolListPage,
     SchoolDetailPage,
     SchoolSettingsPage,
+    MarketPage
 
   ],
   imports: [
+    IonJPushModule,
+    CityPickerModule,
     IonicModule.forRoot(ConferenceApp),
 		IonicStorageModule.forRoot(),
-    EmojiPickerModule.forRoot()
+    EmojiPickerModule.forRoot(),
+
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -169,7 +174,9 @@ import { JPushPlugin } from '@ionic-native/jpush';
     ScreenOrientation,
     Geolocation,
     BookControl,
-    JPushPlugin
+    Helper,
+    JPush
+
     // Lessons
     // AngularInview
   ]

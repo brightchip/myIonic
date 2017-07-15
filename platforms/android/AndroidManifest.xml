@@ -67,7 +67,7 @@
         </receiver>
         <receiver android:exported="false" android:name="cn.jpush.android.service.AlarmReceiver" />
         <meta-data android:name="JPUSH_CHANNEL" android:value="developer-default" />
-        <meta-data android:name="JPUSH_APPKEY" android:value="9d86e6b9e2b1362e5cfb3d4e" />
+        <meta-data android:name="JPUSH_APPKEY" android:value="206bb0adb98d8b2fc2c1de7b" />
     </application>
     <uses-sdk android:minSdkVersion="18" android:targetSdkVersion="25" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />

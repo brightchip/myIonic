@@ -7,7 +7,6 @@ import { AccountPage } from '../pages/account/account';
 import { LoginPage } from '../pages/login/login';
 import { TabsPage } from '../pages/tabs/tabs';
 import { TutorialPage } from '../pages/tutorial/tutorial';
-
 import { SupportPage } from '../pages/support/support';
 import { HomePage } from '../pages/home/home';
 import { EntryPage } from '../pages/entry/entry';
@@ -19,7 +18,11 @@ import {ChatData} from "../providers/chat-data";
 import {DBHelper} from "../providers/dbhelper";
 import {enableProdMode} from '@angular/core';
 import {BookControl} from "../providers/book-control";
-import { JPushPlugin } from '@ionic-native/jpush';
+import {JPushService} from "ionic2-jpush";
+import {NativeService} from "../providers/mapUtil";
+import {Helper} from "../providers/Helper";
+import {JPush} from "ionic3-jpush";
+// import { JPush } from 'ionic-native';
 
 export interface PageInterface {
   title: string;
@@ -31,7 +34,7 @@ export interface PageInterface {
 }
 
 
-
+declare var window;
 @Component({
   templateUrl: 'app.template.html'
 })
@@ -69,6 +72,8 @@ export class ConferenceApp {
   rootPage: any;
   private loginToast: any;
 
+  msgList:Array<any>=[];
+
   constructor(
     public events: Events,
     public userData: UserData,
@@ -81,10 +86,13 @@ export class ConferenceApp {
     public storage: Storage,
     public toastCtrl:ToastController,
     public dbHelper:DBHelper,
-    public jpush: JPushPlugin,
+    public nativeService:NativeService,
     // public bookControl:BookControl,
       // page: PageInterface,
-    public splashScreen: SplashScreen
+
+    public helper:Helper,
+    public splashScreen: SplashScreen,
+    private jPushPlugin: JPushService
   ) {
     // //noinspection JSAnnotator
     // if (this.platform.is('ios') || this.platform.is('android')) {
@@ -94,8 +102,7 @@ export class ConferenceApp {
     //   // something else
     // }
 
-    this.init();
-
+    this.initJPush();
 
     // Check if the user has already seen the tutorial
     this.storage.get('hasSeenTutorial')
@@ -113,7 +120,8 @@ export class ConferenceApp {
                   this.dimissToastBar();
                   // this.chatData.login(this.userData.userInfo.user_id);
                   console.log("token still working")
-                  this.websocket.connect();
+                  this.afterLogined();
+
                   // this.bookControl.loadCourses();
 
                 }).catch( err =>{
@@ -143,35 +151,24 @@ export class ConferenceApp {
 
 }
 
-  init(){
-    //初始化极光
-    this.jpush.init().then( _=>{
-      //延迟执行，等极光完全初始化
-      setTimeout(()=>{
-        this.setAlias( "Alias" );
-      },300)
-    }).catch(e => {
-      console.error("init",e);
+
+  initJPush() {
+    this.platform.ready().then( () =>{
+
+      console.log("init");
+      // this.init2();
+      // this.jPush. init().then(_=>{
+      // })
+
+      console.log("openNotification")
+      this.helper.initJpush();
+
+      // this.setJpush();
+
+
     })
-
-    //收到通知时会触发该事件。
-    document.addEventListener("jpush.receiveNotification", function (event) {
-      console.log("receiveNotification",event)
-      alert( JSON.stringify( event ) );
-    }, false);
-
   }
 
-//绑定别名
-  setAlias( Alias : string ){
-    this.jpush.setAlias( Alias ).then((res)=>{
-      console.log("setAlias",res)
-      alert( JSON.stringify(res) );
-    }).catch((err)=>{
-      alert( JSON.stringify(err) );
-      console.error("setAlias",err)
-    });
-  }
 
   dimissToastBar(){
     this.loginToast.dismiss();
@@ -220,7 +217,8 @@ export class ConferenceApp {
       this.nav.setRoot(TabsPage);
       this.rootPage  = (TabsPage);
 
-      this.websocket.connect();
+      this.afterLogined();
+
       // this.bookControl.loadCourses();
 
       console.log("app component","login")
@@ -231,7 +229,8 @@ export class ConferenceApp {
       this.rootPage  = (TabsPage);
       this.nav.setRoot(TabsPage);
 
-      this.websocket.connect();
+      this.afterLogined();
+
       // this.bookControl.loadCourses();
 
       console.log("app component","signup")
@@ -301,5 +300,16 @@ export class ConferenceApp {
   }
 
 
+  private afterLogined() {
+    console.log("afterLogined");
+    this.websocket.connect();
+    this.userData.getUserInfo().then( _=>{
+      this.helper.setTags("" + this.userData.userInfo.identity);
+      this.helper.setAlias( "" + this.userData.userInfo.user_id)
 
+    })
+
+
+
+  }
 }

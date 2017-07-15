@@ -9,30 +9,47 @@
 
 <!--//news guide-->
 <ion-content  class="schools" padding>
-
-  <ion-row class="city-selector">
+  <div class="city-selector">
     <ion-item>
-      <ion-label>省份</ion-label>
-    <ion-select [(ngModel)]="province" (ionChange)="onProvinceChange()">
-      <ion-option *ngFor="let _province of provinceList" [value]="_province">{{_province.name}}</ion-option>
-    </ion-select>
-    </ion-item>
+      <ion-label>当前所处</ion-label>
+      <city-picker item-content
+                   [cancelText]="'取消'"
+                   [doneText]="'完成'"
+                   [separator]="' - '"
+                   [citiesData]="cityData"
+                   [(ngModel)]="cityName"
+                   (ionChange)="cityChange($event)">
 
-    <ion-item>
-      <ion-label>地级市</ion-label>
-      <ion-select [(ngModel)]="city" (ionChange)="onCityChange()">
-        <ion-option *ngFor="let _city of cityList" [value]="_city">{{_city.name}}</ion-option>
-      </ion-select>
+      </city-picker>
     </ion-item>
+  </div>
 
-    <ion-item>
-      <ion-label>县级市</ion-label>
-      <ion-select [(ngModel)]="subcity" (ionChange)="onSubCityChange()">
-        <ion-option *ngFor="let _subcity of subCityList" [value]="_subcity">{{_subcity.name}}</ion-option>
-      </ion-select>
-    </ion-item>
 
-  </ion-row>
+
+  <!--<ion-row class="city-selector">-->
+    <!--<ion-item>-->
+    <!--<ion-label>省份</ion-label>-->
+    <!--<ion-select [(ngModel)]="province" (ionChange)="onProvinceChange()">-->
+      <!--<ion-option *ngFor="let _province of provinceList" [value]="_province">{{_province.name}}</ion-option>-->
+    <!--</ion-select>-->
+  <!--</ion-item>-->
+
+    <!--<ion-item>-->
+      <!--<ion-label>地级市</ion-label>-->
+      <!--<ion-select [(ngModel)]="city" (ionChange)="onCityChange()">-->
+        <!--<ion-option *ngFor="let _city of cityList" [value]="_city">{{_city.name}}</ion-option>-->
+      <!--</ion-select>-->
+    <!--</ion-item>-->
+
+    <!--<ion-item>-->
+      <!--<ion-label>县级市</ion-label>-->
+      <!--<ion-select [(ngModel)]="subcity" (ionChange)="onSubCityChange()">-->
+        <!--<ion-option *ngFor="let _subcity of subCityList" [value]="_subcity">{{_subcity.name}}</ion-option>-->
+      <!--</ion-select>-->
+    <!--</ion-item>-->
+
+
+  <!--</ion-row>-->
 
 
   <ion-list class="school-list">

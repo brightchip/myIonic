@@ -70261,6 +70261,33 @@ page-map .map_canvas {
   height: 100vh;
 }
 
+page-markets .scroll-content {
+  background: #EDEDED;
+}
+
+page-markets .school-list {
+  margin-top: 100px;
+}
+
+page-markets .content {
+  color: #9F9F9F;
+}
+
+page-markets .city-selector {
+  top: 50px;
+  position: fixed;
+  height: 100px;
+}
+
+page-markets .city-selector ion-item {
+  background: #EDEDED;
+}
+
+page-markets .city-selector ion-item {
+  height: 30px;
+  width: 100%;
+}
+
 page-online-courses ion-content div ion-segment {
   color: #30d05f;
   background-color: #0a86d4;
@@ -70372,7 +70399,7 @@ page-schools .scroll-content {
 }
 
 page-schools .school-list {
-  margin-top: 100px;
+  margin-top: 20px;
 }
 
 page-schools .content {
@@ -70392,6 +70419,7 @@ page-schools .city-selector ion-item {
 page-schools .city-selector ion-item {
   height: 30px;
   width: 100%;
+  color: #478aff;
 }
 
 page-user p {

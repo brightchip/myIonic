@@ -26,7 +26,7 @@
     "cordova-plugin-device": {
         "source": {
             "type": "registry",
-            "id": "cordova-plugin-device@1.1.4"
+            "id": "cordova-plugin-device@^1.1.4"
         },
         "is_top_level": true,
         "variables": {}
@@ -218,20 +218,20 @@
     },
     "jpush-phonegap-plugin": {
         "source": {
-            "type": "registry",
-            "id": "jpush-phonegap-plugin@^3.2.1"
+            "type": "local",
+            "path": "E:\\Development\\Projects\\Cordova\\Ionic\\Myionicapp\\node_modules\\jpush-phonegap-plugin"
         },
         "is_top_level": true,
         "variables": {
-            "API_KEY": "206bb0adb98d8b2fc2c1de7b"
+            "APP_KEY": "206bb0adb98d8b2fc2c1de7b"
         }
     },
     "cordova-plugin-jcore": {
         "source": {
             "type": "registry",
-            "id": "cordova-plugin-jcore"
+            "id": "cordova-plugin-jcore@^1.1.5"
         },
-        "is_top_level": false,
+        "is_top_level": true,
         "variables": {}
     }
 }

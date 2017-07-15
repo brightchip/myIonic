@@ -36,3 +36,6 @@ $ npm install --save @ionic-native/splash-screen
 或下载到本地安装：
 
  cordova plugin add Your_Plugin_Path  --variable APP_KEY=your_jpush_appkey
+ 
+ 
+ npm install ionic2-city-picker --save

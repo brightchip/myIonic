@@ -43,7 +43,8 @@ export class Tools{
     private screenOrientation: ScreenOrientation,
     public nativeService:NativeService,
     public camera: Camera,
-    private filePath: FilePath
+    private filePath: FilePath,
+
 
   ){
     console.log("tool constructor.......");
@@ -58,7 +59,6 @@ export class Tools{
     });
     this.fileTransfer = this.transfer.create();
   }
-
 
 
   getRootDir(){
@@ -596,6 +596,7 @@ export class Tools{
       return this.IMAGE_DIR+ "/" + img;
     }
   }
+
 
 
 

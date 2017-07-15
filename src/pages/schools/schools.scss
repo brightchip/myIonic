@@ -4,7 +4,7 @@ page-schools {
   }
 
   .school-list{
-    margin-top: 100px ;
+    margin-top: 20px ;
   }
 
   .content{
@@ -24,6 +24,7 @@ page-schools {
     ion-item{
       height: 30px;
       width:100%;
+      color:color($colors,primary)
     }
   }
 

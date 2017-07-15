@@ -29,6 +29,15 @@ export class httpEntity{
     });
   }
 
+  getCitiesData(){
+    return this.http.get('./assets/data/city-data/city-data.json')
+      .toPromise()
+      .then(response => response.json())
+      .catch( err => {
+        return Promise.reject(err)
+      })
+
+  }
 
 
 }

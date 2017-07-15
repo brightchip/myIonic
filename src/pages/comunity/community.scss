@@ -1,0 +1,30 @@
+page-community{
+  .scroll-content {
+    background:color($colors,pagebackground);
+  }
+
+  .school-list{
+    margin-top: 100px ;
+  }
+
+  .content{
+    color:color($colors,badge);
+    //max-width: 40vw;
+  }
+
+  .city-selector{
+    //padding:5%;
+    top: 50px;
+    position: fixed;
+    height: 100px;
+    ion-item{
+      background:color($colors,pagebackground);
+    }
+
+    ion-item{
+      height: 30px;
+      width:100%;
+    }
+  }
+
+}

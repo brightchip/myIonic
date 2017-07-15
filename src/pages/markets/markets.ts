@@ -13,7 +13,7 @@ import {SchoolDetailPage} from "../school-detail/school-detail";
   selector: 'page-markets',
   templateUrl: 'markets.html'
 })
-export class SchoolListPage {
+export class MarketPage {
   actionSheet: ActionSheet;
   shop1:any = {shop_profile:"assets/img/anime1.jpg",shop_name:"shop1",shop_content:["learn how to write A"]}
   shop2:any = {shop_profile:"assets/img/anime2.jpg",shop_name:"B",shop_content:["learn how to write B"]}
