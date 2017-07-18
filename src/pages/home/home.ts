@@ -10,6 +10,7 @@ import {MapPage} from "../map/map";
 import {BookControl} from "../../providers/book-control";
 import {CoursePage} from "../course/course";
 import {SchoolListPage} from "../schools/schools";
+import {MarketPage} from "../markets/markets";
 
 
 @Component({
@@ -130,6 +131,7 @@ export class HomePage {
       case 6:
         //market
         // this.userData.retriveCourses();
+        this.navCtrl.push(MarketPage);
         break;
       case 7:
         //schools recommending
@@ -200,11 +202,21 @@ export class HomePage {
       // this.checkin();
     })
 
+
     this.bookControl.loadCourses().then( (data) => {
       this.MyRecommedCourses = this.bookControl.specialCourses;
     })
 
 
+  }
+
+  listenToLoginEvents() {
+    this.events.subscribe('db:init', () => {
+      // this.enableMenu(true);
+
+
+      console.log("app component", "login")
+    });
   }
 
 updateUI(isSuccess){

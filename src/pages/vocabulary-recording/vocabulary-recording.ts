@@ -6,7 +6,7 @@ import { File  } from '@ionic-native/file';
 import * as $ from 'jquery'
 import * as Enums from "../../providers/globals";
 import {Tools} from "../../providers/tools";
-import {NavParams} from "ionic-angular";
+import {AlertController, NavController, NavParams} from "ionic-angular";
 
 @Component({
   selector: 'vocabulary-recording',
@@ -75,34 +75,79 @@ export class VocabularyRecordingPage {
     });
   }
   private lesson: any;
+  private isStudent: any;
+  homeWork:any;
+  isReview = true;
+  isWork = null;
 
   constructor(
     public nativeSevice:NativeService,
     public  navParams: NavParams,
+    public navCtrl: NavController,
     public userData:UserData,
     public media: MediaPlugin,
     private ngZone: NgZone,
     public tools: Tools,
     public file: File,
+    public alertCtrl: AlertController
   ) {
     this.rootDir = this.tools.getRootDir();
 
     this.lesson =  this.navParams.get('lesson');
+    this.isStudent =  this.navParams.get('isStudent');
 
+    this.homeWork =  this.navParams.get('homeWork');
 
-    console.log("rootDir", this.rootDir);
+    console.log("rootDir", this.isStudent,this.homeWork);
   }
 
   ionViewDidEnter(){
     this.nativeSevice.showLoading("正在加载...");
 
+
+    if(this.isStudent){
+      this.initStudentPage();
+
+    }else {
+      this.initTeacherPage()
+    }
+
+  }
+
+  handleHomework(){
+
+    if(this.homeWork != null && typeof this.homeWork != "undefined"){
+      this.isReview = true;
+      this.isWork = null;
+      this.nativeSevice.showLoading("正在加载作业...")
+      this.tools.downloadHomework(this.homeWork).then( downloadResult=> {
+        this.nativeSevice.hideLoading();
+      })
+      for(let i = 0;i<this.vacabularys.length;i++){
+        if(this.homeWork[i] != null &&  typeof this.homeWork[i] != "undefined"){
+          this.vacabularys[this.currentIndex].userAudio = this.tools.getAudioUrl(this.homeWork[i]);
+        }
+      }
+
+    }
+    console.log("handleHomework",this.homeWork.length,this.vacabularys);
+  }
+
+  initTeacherPage(){
+
+  }
+
+  initStudentPage(){
     if(this.btRecorder == null || typeof this.btRecorder == "undefined") {
       this.addAudioInput();
       this.playSampleAudio()
       // self.isHasInit = true
     }
     this.disableNextButton = true;
-    this.slides.lockSwipes(true);
+    if(typeof this.slides != "undefined" && this.slides != null){
+      this.slides.lockSwipes(true);
+    }
+
     if(this.vacabularys == null || typeof this.vacabularys == "undefined" || this.vacabularys.length < 1){
       this.initVocabularyFiles().then( _ => {
         this.nativeSevice.hideLoading();
@@ -110,8 +155,6 @@ export class VocabularyRecordingPage {
     }else {
       this.nativeSevice.hideLoading();
     }
-
-
   }
 
 
@@ -137,6 +180,7 @@ export class VocabularyRecordingPage {
     return this.userData.findVocabulary(this.lesson.lesson_id).then( result => {
       if(result != null && typeof result != "undefined"){
         this.vacabularys = result;
+        this.handleHomework()
         console.log("initVocabularyFiles",this.vacabularys);
       }
       return
@@ -145,6 +189,9 @@ export class VocabularyRecordingPage {
   }
 
   playSampleAudio(){
+    if(this.isReview){
+      return;
+    }
     try {
       if(this.vacabularys.length < 1 ){
         return;
@@ -347,10 +394,18 @@ export class VocabularyRecordingPage {
       this.playIndex ++;
       if(this.playIndex >  this.audioPaths.length - 1){
         console.log("lesson","onSuccessAndContinuePlaying finish playing")
-        this.playIndex = 0;
+        this.showFinishPlayAll();
+        // this.playIndex = 0;
       }else {
-        console.log("lesson","continue playing..." + this.audioPaths[this.playIndex])
-        this.testPlayer = this.media.create(this.audioPaths[this.playIndex], this.onStatusUpdate, this.onSuccessAndContinuePlaying, this.onError);
+        try {
+        this.slides.lockSwipes(false);
+        this.slides.slideTo(this.playIndex);
+        this.slides.lockSwipes(true);
+        }catch (err){
+          console.error("slides Swipes",err);
+        }
+        console.log("lesson","continue playing..." + this.tools.pathForAudio(this.audioPaths[this.playIndex]))
+        this.testPlayer = this.media.create(this.tools.pathForAudio(this.audioPaths[this.playIndex]), this.onStatusUpdate, this.onSuccessAndContinuePlaying, this.onError);
         if (this.testPlayer) {
           this.testPlayer.play();
           this.isPlaying = true;
@@ -359,20 +414,26 @@ export class VocabularyRecordingPage {
     });
   }
 
-  playAll(audioArray){
-    this.audioPaths = audioArray;
-    console.log("lesson:playAll",this.audioPaths);
-    if(!this.isPlaying){
-      console.log("lesson","start playing..." + this.audioPaths[this.playIndex])
-      this.testPlayer = this.media.create(this.audioPaths[this.playIndex], this.onStatusUpdate, this.onSuccessAndContinuePlaying, this.onError);
-      if (this.testPlayer) {
-        this.testPlayer.play();
-        this.isPlaying = true;
+  playAll(){
+
+      this.audioPaths = this.homeWork.vacabulary_pronunciation;
+      console.log("lesson:playAll",this.audioPaths);
+
+      if(!this.isPlaying){
+        this.playIndex = 0;
+        console.log("lesson","start playing..." + this.tools.pathForAudio(this.audioPaths[this.playIndex]))
+
+        this.testPlayer = this.media.create(this.tools.pathForAudio(this.audioPaths[this.playIndex]), this.onStatusUpdate, this.onSuccessAndContinuePlaying, this.onError);
+        if (this.testPlayer) {
+          this.testPlayer.play();
+          this.isPlaying = true;
+        }
+      }else {
+        this.isPlaying = false;
+        this.testPlayer.stop()
       }
-    }else {
-      this.isPlaying = false;
-      this.testPlayer.stop()
-    }
+
+
   }
 
 
@@ -384,4 +445,47 @@ export class VocabularyRecordingPage {
     return newFileName;//this.vacabularys[this.currentIndex].word;
   }
 
+  private showFinishPlayAll() {
+    console.log("showFinishPlayAll")
+    let today = new Date();
+    if( this.isStudent) {
+      let alert = this.alertCtrl.create({
+        title: '回放结束',
+        subTitle: '回放结束',
+        buttons: [
+          {
+            text: '返回',
+            handler: () => {
+              console.log('close clicked');
+              this.navCtrl.pop();
+            }
+          }]
+      });
+      alert.present();
+    }else {
+      let alert = this.alertCtrl.create({
+        title: '浏览结束',
+        message: '再看一遍',
+        buttons: [
+          {
+            text: '返回上一级',
+            handler: () => {
+              console.log('Cancel clicked');
+              this.navCtrl.pop();
+            }
+          },
+          {
+            text: '再看一遍',
+            handler: () => {
+              console.log('再看一遍 clicked');
+              this.playAll()
+            }
+          }
+        ]
+      });
+      alert.present();
+    }
+
+
+  }
 }

@@ -14,9 +14,6 @@ export class DBHelper {
   public testVar: string;
   hasInitialized = false;
   db:any;
-  externalDb :any;
-  CITY_DB_DIR:string = "assets/data/china-city-master"
-  CITY_DB_FILE:string = "city.db"
 
 
   // vacabularys = [];
@@ -34,23 +31,58 @@ export class DBHelper {
     platform.ready().then(() => {
       StatusBar.styleDefault();
       this.db = new SQLite();
-      this.externalDb = new SQLite();
       this.db.openDatabase({
         name: "data.db",
         location: "default"
       }).then(() => {
-        this.createTable("CREATE TABLE IF NOT EXISTS tb_user (id INTEGER PRIMARY KEY AUTOINCREMENT, user_id INTEGER UNIQUE, avatar TEXT,user_name TEXT,phone TEXT)");
-        this.createTable("CREATE TABLE IF NOT EXISTS tb_chat (id INTEGER PRIMARY KEY AUTOINCREMENT, sender_id INTEGER, receiver_id INTEGER,chatdatas VARCHAR(255))");
-        this.createTable("CREATE TABLE IF NOT EXISTS tb_lesson (id INTEGER PRIMARY KEY AUTOINCREMENT, lesson_id INTEGER,created_date DATETIME, lesson_name TEXT,teacher_id INTEGER,modified_date DATETIME,lesson_order INTEGER,book_id INTEGER,vocabulary VARCHAR(255))");
-        this.createTable("CREATE TABLE IF NOT EXISTS tb_vocabulary (id INTEGER PRIMARY KEY AUTOINCREMENT, vocabulary_id INTEGER,word TEXT,mean TEXT, pronunciation TEXT,lesson_id INTEGER,explain TEXT,explain_img TEXT,audio TEXT,audio_url TEXT,recite_wrong_times INTEGER DEFAULT 0)");
-        this.createTable("CREATE TABLE IF NOT EXISTS tb_book (id INTEGER PRIMARY KEY AUTOINCREMENT, book_id  INTEGER,book_name TEXT,book_profile TEXT, book_author TEXT,book_remark TEXT,timespan INTEGER,created_date DATETIME,modified_date DATETIME,intro_video TEXT)");
-        this.createTable("CREATE TABLE IF NOT EXISTS tb_vocabulary_result (id INTEGER PRIMARY KEY AUTOINCREMENT, lesson_id  INTEGER,wrong_times INTEGER,created_date DATETIME)");
+      this.initDb().then( _ => {
+        this.events.publish('db:init');
+      })
+
       }, (error) => {
         console.error("Unable to open database", error);
       });
     }).catch( err => {
       console.error("create table",err);
     })
+  }
+
+
+
+  initDb():Promise<any>{
+    let arrPromise = [];
+    let promise1 =   this.createTable("CREATE TABLE IF NOT EXISTS tb_user (id INTEGER PRIMARY KEY AUTOINCREMENT, user_id INTEGER UNIQUE, avatar TEXT,user_name TEXT,phone TEXT)")
+      .then( result => Promise.resolve(result) )
+      .catch( error => Promise.resolve( [] ) );
+    arrPromise.push(promise1);
+    let promise2 =    this.createTable("CREATE TABLE IF NOT EXISTS tb_chat (id INTEGER PRIMARY KEY AUTOINCREMENT, sender_id INTEGER, receiver_id INTEGER,chatdatas VARCHAR(255))")
+      .then( result => Promise.resolve(result) )
+      .catch( error => Promise.resolve( [] ) );
+    arrPromise.push(promise2);
+    let promise3 =    this.createTable("CREATE TABLE IF NOT EXISTS tb_lesson (id INTEGER PRIMARY KEY AUTOINCREMENT, lesson_id INTEGER,created_date DATETIME, lesson_name TEXT,teacher_id INTEGER,modified_date DATETIME,lesson_order INTEGER,book_id INTEGER,vocabulary VARCHAR(255))")
+      .then( result => Promise.resolve(result) )
+      .catch( error => Promise.resolve( [] ) );
+    arrPromise.push(promise3);
+    let promise4 =   this.createTable("CREATE TABLE IF NOT EXISTS tb_vocabulary (id INTEGER PRIMARY KEY AUTOINCREMENT, vocabulary_id INTEGER,word TEXT,mean TEXT, pronunciation TEXT,lesson_id INTEGER,explain TEXT,explain_img TEXT,audio TEXT,audio_url TEXT,recite_wrong_times INTEGER DEFAULT 0)")
+      .then( result => Promise.resolve(result) )
+      .catch( error => Promise.resolve( [] ) );
+    arrPromise.push(promise4);
+    let promise5 =   this.createTable("CREATE TABLE IF NOT EXISTS tb_book (id INTEGER PRIMARY KEY AUTOINCREMENT, book_id  INTEGER,book_name TEXT,book_profile TEXT, book_author TEXT,book_remark TEXT,timespan INTEGER,created_date DATETIME,modified_date DATETIME,intro_video TEXT)")
+      .then( result => Promise.resolve(result) )
+      .catch( error => Promise.resolve( [] ) );
+    arrPromise.push(promise5);
+    let promise6 =   this.createTable("CREATE TABLE IF NOT EXISTS tb_vocabulary_result (id INTEGER PRIMARY KEY AUTOINCREMENT, lesson_id  INTEGER,wrong_times INTEGER,created_date DATETIME)")
+      .then( result => Promise.resolve(result) )
+      .catch( error => Promise.resolve( [] ) );
+    arrPromise.push(promise6);
+
+    return   Promise.all(arrPromise).then(data => {
+      console.log("initDb",)
+      return true;
+    }, err => {
+      console.error("initDb" , err);
+      return false;
+    });
   }
 
   getUserInfo(user_id):Promise<any>{
@@ -94,7 +126,9 @@ export class DBHelper {
         .then(function (res) {
           let vocabulary = [];
           if (res.rows.length > 0) {
-            vocabulary = res.rows;
+            for(var i = 0; i < res.rows.length; i++) {
+              vocabulary.push(res.rows.item(i));
+            }
             console.log("SELECTED -> " + res.rows);
           } else {
             console.log("No results found");
@@ -123,7 +157,9 @@ export class DBHelper {
           .then(function (res) {
             let vocabulary = [];
             if (res.rows.length > 0) {
-              vocabulary = res.rows;
+              for(var i = 0; i < res.rows.length; i++) {
+                vocabulary.push(res.rows.item(i));
+              }
               console.log("SELECTED -> " + res.rows);
             } else {
               console.log("No results found");
@@ -150,9 +186,11 @@ export class DBHelper {
       let query = "SELECT *  FROM tb_vocabulary ORDER BY RAND() LIMIT 3 WHERE vocabulary_id != ?";
       return this.db.executeSql(query, [vocabulary.vocabulary_id])
         .then(function (res) {
-          let vocabularies = {};
+          let vocabularies = [];
           if (res.rows.length > 0) {
-            vocabularies = res.rows;
+            for(var i = 0; i < res.rows.length; i++) {
+              vocabularies.push(res.rows.item(i));
+            }
             console.log("SELECTED -> " + vocabularies);
           } else {
             console.log("No results found");
@@ -210,7 +248,16 @@ export class DBHelper {
       let query = "SELECT * FROM tb_vocabulary_result  WHERE lesson_id=$1 ORDER BY created_date DESC";
       return  this.db.executeSql( query, [lesson_id])
         .then(function(res) {
-          return res.rows.item;
+
+          let results = [];
+          if (res.rows.length > 0) {
+            for (var i = 0; i < res.rows.length; i++) {
+              results.push(res.rows.item(i));
+            }
+          }else {
+            console.log("No results found");
+          }
+          return results;
         }, function (err) {
           // console.error(err);
           throw err;
@@ -228,7 +275,7 @@ export class DBHelper {
         if(!this.nativeServic.isMobile()){
           return;
         }
-         let query = "INSERT INTO tb_vocabulary_result (lesson_id,created_date,wrong_times) VALUES ($1,$2,$3)";
+         let query = "INSERT INTO tb_vocabulary_result (lesson_id,created_date,wrong_times) VALUES (?,?,?)";
           this.db.executeSql( query, [result.lesson_id,result.created_date,result.wrong_times])
             .then(function(res) {
               return true;
@@ -251,7 +298,7 @@ export class DBHelper {
       return this.getUserInfo(vocabulary.vocabulary_id)
         .then( (vocabularyOld) => {
           let query = "";
-          if(vocabularyOld.length <0){
+          if(Object.keys(vocabularyOld).length === 0 && vocabularyOld.constructor === Object){
             query = "INSERT INTO tb_vocabulary (vocabulary_id, word,pronunciation,lesson_id,audio,explain,explain_img) VALUES ($1,$2,$3,$4,$5,$6,$7)";
           }else {
             query = "UPDATE tb_vocabulary SET vocabulary_id=$1,word=$2,pronunciation=$3,lesson_id=$4,audio=$5,explain=$6,explain_img=$7  where vocabulary_id=$1"
@@ -282,7 +329,7 @@ export class DBHelper {
      return this.getUserInfo(userInfo.user_id)
        .then( (userInfoOld) => {
         let query = "";
-        if(userInfoOld.length <0){
+         if(Object.keys(userInfoOld).length === 0 && userInfoOld.constructor === Object){
           query = "INSERT INTO tb_user (user_id, user_name,avatar,phone) VALUES ($1,$2,$3,$4)";
         }else {
           query = "UPDATE tb_user SET user_id=$1,user_name=$2,avatar=$3,phone=$4 where user_id=$1"
@@ -305,9 +352,10 @@ export class DBHelper {
 
   }
 
-  createTable(sqlStatement){
-    this.db.executeSql(sqlStatement, {}).then((data) => {
+  createTable(sqlStatement):Promise<any>{
+   return this.db.executeSql(sqlStatement, {}).then((data) => {
       console.log("TABLE CREATED: ", data);
+     return data;
     }, (error) => {
       console.error("Unable to execute sql", error);
       throw error;
@@ -341,19 +389,19 @@ export class DBHelper {
       return this.getLessonInfo(lessonInfo.lesson_id)
         .then( (lessonInfoOld) => {
           let query = "";
-          if(lessonInfoOld.length <0){
-            query = "INSERT INTO tb_lesson(lesson_id,book_id,lesson_name,lesson_order,created_date) VALUES($1, $2, $3, $4,$5)";
+          if(Object.keys(lessonInfoOld).length === 0 && lessonInfoOld.constructor === Object){
+            query = "INSERT INTO tb_lesson(lesson_id,book_id,lesson_name,lesson_order,created_date) VALUES($1,$2,$3,$4,$5)";
           }else {
             query = "UPDATE tb_lesson SET lesson_id=$1,book_id=$2,lesson_name=$3,lesson_order=$4,modified_date=$5 where lesson_id=$1"
           }
-
+          console.log("updateLesson,executeSql",query)
           this.db.executeSql( query, [lessonInfo.lesson_id,lessonInfo.book_id,lessonInfo.lesson_name,lessonInfo.lesson_order,lessonInfo.date])
             .then(function(res) {
-
+              console.log("updateLesson,executeSql",res)
               return true;
             }, function (err) {
+              console.error("updateLesson,executeSql",err)
               // console.error(err);
-
               throw err;
             });
         })
@@ -365,35 +413,42 @@ export class DBHelper {
   }
 
   updateBook(bookInfo):Promise<any>{
-    console.log("updateBook,update in local sqlite")
     return this.platform.ready().then(() => {
       if(!this.nativeServic.isMobile()){
         return;
       }
-      return this.getBookInfo(bookInfo.book_id)
-        .then( (lessonInfoOld) => {
-          let query = "";
-          if(lessonInfoOld.length <0){
-            query = "INSERT INTO tb_book(book_id,book_name,book_profile, book_author,book_remark,timespan,created_date,intro_video) values($1, $2, $3, $4,$5,$6,$7,$8)";
-          }else {
-            query = "UPDATE tb_book SET book_id=$1,book_name=$2,book_profile=$3,book_author=$4,book_remark=$5,timespan=$6,modified_date=$7,intro_video=$8 where book_id=$1"
-          }
+      return this.db.openDatabase({
+        name: "data.db",
+        location: "default"
+      }).then(() => {
+        return this.getBookInfo(bookInfo.book_id)
+          .then((lessonInfoOld) => {
+            let query = "";
+            if (Object.keys(lessonInfoOld).length === 0 && lessonInfoOld.constructor === Object) {
+              query = "INSERT INTO tb_book(book_id,book_name,book_profile, book_author,book_remark,timespan,created_date,intro_video) values(?, ?, ?, ?,?,?,?,?) RETURNING *";
+            } else {
+              query = "UPDATE tb_book SET book_id=$1,book_name=$2,book_profile=$3,book_author=$4,book_remark=$5,timespan=$6,modified_date=$7,intro_video=$8 where book_id=$1"
+            }
 
-          this.db.executeSql( query, [bookInfo.book_id,bookInfo.book_name,bookInfo.book_profile,bookInfo.book_author,bookInfo.book_remark,bookInfo.timespan,bookInfo.modified_date,bookInfo.intro_video])
-            .then(function(res) {
+            console.log("updateBook,update in local sqlite",query)
+            this.db.executeSql(query, [bookInfo.book_id, bookInfo.book_name, bookInfo.book_profile, bookInfo.book_author, bookInfo.book_remark, bookInfo.timespan, bookInfo.modified_date, bookInfo.intro_video])
+              .then(function (res) {
+                console.log("updateBook,update in local sqlite", res)
+                return true;
+              }, function (err) {
+                // console.error(err);
 
-              return true;
-            }, function (err) {
-              // console.error(err);
-
-              throw err;
-            });
-        })
+                throw err;
+              });
+          })
+      }).catch( err => {
+        console.error(err);
+        // throw err;
+      })
     }).catch( err => {
       console.error(err);
       // throw err;
     })
-
   }
 
   getLessons(book_id: any):Promise<any> {
@@ -401,12 +456,15 @@ export class DBHelper {
       if(!this.nativeServic.isMobile()){
         return [];
       }
-      let query = "SELECT * FROM tb_lesson where book_id=$1 ORDER BY lesson_order";
+      let query = "SELECT * FROM tb_lesson where book_id=? ORDER BY lesson_order";
       return this.db.executeSql(query,[book_id])
         .then(function (res) {
+          console.log("getLessons",res);
           let lessons = [];
           if (res.rows.length > 0) {
-            lessons = res.rows;
+            for(var i = 0; i < res.rows.length; i++) {
+              lessons.push(res.rows.item(i));
+            }
             console.log("SELECTED -> " + res.rows);
           } else {
             console.log("No results found");
@@ -430,20 +488,33 @@ export class DBHelper {
       }else{
         let query = "SELECT * FROM tb_book";
         console.log("getBooks",query);
-        return this.db.executeSql(query,[])
-          .then(function (res) {
-            let books = [];
-            if (res.rows.length > 0) {
-              books = res.rows;
-              console.log("SELECTED -> " + res.rows);
-            } else {
-              console.log("No results found");
-            }
-            return books;
-          }, function (err) {
-            // console.error(err);
-            throw err;
-          });
+        // this.db = new SQLite();
+        return this.db.openDatabase({
+          name: "data.db",
+          location: "default"
+        }).then(() => {
+          return this.db.executeSql(query, [])
+            .then(function (res) {
+              let books = [];
+              if (res.rows.length > 0) {
+
+                  for(var i = 0; i < res.rows.length; i++) {
+                    books.push(res.rows.item(i));
+                  }
+
+                // books = res.rows;
+                console.log("SELECTED -> " + books);
+              } else {
+                console.log("No results found");
+              }
+              return books;
+            }, function (err) {
+              // console.error(err);
+              throw err;
+            });
+        }).catch( e => {
+          console.error("getBooks",e);
+        })
       }
     }).catch( err => {
       // console.error(err);
@@ -485,7 +556,7 @@ export class DBHelper {
         return {};
       }
       let query = "SELECT * FROM tb_lesson WHERE lesson_id = ?";
-      return this.db.executeSql(query, [lesson_id])
+      return this.db.executeSql(query, {lesson_id})
         .then(function (res) {
           let lessonInfo = {};
           if (res.rows.length > 0) {
@@ -536,100 +607,5 @@ export class DBHelper {
     })
   }
 
-  getAllProvinces() :Promise<any>{
-   return this.platform.ready().then(() => {
-      let cities = []
-     return   this.externalDb .openDatabase({
-       name: this.CITY_DB_FILE,
-       location: this.CITY_DB_DIR
-      }).then(() => {
-        let query = "SELECT * FROM province";
-        return this.externalDb.executeSql(query, [])
-          .then(function (res) {
-            if (res.rows.length > 0) {
-              cities =   res.rows.item;
-              console.log("SELECTED -> " + cities);
-            } else {
-              console.log("No results found");
-            }
-
-            return cities;
-          }, function (err) {
-            // console.error(err);
-            throw err;
-          });
-      }, (error) => {
-        console.error("Unable to open database", error);
-        throw error;
-      });
-    }).catch( err => {
-      console.error("create table",err);
-      throw err;
-    })
-  }
-
-  getAllCities() :Promise<any>{
-    return this.platform.ready().then(() => {
-      let cities = []
-      return   this.externalDb .openDatabase({
-        name: this.CITY_DB_FILE,
-        location: this.CITY_DB_DIR
-      }).then(() => {
-        let query = "SELECT * FROM city";
-        return this.externalDb.executeSql(query, [])
-          .then(function (res) {
-            if (res.rows.length > 0) {
-              cities =   res.rows.item;
-              console.log("SELECTED -> " + cities);
-            } else {
-              console.log("No results found");
-            }
-
-            return cities;
-          }, function (err) {
-            // console.error(err);
-            throw err;
-          });
-      }, (error) => {
-        console.error("Unable to open database", error);
-        throw error;
-      });
-    }).catch( err => {
-      console.error("create table",err);
-      throw err;
-    })
-  }
-
-  getAllSubCities() :Promise<any>{
-    return this.platform.ready().then(() => {
-      let cities = []
-      return   this.externalDb .openDatabase({
-        name: this.CITY_DB_FILE,
-        location: this.CITY_DB_DIR
-      }).then(() => {
-        let query = "SELECT * FROM country";
-        return this.externalDb.executeSql(query, [])
-          .then(function (res) {
-            if (res.rows.length > 0) {
-              cities =   res.rows.item;
-              console.log("SELECTED -> " + cities);
-            } else {
-              console.log("No results found");
-            }
-
-            return cities;
-          }, function (err) {
-            // console.error(err);
-            throw err;
-          });
-      }, (error) => {
-        console.error("Unable to open database", error);
-        throw error;
-      });
-    }).catch( err => {
-      console.error("create table",err);
-      throw err;
-    })
-  }
 
 }

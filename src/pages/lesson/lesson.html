@@ -315,7 +315,7 @@
 
               <div class="first-enter"  *ngSwitchCase="0">
                 <p class="info">空旷旷,马上点击下面按钮开始作业吧</p>
-                <button class="bt-start-dub" (click)="startVocabularyRecording()">
+                <button class="bt-start-dub" (click)="startVocabularyRecording(true)">
                   <img width="60" height="60" class="input-img"  src="assets/img/start.png" />
                 </button>
                 <p class="bt-text">录音练习</p>
@@ -324,7 +324,11 @@
               <div class="review" *ngSwitchCase="1">
 
                 <p class="info">上次作业于{{submittedHomework.created_date}}成功提交</p>
-                <p class="bt-text">来自老师的留言:{{submittedHomework.commentary}} </p>
+                <!--<p class="bt-text">来自老师的留言:{{submittedHomework.commentary}} </p>-->
+                <button class="bt-start-dub" (click)="startVocabularyRecording(true)">
+                  <img width="60" height="60" class="input-img"  src="assets/img/start.png" />
+                </button>
+                <p class="bt-text">预览</p>
               </div>
 
             </div>

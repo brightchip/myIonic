@@ -121,7 +121,7 @@ export class LessonPage {
 
   ionViewDidEnter(){
     console.log("lesson:ionViewDidEnter")
-    this.viewState = 0;
+    // this.viewState = 0;
     this.updateLessonInfo();
     this.initCurrentPage();
 
@@ -371,8 +371,8 @@ export class LessonPage {
     this.navCtrl.push(VideoDubbingPage,{lesson:this.lesson });
   }
 
-  startVocabularyRecording(){
-    this.navCtrl.push(VocabularyRecordingPage,{lesson:this.lesson });
+  startVocabularyRecording(isStudent){
+    this.navCtrl.push(VocabularyRecordingPage,{lesson:this.lesson,homeWork:this.submittedHomework ,isStudent:isStudent});
   }
 
   startImgSelectiong(){
@@ -619,6 +619,10 @@ export class LessonPage {
       }
       // this.submitState = 1;
     })
+  }
+
+  viewhomework(){
+
   }
 
   public timestampToDate(unix_timestamp){

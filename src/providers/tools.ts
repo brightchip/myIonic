@@ -99,53 +99,64 @@ export class Tools{
     });
   }
 
-  downloadAllhomeworks(arrHomeworkCollection):Promise<any>{
-    return this.file.checkDir(this.ROOT_DIR, this.AUDIO_DIR_NAME).then((exist) =>{
-      console.log('Directory exists')
-      return    this.checkAllHomeworks(arrHomeworkCollection,this.ROOT_DIR + this.AUDIO_DIR_NAME,this.BASE_URL);
-    }).catch((err) => {            //checkin dir error
-      this.file.createDir(this.ROOT_DIR , this.AUDIO_DIR_NAME , true).then(() => {
-        return this.checkAllHomeworks(arrHomeworkCollection, this.ROOT_DIR + this.AUDIO_DIR_NAME, this.BASE_URL);
-      })
-        .catch((err) => {
-          console.log("error during creating directory", err)
-        });
-      console.log('Directory not exists')
+  downloadAllhomeworks(arrHomework):Promise<any>{
+    console.log("downloadAllhomeworks...",arrHomework );
+    var downloadFinshPro = [];
+    for(let i =0;i<arrHomework.length;i++){
+      let downloadPro =  this.downloadHomework(arrHomework[i])
+        .then( result => Promise.resolve(result) )
+        .catch( error => Promise.resolve( [] ) );
+      downloadFinshPro.push(downloadPro);
+    }
+    console.log("downloadAllhomeworks","Promise all...");
+    return   Promise.all(downloadFinshPro).then(data => {
+      console.log("downloadAllhomeworks","finished" )
+      return true;
+    }, err => {
+      console.log("downloadAllhomeworks", "Error while download file " + err);
+      return false;
+    });
+
+  }
+
+  downloadHomework(homework):Promise<any>{
+      let student_id = homework.student_id;
+      let arrAudioFiles = homework.vacabulary_pronunciation;
+      let downloadFinshPro = [];
+      // let homeworkdata = {student_id:student_id,audios:downloadForlder + "/" + arrAudioFiles }
+      // arrHomeworkData.push(homeworkdata);
+    for(let i =0;i<arrAudioFiles.length;i++){
+      let downloadPro =  this.downloadAudio(arrAudioFiles[i])
+        .then( result => Promise.resolve(result) )
+        .catch( error => Promise.resolve( [] ) );
+      downloadFinshPro.push(downloadPro);
+    }
+    console.log("downloadHomework","Promise all...");
+    return   Promise.all(downloadFinshPro).then(data => {
+      console.log("downloadHomework","finished student_id :" + student_id)
+      return true;
+    }, err => {
+      console.log("downloadHomework", "Error while download file " + err);
+      return false;
     });
   }
 
-  checkAllHomeworks(arrHomework,downloadForlder,baseUrl) : Promise<boolean>{
-    console.log("checkAllHomeworks..."  );
-    var promises = [];
+  public downloadAudio(fileName:string) :Promise<any> {
+    console.log('downloadAudio : fileName', fileName);
+    return this.file.checkDir(this.ROOT_DIR, this.AUDIO_DIR_NAME).then((exist) => {
+      console.log('Directory exists')
+      return  this.downloadFileFromSpecifiedLink(this.BASE_URL + "download" + "?fileName=" + fileName + "&fileType=audio" , this.getAudioUrl(fileName)).then((result) => {
+        console.log('downloadAudio result' + result);
+        return result;
+      });
+    }).catch((err) => {            //checkin dir error
+      return  this.file.createDir(this.ROOT_DIR, this.AUDIO_DIR_NAME, true).then(() => {
+        this.downloadFileFromSpecifiedLink(this.BASE_URL + "download" + "?fileName=" + fileName + "&fileType=audio", this.getAudioUrl(fileName)).then((result) => {
+          console.log('downloadAudio result' + result);
+          return result;
+        });
+      })
 
-    var arrHomeworkData = [];
-    var self = this;
-
-    arrHomework.forEach(function (homework) {
-      let studen_phone = homework.student_phone;
-      let arrAudioFiles = homework.vacabulary_pronunciation;
-      let homeworkdata = {studen_phone:studen_phone,audios:downloadForlder + "/" + arrAudioFiles }
-      arrHomeworkData.push(homeworkdata);
-
-      let checkHomeworkPromise =    self.downloadMultiFiles(self,studen_phone,arrAudioFiles,"audios",downloadForlder,baseUrl,self.fileTransfer,self.file)
-        .then( result => Promise.resolve(result) )
-        .catch( error => Promise.resolve( [] ) );
-
-      promises.push(checkHomeworkPromise);
-      console.log("checkAllHomeworks","studen_phone:" + studen_phone + " audio files:" + arrAudioFiles);
-    });
-
-    // this.userData.saveHomeworkData(arrHomeworkData);
-
-    console.log("checkAllHomeworks","Promise all...");
-    return   Promise.all(promises).then(data => {
-      console.log("checkAllHomeworks", "finished" );
-      console.log("checkAllHomeworks", "finished" );
-      return true;
-    }, err => {
-
-      console.log("checkAllHomeworks", "Error while checking All Homeworks" );
-      return false;
     });
   }
 
@@ -250,7 +261,7 @@ export class Tools{
 
   public downloadImg(fileName:string) {
     console.log('downloadImg : fileName' , fileName);
-    this.downloadFileFromSpecifiedLink(this.BASE_URL + "download" + "?fileName=" + fileName,this.getImageUrl(fileName)).then((result) => {
+    this.downloadFileFromSpecifiedLink(this.BASE_URL + "download" + "?fileName=" + fileName + "&fileType=img",this.getImageUrl(fileName)).then((result) => {
       console.log('downloadImg result' + result);
     });
   }
@@ -594,6 +605,13 @@ export class Tools{
       return '';
     } else {
       return this.IMAGE_DIR+ "/" + img;
+    }
+  }
+  public pathForAudio(audio) {
+    if (audio === null) {
+      return '';
+    } else {
+      return this.AUDIO_DIR+ "/" + audio;
     }
   }
 

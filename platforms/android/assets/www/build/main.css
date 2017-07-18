@@ -70729,6 +70729,22 @@ vocabulary-recording .voice-recorder div .bt-recorder ion-icon {
   font-size: 60px;
 }
 
+vocabulary-recording .voice-recorder div .review {
+  width: 100%;
+}
+
+vocabulary-recording .voice-recorder div .bt-playAll {
+  background-color: transparent;
+}
+
+vocabulary-recording .voice-recorder div .bt-info {
+  text-align: center;
+}
+
+vocabulary-recording .voice-recorder div .bt-playAll ion-icon {
+  font-size: 60px;
+}
+
 vocabulary-recording .bt-box {
   -webkit-flex-direction: column;
   -ms-flex-direction: column;

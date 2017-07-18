@@ -32,7 +32,7 @@ export class VocabularySelectingPage {
   isPlaying:boolean = null;
   SELECT_RIGHT_AUDIO = "assets/audio/right.mp3";
   SELECT_WRONG_AUDIO = "assets/audio/wrong.mp3";
-  vacabularys :any;
+  vacabularys :any = [];
   isPickWrong = null;
   recorder: MediaObject;
   btRecorder:any;

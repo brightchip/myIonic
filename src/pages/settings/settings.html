@@ -55,6 +55,23 @@
       <!--<ion-icon item-right name="arrow-forward"></ion-icon>-->
     </ion-item>
 
+    <ion-item detail-push (click)="setLocation()">
+      <ion-icon item-left name="settings"></ion-icon>
+      <!--<button  ion-item (click)="findOrder()">-->
+      我的位置
+      <city-picker item-content
+                   [cancelText]="'取消'"
+                   [doneText]="'完成'"
+                   [separator]="' - '"
+                   [citiesData]="cityData"
+                   [(ngModel)]="cityName"
+                   (ionChange)="cityChange($event)">
+
+      </city-picker>
+      <!--</button>-->
+      <!--<ion-icon item-right name="arrow-forward"></ion-icon>-->
+    </ion-item>
+
     <ion-item *ngIf="userData.userInfo.identity == MyUserType.principal" detail-push (click)="showSchoolSetting()">
       <ion-icon item-left name="settings"></ion-icon>
       <!--<button  ion-item (click)="findOrder()">-->

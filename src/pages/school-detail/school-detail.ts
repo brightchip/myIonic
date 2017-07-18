@@ -20,6 +20,9 @@ export class SchoolDetailPage {
 
   school_parts: string = "preview";
 
+  TEXT_SUBSCRIBE = "报名该校";
+
+
 
   constructor(
     public actionSheetCtrl: ActionSheetController,
@@ -39,6 +42,10 @@ export class SchoolDetailPage {
 
   segmentChanged(){
 
+  }
+
+  subscribeSchool(){
+    console.log("subscribeSchool",this.school)
   }
 
 }

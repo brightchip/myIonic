@@ -106,7 +106,10 @@ export class WebsocketEntity {
   closeConnection(){
     console.log("websocket","close connection")
     // this.ws.close(false);    // close
-    this.ws.close(true);    // close immediately
+    if(this.ws != null && typeof this.ws != "undefined"){
+      this.ws.close(true);    // close immediately
+    }
+
   }
 
   private handle(eventObj: any) {

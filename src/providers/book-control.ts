@@ -13,6 +13,7 @@ import {httpEntity} from "./httpEntity";
 import {DBHelper} from "./dbhelper";
 import {Http} from '@angular/http';
 import 'rxjs/Rx';
+import {Events} from "ionic-angular";
 @Injectable()
 export class BookControl {
 
@@ -31,13 +32,27 @@ export class BookControl {
     public userData: UserData,
     public httpTools:httpEntity,
     public dbHelper : DBHelper,
+    public events: Events,
     public  http:Http
   ) {
     // this.loadCourses();
+    this.listenToLoginEvents();
+  }
+
+  listenToLoginEvents() {
+    this.events.subscribe('db:init', () => {
+      // this.enableMenu(true);
+      this.loadCourses();
+      // this.loadCourses().then( (data) => {
+      //   this.MyRecommedCourses = this.bookControl.specialCourses;
+      // })
+
+
+      console.log("app component", "login")
+    });
   }
 
   loadCourses() : Promise<any>{
-
     return new Promise(resolve => {
       if(this.specialCourses.length < 1){
         console.log("loadCourses initlize courses")

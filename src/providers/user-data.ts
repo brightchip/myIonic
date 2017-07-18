@@ -23,6 +23,8 @@ export class UserData {
   testVar: string;
   public userInfo: any = {};
 
+  hasNewUpdate = true;
+
   constructor(public events: Events,
               public storage: Storage,
               private tools: Tools,
@@ -394,7 +396,26 @@ export class UserData {
     })
   }
 
+  updateLocation(city) {
 
+      var reqData = JSON.stringify(city);
+      let headers = new Headers();
+      headers.append('Authorization', this.auth.token);
+
+      console.log("updateLocation", this.BASE_URL  + "updateLocation" , reqData,{headers: headers});
+      return  this.httpTools.sendPost(this.BASE_URL + "updateLocation", reqData,{headers: headers})
+        .toPromise()
+        .then(resData => {
+          let  data =  JSON.parse(resData._body);  //1ss
+          console.log("success" , data.data.checkin_count );
+        }, error => {
+          this.tools.presentErrorAlert("更新失败","请检查网络")
+          console.log("updateLocation" ,"err " , error);
+          this.handleError(error);
+          throw (error);
+
+        })
+  }
 
   forgetPassword(password) {
 
@@ -848,6 +869,7 @@ export class UserData {
       .then(resData => {
         console.log("retriveStudentHomework data ? ", resData);
 
+
         return resData.data;
       }, error => {
         console.log("retriveStudentHomework failed", error);
@@ -947,13 +969,13 @@ export class UserData {
     var courseList = []
     return this.dbHelper.getBooks().then( (books) => {
       console.log("findCourses from local cache", books)
-      if(typeof  books != "undefined" && books != null && books.length > 1) {
+      if(typeof  books != "undefined" && books != null && books.length > 1 && !this.hasNewUpdate) {
         courseList = this.tools.deepClone(books);
         return courseList;
       }else {
         return this.retriveBookList().then(booksNew => {
           if(typeof  booksNew != "undefined" && booksNew != null && booksNew.length > 1) {
-            console.log("findCourses",booksNew)
+            // console.log("findCourses",booksNew)
             for(let i =0;i<booksNew.length;i++) {
               //add to local database
               this.dbHelper.updateBook(booksNew[i]);//update local user table
@@ -979,13 +1001,13 @@ export class UserData {
   findLessons(bookInfo):Promise<any>{
     var lessonList = []
     return this.dbHelper.getLessons(bookInfo.book_id).then( (lessonListOld) => {
-      if(typeof  lessonListOld != "undefined" && lessonListOld != null && lessonListOld.length > 1) {
-        console.log("getLessons of", bookInfo.book_id, lessonListOld)
+      console.log("getLessons of", bookInfo.book_id, lessonListOld)
+      if(typeof  lessonListOld != "undefined" && lessonListOld != null && lessonListOld.length > 0 && !this.hasNewUpdate) {
         lessonList = this.tools.deepClone(lessonListOld);
         return lessonList;
       }else {
         return this.retriveLessonList(bookInfo.book_id).then( lessonListNew => {
-          if(typeof  lessonListNew != "undefined" && lessonListNew != null && lessonListNew.length > 1) {
+          if(typeof  lessonListNew != "undefined" && lessonListNew != null && lessonListNew.length > 0) {
 
 
             for(let i =0;i<lessonListNew.length;i++){
@@ -1076,7 +1098,7 @@ export class UserData {
     console.log("findVocabulary",lesson_id);
     var vocabularys = []
     return this.dbHelper.getVocabularys(lesson_id).then( (vocabularysOld) => {
-      if(typeof  vocabularysOld != "undefined" && vocabularysOld != null && vocabularysOld.length > 1) {
+      if(typeof  vocabularysOld != "undefined" && vocabularysOld != null && vocabularysOld.length > 1 && !this.hasNewUpdate) {
         console.log("findVocabulary from local cache", vocabularysOld)
         for (let i = 0; i < vocabularysOld.length; i++) {
           console.log("findVocabulary process", vocabularysOld[i])
@@ -1145,7 +1167,7 @@ export class UserData {
     var vocabularys = []
   return  this.dbHelper.getCoolPlayVocabularys(lesson_id).then( (vocabularysOld) => {
 
-      if(typeof  vocabularysOld != "undefined" && vocabularysOld != null && vocabularysOld.length > 1) {
+      if(typeof  vocabularysOld != "undefined" && vocabularysOld != null && vocabularysOld.length > 1 && !this.hasNewUpdate) {
           console.log("findCoolPlayVocabulary of" , lesson_id,vocabularysOld,vocabularysOld.length)
 
           for (let i = 0; i < vocabularysOld.length; i++) {
@@ -1254,5 +1276,6 @@ export class UserData {
       this.loginExpaired();
     }
   }
+
 
 }

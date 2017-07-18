@@ -87,7 +87,7 @@ export class ConferenceApp {
     public toastCtrl:ToastController,
     public dbHelper:DBHelper,
     public nativeService:NativeService,
-    // public bookControl:BookControl,
+    public bookControl:BookControl,
       // page: PageInterface,
 
     public helper:Helper,

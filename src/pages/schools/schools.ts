@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, NgZone} from '@angular/core';
 
 import { ActionSheet, ActionSheetController,  NavController,NavParams } from 'ionic-angular';
 
@@ -44,7 +44,8 @@ export class SchoolListPage {
     public navCtrl: NavController,
     public  navParams: NavParams,
     public httpTool: httpEntity,
-    public userData: UserData
+    public userData: UserData,
+  public ngZone:NgZone,
   ) {
     console.log("Passed params", navParams.data);
     this.setCityPickerData();
@@ -62,7 +63,10 @@ export class SchoolListPage {
   setCityPickerData(){
     this.httpTool.getCitiesData()
       .then( data => {
-        this.cityData = data;
+        this.ngZone.run( () => {
+          this.cityData = data;
+          console.log("setCityPickerData", this.cityData)
+        })
       });
   }
 
@@ -72,7 +76,11 @@ export class SchoolListPage {
    */
   cityChange(event){
     console.log(event);
-    this.code = event['region'].value
+    this.ngZone.run( () => {
+      this.code = event['region'].value
+      console.log("cityChange",this.cityName)
+    })
+
   }
 
   // onProvinceChange(){

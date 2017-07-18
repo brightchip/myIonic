@@ -63,6 +63,7 @@ import {CityPickerModule} from "ionic2-city-picker";
 import {MarketPage} from "../pages/markets/markets";
 import {Helper} from "../providers/Helper";
 import {JPush} from "ionic3-jpush";
+import {SQLite} from "ionic-native";
 
 
 // import { BackgroundGeolocation } from '@ionic-native/background-geolocation';
@@ -175,7 +176,8 @@ import {JPush} from "ionic3-jpush";
     Geolocation,
     BookControl,
     Helper,
-    JPush
+    JPush,
+    SQLite,
 
     // Lessons
     // AngularInview

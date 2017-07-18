@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, NgZone} from '@angular/core';
 
 import { ActionSheet, ActionSheetController, Config, NavController,NavParams } from 'ionic-angular';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
@@ -29,7 +29,7 @@ export class CoursePage {
   showNothing = null;
 
 
-  myLessonList:any[]=[];
+  myLessonList:any = [];
   private selectedCourse: any;
 
 
@@ -39,7 +39,8 @@ export class CoursePage {
               public userData: UserData,
               public config: Config,
               public inAppBrowser: InAppBrowser,
-              public nativeSevice:NativeService
+              public nativeSevice:NativeService,
+              public ngZone:NgZone
               ) {
 
     this.selectedCourse =   this.navParams.get('course');
@@ -63,8 +64,11 @@ export class CoursePage {
 
     this.userData.findLessons(this.selectedCourse).then( result => {
       if(result != null && typeof result != "undefined"){
-        this.myLessonList = result;
-        console.log("init myLessonList",this.myLessonList);
+        this.ngZone.run(()=>{
+          this.myLessonList = result;
+          console.log("init myLessonList",this.myLessonList);
+        });
+
       }
       if(this.myLessonList.length < 1){
         this.showNothing = true;
