@@ -92,7 +92,11 @@ export class SettingsPage {
       .then( data => {
         this.ngZone.run( () => {
           this.cityData = data;
-          console.log("setCityPickerData", this.cityData)
+          if(this.userData.userInfo.location != null && typeof  this.userData.userInfo.location != "undefined"){
+            this.cityName = this.userData.userInfo.location;
+          }
+
+          console.log("setCityPickerData", this.cityData,this.cityName)
         })
       });
   }
@@ -107,7 +111,8 @@ export class SettingsPage {
       this.code = event['region'].value
       console.log("cityChange",this.cityName);
 
-      this.userData.updateLocation({user_id:this.userData.userInfo.user_id,cityCode:this.code});
+      this.userData.updateLocation({user_id:this.userData.userInfo.user_id,location:this.cityName});
+
     })
 
   }

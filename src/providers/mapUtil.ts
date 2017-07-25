@@ -19,7 +19,7 @@ import { Geolocation } from '@ionic-native/geolocation';
 
 import {Position} from "../model/type";
 import {APP_DOWNLOAD, APK_DOWNLOAD} from "./Constants";
-
+import { Device } from '@ionic-native/device';
 
 
 
@@ -33,6 +33,7 @@ export class NativeService {
               private alertCtrl: AlertController,
               private statusBar: StatusBar,
               // private splashScreen: SplashScreen,
+              private device: Device,
               private appVersion: AppVersion,
               private camera: Camera,
               private toast: Toast,
@@ -182,9 +183,7 @@ export class NativeService {
   };
 
 
-  showConfirm(title,message) {
 
-  }
 
   /**
    * 使用cordova-plugin-camera获取照片
@@ -367,6 +366,14 @@ export class NativeService {
         this.warn('getAppName:' + err);
       });
     });
+  }
+
+  getDeviceId(){
+    let id = this.device.uuid;
+    if(id == null){
+      return "chrome"
+    }
+    return this.device.uuid;
   }
 
   /**

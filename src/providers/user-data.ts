@@ -9,6 +9,7 @@ import { Headers } from '@angular/http';
 import {throttle} from "rxjs/operator/throttle";
 import {WebsocketEntity} from "./websocketEntity";
 import {DBHelper} from "./dbhelper";
+import {NativeService} from "./mapUtil";
 // import {ChatData} from "./chat-data";
 
 @Injectable()
@@ -32,7 +33,9 @@ export class UserData {
               private httpTools:httpEntity,
               public platform:Platform,
               public websocket:WebsocketEntity,
-              public dbHelper:DBHelper
+              private alertCtrl: AlertController,
+              public dbHelper:DBHelper,
+              public nativeService:NativeService,
               ) {
   }
 
@@ -108,12 +111,21 @@ export class UserData {
     this.events.publish('user:login');
     console.log("loginFinished");
     // this.chatData.login(this.userInfo.user_id);
-
     if(updateStorage){
       // let userInfo = user;
       console.log("user-data:finished login",user);
       this.setUserInfo(user);
     }
+    this.getUserInfo().then( _=>{
+      this.retriveUserInfo(this.userInfo.user_id).then(dat => {
+        if(typeof dat != "undefined" && dat != null){
+          console.log("loginFinish synclized user data",dat)
+          this.userInfo.location = dat.location;
+          this.setUserInfo(this.userInfo)
+        }
+      })
+    })
+
 
   };
 
@@ -202,7 +214,8 @@ export class UserData {
           identity : user.identity,
           user_id : user.user_id,
           phone : user.phone,
-          avatar:this.tools.getAvatar(user.avatar)
+          avatar:this.tools.getAvatar(user.avatar),
+          location:user.location
         }
         //download user avatar by phone value
         // this.tools.downloadAvatar(userInfo.avatar)
@@ -397,7 +410,6 @@ export class UserData {
   }
 
   updateLocation(city) {
-
       var reqData = JSON.stringify(city);
       let headers = new Headers();
       headers.append('Authorization', this.auth.token);
@@ -407,13 +419,14 @@ export class UserData {
         .toPromise()
         .then(resData => {
           let  data =  JSON.parse(resData._body);  //1ss
-          console.log("success" , data.data.checkin_count );
+          this.userInfo.location = city.location;
+          this.setUserInfo(this.userInfo)
+          console.log("successupdateLocation" ,  this.userInfo, this.userInfo.location );
         }, error => {
           this.tools.presentErrorAlert("更新失败","请检查网络")
           console.log("updateLocation" ,"err " , error);
           this.handleError(error);
           throw (error);
-
         })
   }
 
@@ -998,6 +1011,8 @@ export class UserData {
     })
   }
 
+
+
   findLessons(bookInfo):Promise<any>{
     var lessonList = []
     return this.dbHelper.getLessons(bookInfo.book_id).then( (lessonListOld) => {
@@ -1049,6 +1064,36 @@ export class UserData {
       });
   }
 
+  retriveSchoolList(location):Promise<any>{
+    let headers = new Headers();
+    headers.append('Authorization', this.auth.token);
+    console.log("retriveSchoolList", this.BASE_URL + "retriveSchoolList" + "?location=" + location   , {headers: headers});
+    return this.httpTools.sendGet(this.BASE_URL + "retriveSchoolList" + "?location=" + location  , {headers: headers})
+      .toPromise()
+      .then(resData => {
+        console.log("retriveSchoolList res data ?", resData);
+        let schoolList = resData.data;
+        for(let i = 0 ;i< schoolList.length;i++){
+          this.handleSchoolData(schoolList[i]);
+        }
+        return  schoolList
+      }, error => {
+        console.log("Oooops!" + error);
+        this.handleError(error);
+        throw  error;
+      });
+  }
+
+  handleSchoolData(schoolData){
+    this.retriveCourses(schoolData.school_id).then(course => {
+      schoolData.courses = course
+    })
+    this.retriveActivities(schoolData.school_id).then(activities => {
+      schoolData.activities = activities
+    })
+
+  }
+
   retriveLessonList(book_id):Promise<any>{
     let headers = new Headers();
     headers.append('Authorization', this.auth.token);
@@ -1091,6 +1136,54 @@ export class UserData {
            this.handleError(error);
 
         throw  error;
+      });
+  }
+
+  verifyUser(book_id,user_id,device_id):Promise<any>{
+    let headers = new Headers();
+    headers.append('Authorization', this.auth.token);
+    console.log("verifyUser", this.BASE_URL + "verifyUser" + "?book_id=" + book_id + "&user_id=" + user_id + "&device_id=" + device_id, {headers: headers});
+    return this.httpTools.sendGet(this.BASE_URL + "verifyUser"+ "?book_id=" + book_id + "&user_id=" + user_id + "&device_id=" + device_id, {headers: headers})
+      .toPromise()
+      .then(resData => {
+        console.log("verifyUser",resData)
+        let  data =  resData;  //1
+        if(!data.success){
+          console.log("not active yet")
+          this.showActivationPrompt(this.userInfo.user_id,book_id,device_id)
+          return false;
+        }
+        return data.success;
+      }, error => {
+        console.log("user:verifyUser failed",error);
+        this.handleError(error);
+          throw false;
+      });
+  }
+
+  activeBook(reqData):Promise<any>{　
+    let headers = new Headers();
+    headers.append('Authorization', this.auth.token);
+    console.log("activeBook", this.BASE_URL + "activeBook" +reqData, {headers: headers});
+    return this.httpTools.sendPost(this.BASE_URL + "activeBook", reqData, {headers: headers})
+      .toPromise()
+      .then(resData => {
+        let  data =  JSON.parse(resData._body);  //1
+        console.log("success activeBook",data);
+        // if(){
+        //   this.tools.presentToast(" 激活成功！");
+        //   return true;
+        // }else {
+        //   this.tools.presentToast(" 激活失败！");
+        //   return false;
+        // }
+        return data.success
+        // return data;
+      }, error => {
+        console.log("user:activeBook failed",error);
+        // this.tools.presentToast(" 激活码错误！");
+        this.handleError(error);
+        throw false;
       });
   }
 
@@ -1277,5 +1370,42 @@ export class UserData {
     }
   }
 
+
+  showActivationPrompt(user_id,book_id,device_id) {
+    let alert = this.alertCtrl.create({
+      title: "激活课程",
+      inputs: [
+        {
+          name: 'activationCode',
+          placeholder: "输入该课程激活码"
+        },
+      ],
+      buttons: [
+        {
+          text: '取消',
+          role: 'cancel',
+          handler: data => {
+            console.log('Cancel clicked');
+          }
+        },
+        {
+          text: '确定',
+          handler: data => {
+            this.activeBook({code_value:data.activationCode,user_id:user_id,book_id:book_id,device_id:device_id}).then(result => {
+              if(result){
+                this.nativeService.showToast("激活成功");
+              }else {
+                this.nativeService.showToast("激活失败");
+
+              }
+            }).catch(err => {
+
+            })
+          }
+        }
+      ]
+    });
+    alert.present();
+  }
 
 }

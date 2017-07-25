@@ -27,6 +27,10 @@ $ npm install --save @ionic-native/geolocation
 $ ionic cordova plugin add cordova-plugin-splashscreen
 $ npm install --save @ionic-native/splash-screen
 
+
+$ ionic cordova plugin add cordova-plugin-device
+$ npm install --save @ionic-native/device
+
 通过 Cordova Plugins 安装，要求 Cordova CLI 5.0+：
 
  cordova plugin add jpush-phonegap-plugin --variable APP_KEY=your_jpush_appkey

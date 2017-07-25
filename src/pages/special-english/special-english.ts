@@ -73,8 +73,17 @@ export class SpecialEnglishPage {
   }
 
   gotoSpecialCourse(_specialEnglishBooks){
-    console.log("gotoOnlineCourse");
-    this.navCtrl.push(CoursePage,{course:_specialEnglishBooks });
+    console.log("gotoSpecialCourse");
+    this.userData.verifyUser(_specialEnglishBooks.book_id,this.userData.userInfo.user_id,this.nativeSevice.getDeviceId()).then( result => {
+      if(result){
+        this.navCtrl.push(CoursePage,{course:_specialEnglishBooks });
+      }else {
+
+      }
+
+    }).catch( err => {
+
+    })
   }
 
   findLocation(_specialEnglishBooks){

@@ -261,7 +261,7 @@ export class Tools{
 
   public downloadImg(fileName:string) {
     console.log('downloadImg : fileName' , fileName);
-    this.downloadFileFromSpecifiedLink(this.BASE_URL + "download" + "?fileName=" + fileName + "&fileType=img",this.getImageUrl(fileName)).then((result) => {
+    this.downloadFileFromSpecifiedLink(this.BASE_URL + "download" + "?fileName=" + fileName + "&fileType=avatar",this.getImageUrl(fileName)).then((result) => {
       console.log('downloadImg result' + result);
     });
   }
@@ -614,6 +614,8 @@ export class Tools{
       return this.AUDIO_DIR+ "/" + audio;
     }
   }
+
+
 
 
 

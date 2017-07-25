@@ -11,6 +11,7 @@ import {BookControl} from "../../providers/book-control";
 import {CoursePage} from "../course/course";
 import {SchoolListPage} from "../schools/schools";
 import {MarketPage} from "../markets/markets";
+import {NativeService} from "../../providers/mapUtil";
 
 
 @Component({
@@ -40,6 +41,7 @@ export class HomePage {
   public events: Events,
   public tools:Tools,
   public bookControl:BookControl,
+  public nativeService:NativeService,
   public userData: UserData)
   {
     // this.content.addCssClass("scroll");,private app: App
@@ -84,8 +86,18 @@ export class HomePage {
   }
 
   gotoSpecialCourse(_specialEnglishBooks){
-    console.log("gotoOnlineCourse");
-    this.navCtrl.push(CoursePage,{course:_specialEnglishBooks });
+    console.log("gotoSpecialCourse");
+    this.userData.verifyUser(_specialEnglishBooks.book_id,this.userData.userInfo.user_id,this.nativeService.getDeviceId()).then( result => {
+      if(result){
+        this.navCtrl.push(CoursePage,{course:_specialEnglishBooks });
+      }else {　
+　
+      }
+
+    }).catch( err => {
+
+    })
+
   }
 
   slideChanged(slider: Slides){
@@ -131,11 +143,12 @@ export class HomePage {
       case 6:
         //market
         // this.userData.retriveCourses();
+        console.log("goto MarketPage")
         this.navCtrl.push(MarketPage);
         break;
       case 7:
         //schools recommending
-        console.log("goto mappage")
+        console.log("goto SchoolListPage")
         this.navCtrl.push(SchoolListPage);
         break;
       default:

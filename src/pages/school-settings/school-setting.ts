@@ -74,7 +74,11 @@ export class SchoolSettingsPage {
   }
 
   applyChange(){
-
+    let reqUserInfo = {school_name:this.school.school_name,
+      school_content:this.school.school_content,
+      principal_id:this.userData.userInfo.user_id,
+      location:this.userData.userInfo.location};
+    this.updateSchoolInfo(reqUserInfo);
   }
 
   changeSchoolName(){
@@ -91,13 +95,13 @@ export class SchoolSettingsPage {
     });
     alert.addInput({
       name: 'school_content',
-      value: this.school.school_content,
+        value: this.school.school_content,
       placeholder: '输入学校简介'
     });
     alert.addButton({
       text: '确定',
       handler: (data: any) => {
-        let reqUserInfo = {school_name:data.school_name,school_content:data.school_content,principal_id:this.userData.userInfo.user_id};
+        let reqUserInfo = {school_name:data.school_name,school_content:data.school_content,principal_id:this.userData.userInfo.user_id,location:this.userData.userInfo.location};
 
         this.updateSchoolInfo(reqUserInfo);
 
@@ -303,30 +307,27 @@ export class SchoolSettingsPage {
       ]
     });
     confirm.present();
-
   }
-
 
   private updateSchoolInfo(reqUserInfo: { school_name: (any | string | string | string); school_content: (string | any | string | string); principal_id: any }) {
     console.log("updateSchoolInfo",this.school);
 
-    if(this.school.id == null || typeof this.school.id == "undefined"){
+    if(this.school.school_id == null || typeof this.school.school_id == "undefined"){
       console.log("updateSchoolInfo create new school");
       this.userData.addSchoolInfo(reqUserInfo).then( (results => {
         this.school.school_name = reqUserInfo.school_name;
         this.school.school_content = reqUserInfo.school_content
       })).catch(err => {
         // this.userData.userInfo.user_name = temp;
-      } )
+      })
     }else {
       this.userData.updateSchoolInfo(reqUserInfo).then( (results => {
         this.school.school_name = reqUserInfo.school_name;
         this.school.school_content = reqUserInfo.school_content
       })).catch(err => {
         // this.userData.userInfo.user_name = temp;
-      } )
+      })
     }
-
   }
 
   private addCourseInServer(reData: { course_name: (any | string | string | string); course_content: (any | string | string | string | string); school_id: any }) {

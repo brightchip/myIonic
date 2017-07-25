@@ -63,9 +63,15 @@ export class SchoolListPage {
   setCityPickerData(){
     this.httpTool.getCitiesData()
       .then( data => {
+        console.log("setCityPickerData")
         this.ngZone.run( () => {
           this.cityData = data;
-          console.log("setCityPickerData", this.cityData)
+          if(this.userData.userInfo.location != null && typeof  this.userData.userInfo.location != "undefined"){
+            this.cityName = this.userData.userInfo.location;
+            console.log("setCityPickerData", this.cityData,this.cityName)
+            this.getSchoolList();
+          }
+
         })
       });
   }
@@ -80,7 +86,6 @@ export class SchoolListPage {
       this.code = event['region'].value
       console.log("cityChange",this.cityName)
     })
-
   }
 
   // onProvinceChange(){
@@ -106,6 +111,14 @@ export class SchoolListPage {
     //
     // })
     // this.bookControl.loadCityList();
+    this.getSchoolList();
+  }
+
+  getSchoolList(){
+    this.userData.retriveSchoolList(this.cityName).then(dat =>{
+      console.log("getSchoolList",dat);
+      this.arrSchool = dat;
+    });
   }
 
 }

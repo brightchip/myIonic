@@ -64,6 +64,7 @@ import {MarketPage} from "../pages/markets/markets";
 import {Helper} from "../providers/Helper";
 import {JPush} from "ionic3-jpush";
 import {SQLite} from "ionic-native";
+import {Device} from "@ionic-native/device";
 
 
 // import { BackgroundGeolocation } from '@ionic-native/background-geolocation';
@@ -145,7 +146,8 @@ import {SQLite} from "ionic-native";
     VocabularySelectingPage,
     SchoolListPage,
     SchoolDetailPage,
-    SchoolSettingsPage
+    SchoolSettingsPage,
+    MarketPage
 
   ],
   providers: [
@@ -178,6 +180,7 @@ import {SQLite} from "ionic-native";
     Helper,
     JPush,
     SQLite,
+    Device
 
     // Lessons
     // AngularInview

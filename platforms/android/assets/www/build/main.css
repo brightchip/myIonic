@@ -70409,6 +70409,7 @@ page-schools .content {
 page-schools .city-selector {
   top: 50px;
   position: fixed;
+  width: 90%;
   height: 100px;
 }
 
