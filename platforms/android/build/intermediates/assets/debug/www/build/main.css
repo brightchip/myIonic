@@ -70428,6 +70428,10 @@ page-user p {
   text-align: center;
 }
 
+page-senglish .books {
+  width: 100%;
+}
+
 page-senglish .main-content .book {
   height: 20%;
 }

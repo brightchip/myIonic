@@ -225,6 +225,7 @@ export class LessonPage {
   }
 
   updateCommentSession(tempComment,part_id){
+    console.log("updateCommentSession",tempComment,part_id)
       this.arrCurrentComments[part_id].unshift(tempComment);
       let tempComments = this.tools.deepClone(this.arrCurrentComments[part_id]);
       this.comments[part_id] = this.handleComments(tempComments);
@@ -372,11 +373,22 @@ export class LessonPage {
   }
 
   startVocabularyRecording(isStudent){
+    console.log("startVocabularyRecording",{lesson:this.lesson,homeWork:this.submittedHomework ,isStudent:isStudent})
     this.navCtrl.push(VocabularyRecordingPage,{lesson:this.lesson,homeWork:this.submittedHomework ,isStudent:isStudent});
   }
 
   startImgSelectiong(){
+    console.log("startImgSelectiong",{lesson:this.lesson })
     this.navCtrl.push(VocabularySelectingPage,{lesson:this.lesson });
+  }
+
+  doRefresh(refresher) {
+    console.log('Begin async operation', refresher);
+    this.initCurrentPage();
+    setTimeout(() => {
+      console.log('Async operation has ended');
+      refresher.complete();
+    }, 2000);
   }
 
 
@@ -496,7 +508,7 @@ export class LessonPage {
       console.log("lisenEvents:updateComment",data)
       // data.comments
       if(data != null){
-        this.updateCommentSession(data.comment,data.part_id);
+        this.updateCommentSession(data.comments,data.part_id);
       }
     });
 

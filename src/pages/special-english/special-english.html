@@ -1,3 +1,4 @@
+
 <ion-header>
   <ion-navbar>
     <button ion-button menuToggle>
@@ -8,45 +9,45 @@
 </ion-header>
 
 <ion-content class="main-content" no-padding>
-  <ion-card  class="books" *ngFor="let _specialEnglishBooks of specialCourses">
-    <!--<ion-item>-->
-    <!--<ion-avatar item-left>-->
-    <!--<img *ngIf="_recommedCourse" src="{{_recommedCourse.logo}}">-->
-    <!--</ion-avatar>-->
-    <!--<h2>Marty McFly</h2>-->
-    <!--<p>November 5, 1955</p>-->
-    <!--</ion-item>-->
-      <ion-item class="book" detail-push  (click)="gotoSpecialCourse(_specialEnglishBooks)">
-        <ion-thumbnail item-left>
-          <img *ngIf="_specialEnglishBooks" src="{{_specialEnglishBooks.book_profile}}" >
-        </ion-thumbnail>
-        <h2 >    {{_specialEnglishBooks.book_name}}</h2>
-        <p>课时:{{_specialEnglishBooks.timespan}}</p>
-        <p>特效:{{_specialEnglishBooks.book_remark}}</p>
-      </ion-item>
 
-    <!--<hr >-->
-
-    <div class="book-link">
-      <ion-item  class="item1" (click)="gotoOnlineCourse(_specialEnglishBooks)">
-        <p item-left> 我已经是学员，点我观看名师在线视频</p>
-        <ion-icon item-right name="ios-arrow-dropright"></ion-icon>
-      </ion-item>
-      <ion-item  color="link2" class="item2" (click)="findLocation(_specialEnglishBooks)">
-        <p item-left> 我还不是学员，点我观看当地授权培训点</p>
-        <ion-icon item-right name="ios-arrow-dropright"></ion-icon>
-      </ion-item>
-    </div>
-
-    <div  class="intro-video" in-view="lineInView($index, $inview, $inviewpart)" >
-      <video #specengVideo class="video"  (play)="videoPlayed(_specialEnglishBooks)"
-              (click)="toggleVideo(_specialEnglishBooks.index)"
-        controls="controls" preload="metadata"  class="videoPlayer"
-        (viewport-leave)="playVideo()" (viewport-enter)="pauseVideo()"><source src="{{_specialEnglishBooks.intro_video}}" type="video/mp4"/>
-      </video>
-    </div>
+  <div class="lesson-head top-fixed" >
+    <ion-segment *ngIf="specialCourses"  [(ngModel)]="book_parts" (ionChange)="segmentChanged($event)">
+      <ion-segment-button *ngFor="let _specialEnglishBooks of specialCourses" value={{_specialEnglishBooks.book_name}} (click)="clickBook(_specialEnglishBooks)" >
+        {{_specialEnglishBooks.book_name}}
+      </ion-segment-button>
+    </ion-segment>
+  </div>
 
 
-  </ion-card>
+  <div [ngSwitch]="book_parts" *ngFor = "let _specialEnglishBooks of specialCourses" class="lesson-content bottom-scroll" >
+    <ion-list *ngSwitchCase="_specialEnglishBooks.book_name">
+
+      <!--<ion-card  class="books" no-padding >-->
+        <ion-item class="book" detail-push  (click)="gotoSpecialCourse(_specialEnglishBooks)">
+          <ion-thumbnail item-left>
+            <img *ngIf="_specialEnglishBooks" src="{{_specialEnglishBooks.book_profile}}" >
+          </ion-thumbnail>
+          <h2 >    {{_specialEnglishBooks.book_name}}</h2>
+          <p>课时:{{_specialEnglishBooks.timespan}}</p>
+          <p>特效:{{_specialEnglishBooks.book_remark}}</p>
+        </ion-item>
+        <!--<div class="book-link">-->
+          <!--<ion-item  class="item1" (click)="gotoOnlineCourse(_specialEnglishBooks)">-->
+            <!--<p item-left> 我已经是学员，点我观看名师在线视频</p>-->
+            <!--<ion-icon item-right name="ios-arrow-dropright"></ion-icon>-->
+          <!--</ion-item>-->
+          <!--<ion-item  color="link2" class="item2" (click)="findLocation(_specialEnglishBooks)">-->
+            <!--<p item-left> 我还不是学员，点我观看当地授权培训点</p>-->
+            <!--<ion-icon item-right name="ios-arrow-dropright"></ion-icon>-->
+          <!--</ion-item>-->
+        <!--</div>-->
+        <div  class="intro-video" in-view="lineInView($index, $inview, $inviewpart)" >
+          <video #specengVideo autoplay="true" controls="controls" preload="metadata"  class="videoPlayer">
+            <source src="{{_specialEnglishBooks.intro_video}}" type="video/mp4"/>
+          </video>
+        </div>
+      <!--</ion-card>-->
+    </ion-list>
+  </div>
+
 </ion-content>
-

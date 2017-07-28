@@ -7,6 +7,7 @@ import * as $ from 'jquery'
 import * as Enums from "../../providers/globals";
 import {Tools} from "../../providers/tools";
 import {DBHelper} from "../../providers/dbhelper";
+import {NavParams} from "ionic-angular";
 
 @Component({
   selector: 'vocabulary-selecting',
@@ -64,11 +65,15 @@ export class VocabularySelectingPage {
     public nativeSevice:NativeService,
     private ngZone: NgZone,
     public tools: Tools,
+    public  navParams: NavParams,
     public dbHelper:DBHelper,
     public media: MediaPlugin,
     public userData:UserData,
-    public file: File,) {
+    public file: File) {
+    let lesson =  this.navParams.get('lesson');
 
+    this.lesson_id = lesson.lesson_id;
+    console.log("vocabulary-selecting.ts", this.lesson_id);
   }
 
   slideChanged() {
@@ -114,13 +119,14 @@ export class VocabularySelectingPage {
     this.showTestingPage = true;
     this.showResultPage = null;
 
-    console.log("initCoolPlayVocabulary",this.vacabularys);
+    console.log(".",this.vacabularys);
     this.readedWordList = [];
     // this.randomVocabulary = this.getTestTimes()
     this.isPickWrong = null;
 
     return  this.userData.findCoolPlayVocabulary(this.lesson_id).then( (datas) => {
       this.vacabularys = datas;
+      console.log("findCoolPlayVocabulary",this.vacabularys)
       return true;
     })
   }
@@ -268,7 +274,6 @@ export class VocabularySelectingPage {
   }
 
 
-
   playSampleAudio(){
     try {
       this.disableRecordButton = true;
@@ -286,7 +291,6 @@ export class VocabularySelectingPage {
       this.disableRecordButton = null;
       console.error("playSampleAudio:Error",e)
     }
-
   }
 
   ionViewDidEnter(){

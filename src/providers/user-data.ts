@@ -998,8 +998,14 @@ export class UserData {
               // }else if(booksNew[i].state == 4){
               //   this.dbHelper.deleteItem("tb_book",booksNew[i]);//update local user table
               // }
+              this.getLessonCount(booksNew[i].book_id).then(count => {
+                console.log("getLessonCount timespan",count)
+                booksNew.timespan = count;
+              })
             }
             console.log("findCourses from remote server",  booksNew)
+
+
             courseList = this.tools.deepClone(booksNew);
             return courseList;
           }
@@ -1011,6 +1017,24 @@ export class UserData {
     })
   }
 
+  getLessonCount(book_id):Promise<any>{
+    let headers = new Headers();
+    headers.append('Authorization', this.auth.token);
+
+    console.log("getLessonCount", this.BASE_URL + "getLessonCount?book_id=" + book_id, {headers: headers});
+    return    this.httpTools.sendGet(this.BASE_URL + "getLessonCount?book_id=" + book_id, {headers: headers})
+      .toPromise()
+      .then(resData => {
+        console.log("getLessonCount", resData,resData.data);
+        // let data = JSON.parse(resData);  //1
+
+        return (resData.data);
+      }, error => {
+        console.log("user:getLessonCount failed", error);
+        this.handleError(error);
+        throw (error);
+      });
+  }
 
 
   findLessons(bookInfo):Promise<any>{
@@ -1258,7 +1282,7 @@ export class UserData {
   findCoolPlayVocabulary(lesson_id) : Promise<any>{
     console.log("findCoolPlayVocabulary",lesson_id);
     var vocabularys = []
-  return  this.dbHelper.getCoolPlayVocabularys(lesson_id).then( (vocabularysOld) => {
+    return  this.dbHelper.getCoolPlayVocabularys(lesson_id).then( (vocabularysOld) => {
 
       if(typeof  vocabularysOld != "undefined" && vocabularysOld != null && vocabularysOld.length > 1 && !this.hasNewUpdate) {
           console.log("findCoolPlayVocabulary of" , lesson_id,vocabularysOld,vocabularysOld.length)
@@ -1306,7 +1330,7 @@ export class UserData {
                 randoms: randoms, need_recite_count: 1,
                 recite_wrong_times: data[i].recite_wrong_times
               };
-              console.log("findCoolPlayVocabulary from remote server process", data[i])
+              console.log("findCoolPlayVocabulary from remote server process", vocabulary)
               // if (!this.tools.checkRemoteFileUrl(data[i].audio)) {
               //   console.log("findVocabulary  from remote server  process", data[i], "local file not found try to download from remote serve")
               //   let audio = this.tools.getAudioUrl(this.createFileName())
@@ -1319,7 +1343,7 @@ export class UserData {
           }
         })
       }
-    return vocabularys;
+      return vocabularys;
     })
 
   }

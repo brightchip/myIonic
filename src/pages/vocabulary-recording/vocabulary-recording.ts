@@ -98,7 +98,7 @@ export class VocabularyRecordingPage {
 
     this.homeWork =  this.navParams.get('homeWork');
 
-    console.log("rootDir", this.isStudent,this.homeWork);
+    console.log("vocabulary-recording.ts", this.isStudent,this.homeWork,this.lesson);
   }
 
   ionViewDidEnter(){

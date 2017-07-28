@@ -48,7 +48,6 @@ export class DBHelper {
   }
 
 
-
   initDb():Promise<any>{
     let arrPromise = [];
     let promise1 =   this.createTable("CREATE TABLE IF NOT EXISTS tb_user (id INTEGER PRIMARY KEY AUTOINCREMENT, user_id INTEGER UNIQUE, avatar TEXT,user_name TEXT,phone TEXT)")
@@ -180,7 +179,7 @@ export class DBHelper {
     console.log("getRandomRows")
     return this.platform.ready().then(() => {
       if(!this.nativeServic.isMobile()){
-        return [];
+        return [this.vacabularys[0],this.vacabularys[1],this.vacabularys[2],this.vacabularys[3]];
       }
 
       let query = "SELECT *  FROM tb_vocabulary ORDER BY RAND() LIMIT 3 WHERE vocabulary_id != ?";
