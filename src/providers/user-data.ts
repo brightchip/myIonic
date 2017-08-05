@@ -24,7 +24,7 @@ export class UserData {
   testVar: string;
   public userInfo: any = {};
 
-  hasNewUpdate = true;
+  hasNewUpdate = false;
 
   constructor(public events: Events,
               public storage: Storage,
@@ -1003,9 +1003,7 @@ export class UserData {
                 booksNew.timespan = count;
               })
             }
-            console.log("findCourses from remote server",  booksNew)
-
-
+            console.log("  from remote server",  booksNew)
             courseList = this.tools.deepClone(booksNew);
             return courseList;
           }
@@ -1143,17 +1141,22 @@ export class UserData {
     return this.httpTools.sendGet(this.BASE_URL + "retriveVocabularyList" + "?lesson_id=" + lesson_id, {headers: headers})
       .toPromise()
       .then(resData => {
-        console.log("retriveVocabularyList res data ?", resData);
-        // for(let i =0;i<resData.length;i++){
-        //
-        //   if(resData[i].state == 1 || resData[i].state == 2){
-        //     this.dbHelper.updateVocabulary(resData[i]);//update local user table
-        //   }else if(resData[i].state == 4){
-        //     this.dbHelper.deleteItem("tb_vocabulary",resData[i]);//update local user table
-        //   }
-        // }
+        let data = resData.data;
+        console.log("retriveVocabularyList res data ?", data,data.length);
+        let promises = []
+        for(let i =0;i<data.length;i++){
+          // if(resData[i].state == 1 || resData[i].state == 2){
+         let promise =   this.dbHelper.updateVocabulary(data[i]);//update local user table
+          // }else if(resData[i].state == 4){
+          //   this.dbHelper.deleteItem("tb_vocabulary",resData[i]);//update local user table
+          // }
+          promises.push(promise);
+        }
+        return  Promise.all(promises).then( () => {
+          //  console.log("getComments all the userinfo were caught:" , arrUserInfo);
+          return data;
+        });
 
-        return resData.data;
       }, error => {
         console.log("Oooops!" + error);
         // console.log("retriveLessonList failed");
@@ -1284,12 +1287,12 @@ export class UserData {
     var vocabularys = []
     return  this.dbHelper.getCoolPlayVocabularys(lesson_id).then( (vocabularysOld) => {
 
+      let promises = [];
       if(typeof  vocabularysOld != "undefined" && vocabularysOld != null && vocabularysOld.length > 1 && !this.hasNewUpdate) {
           console.log("findCoolPlayVocabulary of" , lesson_id,vocabularysOld,vocabularysOld.length)
 
           for (let i = 0; i < vocabularysOld.length; i++) {
-
-              this.dbHelper.getRandomRows(vocabularysOld[i]).then( (randoms) => {
+           let promise =  this.dbHelper.getRandomRows(vocabularysOld[i]).then( (randoms) => {
               var vocabulary = {wrongAnswer:null,
                 correctAnswer:null,
                 vocabulary_id:vocabularysOld[i].vocabulary_id,
@@ -1311,13 +1314,17 @@ export class UserData {
                 vocabularys.push(vocabulary);
                 console.log("findVocabulary find a vocabulary" , vocabulary)
             })
-
+            promises.push(promise);
           }
+        return  Promise.all(promises).then( () => {
+          //  console.log("getComments all the userinfo were caught:" , arrUserInfo);
+          return vocabularys;
+        });
       }else {
-        this.retriveVocabularyList(lesson_id).then( data => {
+       return this.retriveVocabularyList(lesson_id).then( data => {
           for (let i = 0; i < data.length; i++) {
-
-            this.dbHelper.getRandomRows(data[i]).then((randoms) => {
+            // console.log("findCoolPlayVocabulary from remote server process", data[i])
+            let promise =   this.dbHelper.getRandomRows(data[i]).then((randoms) => {
               var vocabulary = {
                 wrongAnswer: null,
                 correctAnswer: null,
@@ -1339,11 +1346,22 @@ export class UserData {
               // }
               vocabularys.push(vocabulary);
               // console.log("findVocabulary find a vocabulary", vocabulary)
+            }).catch(er => {
+              console.error("findCoolPlayVocabulary from remote server process", er)
             })
           }
+         return  Promise.all(promises).then( () => {
+           //  console.log("getComments all the userinfo were caught:" , arrUserInfo);
+           return vocabularys;
+         });
+
         })
+
       }
-      return vocabularys;
+
+
+    }).catch(err => {
+      console.error("findCoolPlayVocabulary",err);
     })
 
   }

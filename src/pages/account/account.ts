@@ -116,23 +116,23 @@ export class AccountPage {
 
   presentActionSheet() {
     let actionSheet = this.actionSheetCtrl.create({
-      title: 'Select Image Source',
+      title: '选择图片来源',
       buttons: [
         {
-          text: 'Load from Library',
+          text: '从图库中选择',
           handler: () => {
             this.takePicture(this.camera.PictureSourceType.PHOTOLIBRARY);
           }
         },
         {
-          text: 'Use Camera',
+          text: '拍照',
           handler: () => {
             this.takePicture(this.camera.PictureSourceType.CAMERA);
           }
         },
         {
-          text: 'Cancel',
-          role: 'cancel'
+          text: '取消',
+          role: '取消'
         }
       ]
     });
@@ -168,7 +168,7 @@ export class AccountPage {
         this.copyFileToLocalDir(correctPath, currentName, currentName);
       }
     }, (err) => {
-      this.presentToast('Error while selecting image.' + err);
+      this.presentToast('错误.' + err);
     });
   }
 

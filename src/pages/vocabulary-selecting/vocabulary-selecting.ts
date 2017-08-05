@@ -78,14 +78,12 @@ export class VocabularySelectingPage {
 
   slideChanged() {
     if(typeof this.slides != "undefined"){
-
       this.currentIndex = this.slides.getActiveIndex();
       console.log("vacabularyUpdated", this.currentIndex);
       this.playSampleAudio();
       this.isPickWrong = null;
     }
   }
-
 
   slideOnHead(){
     console.log("slideOnHead");
@@ -97,38 +95,52 @@ export class VocabularySelectingPage {
     // this.slides.lockSwipes(true);
   }
 
-
   initCoolPlayVocabulary() : Promise<any>{
     // for(let i=0;i<this.vacabularys.length;i++){
     // }
     // $('#showExplain').hide();
     this.lastRandom = 0;
 
-    this.dbHelper.getTestResult(this.lesson_id).then( (result) => {
-      console.log("getTestResult",result);
-      if(result != null && typeof result != "undefined"){
-        //show result page
-        this.totalWrongTimes = result.wrong_times;
-        this.showLastPage();
-      }
-    }).catch( err => {
-      console.error("getTestResult",err);
-    })
-
-
     this.showTestingPage = true;
     this.showResultPage = null;
 
-    console.log(".",this.vacabularys);
+    // console.log(".",this.vacabularys);
     this.readedWordList = [];
     // this.randomVocabulary = this.getTestTimes()
     this.isPickWrong = null;
 
     return  this.userData.findCoolPlayVocabulary(this.lesson_id).then( (datas) => {
-      this.vacabularys = datas;
-      console.log("findCoolPlayVocabulary",this.vacabularys)
-      return true;
+
+      console.log("initCoolPlayVocabulary:findCoolPlayVocabulary")
+
+
+      // this.vacabularys = [];
+         this.ngZone.run( () => {
+        this.vacabularys = datas;
+        console.log("initCoolPlayVocabulary:findCoolPlayVocabulary",datas,this.vacabularys)
+
+        return this.dbHelper.getTestResult(this.lesson_id).then( (result) => {
+          console.log("getTestResult",result);
+          // this.showLastPage();
+          if(result != null && typeof result != "undefined" && result.length > 0){
+            //show result page
+            this.totalWrongTimes = result.wrong_times;
+            this.showLastPage();
+
+          }
+          return true;
+        }).catch( err => {
+          console.error("getTestResult",err);
+          return false;
+        })
+
+
+      })
     })
+
+
+
+
   }
 
 
@@ -175,8 +187,12 @@ export class VocabularySelectingPage {
         //   console.log("remove",this.currentIndex,"from array")
         // }
       }else {
-        this.vacabularys[this.currentIndex].need_recite_count ++;
+
         // this.randomVocabulary ++;
+        if(this.vacabularys[this.currentIndex].need_recite_count < 1){
+          this.vacabularys[this.currentIndex].need_recite_count ++;
+
+        }
         this.vacabularys[this.currentIndex].recite_wrong_times ++;
         this.readedWordList.concat(_random);
         this.isPickWrong = true;
@@ -196,6 +212,7 @@ export class VocabularySelectingPage {
           if(this.slides != null && typeof this.slides != "undefined"){
             this.isPickWrong = null;
             // $('#showExplain').hide();
+            this.lastRandom = this.currentIndex;
 
             let nextIndex = this.getNextTestVocabulary();
             if(!nextIndex){
@@ -217,6 +234,7 @@ export class VocabularySelectingPage {
 
 
   showLastPage(){
+    console.log("showLastPage");
     this.showTestingPage = null;
     this.showResultPage = true;
   }
@@ -224,7 +242,9 @@ export class VocabularySelectingPage {
   getNextTestVocabulary(){
     let temArr = this.checkArray();
     console.log("getNextTestVocabulary",temArr);
-    if(temArr.length < 1){
+    let length = temArr.length;
+
+    if(length < 2){
       console.log("getNextTestVocabulary show results")
       this.totalWrongTimes = 0;
       for(let i = 0;i<this.vacabularys.length;i++){
@@ -235,27 +255,23 @@ export class VocabularySelectingPage {
         // }
       }
       this.showLastPage();
-
       let time = new Date();
       let result = {lesson_id:this.lesson_id,created_date:time,wrong_times:this.totalWrongTimes}
       this.dbHelper.addTestResult(result);
-
       return false;
-    }
-    // console.log("getNextTestVocabulary",temArr);
-    let length = temArr.length;
-    if(length <= 1){
+    } else if(length <= 1){
       return temArr[0];
+    }else {
+      let random =  Math.floor(Math.random() * length);
+      console.log("getNextTestVocabulary",temArr,random,this.lastRandom);
+      if(random == this.lastRandom){
+        console.log("repeat and re-check")
+        return this.getNextTestVocabulary()
+      }
+      this.lastRandom = temArr[random];
+      return temArr[random];
     }
 
-    let random =  Math.floor(Math.random() * length);
-    console.log("getNextTestVocabulary",temArr,random,this.lastRandom);
-    if(random == this.lastRandom){
-      console.log("repeat and re-check")
-      return this.getNextTestVocabulary()
-    }
-    this.lastRandom = temArr[random];
-    return temArr[random];
     // if(this.vacabularys[temArr[random]].need_recite_count < 1){
     //   return this.getNextTestVocabulary();
     // }else {

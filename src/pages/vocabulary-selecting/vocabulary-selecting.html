@@ -10,7 +10,7 @@
 <ion-content class="main-content" no-padding>
 
   <div  *ngIf="showTestingPage">
-    <ion-slides #slides (ionSlideDidChange)="slideChanged()"  (ionSlideReachStart)="slideOnHead()" (ionSlideReachEnd)="slidesFinish()" >
+    <ion-slides *ngIf="vacabularys" #slides (ionSlideDidChange)="slideChanged()"  (ionSlideReachStart)="slideOnHead()" (ionSlideReachEnd)="slidesFinish()" >
       <ion-slide *ngFor="let _vacabulary of vacabularys">
 
         <div class="word-playing" no-padding>
@@ -23,7 +23,7 @@
 
           <div *ngFor="let _random of _vacabulary.randoms" >
             <div class="image-box">
-              <img   src={{_random.img_url}} (click)="pickAnswer(_random)" />
+              <img   src={{_random.explain_img}} (click)="pickAnswer(_random)" />
               <div *ngIf="_random.wrongAnswer"  class="answerInfo"><img src="assets/icon/wrong.png"></div>
               <div *ngIf="_random.correctAnswer"  class="answerInfo"><img src="assets/icon/right.png" /></div>
             </div>
@@ -37,7 +37,7 @@
   </div>
 
   <div *ngIf="showResultPage" class="resultPage">
-    <div class="result-summary">total wrong recite time:{{totalWrongTimes}}</div>
+    <div class="result-summary">上次测试一共错误次数:{{totalWrongTimes}}</div>
     <div *ngFor="let _vacabulary of vacabularys">
       <ion-item  *ngIf="_vacabulary.recite_wrong_times > 0">
         <p class="voabulary-list-item">

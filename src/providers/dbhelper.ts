@@ -18,12 +18,12 @@ export class DBHelper {
 
   // vacabularys = [];
   vacabularys:any[] =
-    [{vocabulary_id:1,pronunciation:"a-in-z",word:"Anz",mean:"安银子",audio:"",audio_url:"http://api.wordnik.com/v4/audioFile.mp3/3e7145666db9d2ddd47fb6402d26bb263abaf8b4c98ed5337bf0b16ed4d35cb1",img_url:"assets/img/speakers/bear.jpg",recite_count:0,recite_wrong_times:0},
-    {vocabulary_id:2,pronunciation:"bi-sho-jo",word:"lion",mean:"美少女",audio:"",audio_url:"http://api.wordnik.com/v4/audioFile.mp3/841109043745af50f206ca38d712e66b46c3d26075fcf28c575ed1b7cd99adee",img_url:"assets/img/speakers/lion.jpg",recite_count:0,recite_wrong_times:0},
-    {vocabulary_id:3,pronunciation:"c",word:"mouse",mean:"我顶",audio:"",audio_url:"http://api.wordnik.com/v4/audioFile.mp3/841109043745af50f206ca38d712e66b46c3d26075fcf28c575ed1b7cd99adee",img_url:"assets/img/speakers/mouse.jpg",recite_count:0,recite_wrong_times:0},
-    {vocabulary_id:4,pronunciation:"benglishjo",word:"english",mean:"英语",audio:"",audio_url:"http://api.wordnik.com/v4/audioFile.mp3/841109043745af50f206ca38d712e66b46c3d26075fcf28c575ed1b7cd99adee",img_url:"assets/img/speakers/cheetah.jpg",recite_count:0,recite_wrong_times:0},
-    {vocabulary_id:5,pronunciation:"fantasyo",word:"elephant",mean:"幻想",audio:"",audio_url:"http://api.wordnik.com/v4/audioFile.mp3/841109043745af50f206ca38d712e66b46c3d26075fcf28c575ed1b7cd99adee",img_url:"assets/img/speakers/elephant.jpg",recite_count:0,recite_wrong_times:0},
-    {vocabulary_id:6,pronunciation:"cat",word:"Cat",mean:"猫",audio:"",audio_url:"http://api.wordnik.com/v4/audioFile.mp3/f443d5d1ca81dbaf766d9f01e6a78d24045553f3d8b648ca8a2f1bc952b668b5",img_url:"assets/img/speakers/duck.jpg",recite_count:0,recite_wrong_times:0}]
+    [{vocabulary_id:1,pronunciation:"a-in-z",word:"Anz",mean:"安银子",audio:"",audio_url:"http://api.wordnik.com/v4/audioFile.mp3/3e7145666db9d2ddd47fb6402d26bb263abaf8b4c98ed5337bf0b16ed4d35cb1",explain_img:"assets/img/speakers/bear.jpg",recite_count:0,recite_wrong_times:0},
+    {vocabulary_id:2,pronunciation:"bi-sho-jo",word:"lion",mean:"美少女",audio:"",audio_url:"http://api.wordnik.com/v4/audioFile.mp3/841109043745af50f206ca38d712e66b46c3d26075fcf28c575ed1b7cd99adee",explain_img:"assets/img/speakers/lion.jpg",recite_count:0,recite_wrong_times:0},
+    {vocabulary_id:3,pronunciation:"c",word:"mouse",mean:"我顶",audio:"",audio_url:"http://api.wordnik.com/v4/audioFile.mp3/841109043745af50f206ca38d712e66b46c3d26075fcf28c575ed1b7cd99adee",explain_img:"assets/img/speakers/mouse.jpg",recite_count:0,recite_wrong_times:0},
+    {vocabulary_id:4,pronunciation:"benglishjo",word:"english",mean:"英语",audio:"",audio_url:"http://api.wordnik.com/v4/audioFile.mp3/841109043745af50f206ca38d712e66b46c3d26075fcf28c575ed1b7cd99adee",explain_img:"assets/img/speakers/cheetah.jpg",recite_count:0,recite_wrong_times:0},
+    {vocabulary_id:5,pronunciation:"fantasyo",word:"elephant",mean:"幻想",audio:"",audio_url:"http://api.wordnik.com/v4/audioFile.mp3/841109043745af50f206ca38d712e66b46c3d26075fcf28c575ed1b7cd99adee",explain_img:"assets/img/speakers/elephant.jpg",recite_count:0,recite_wrong_times:0},
+    {vocabulary_id:6,pronunciation:"cat",word:"Cat",mean:"猫",audio:"",audio_url:"http://api.wordnik.com/v4/audioFile.mp3/f443d5d1ca81dbaf766d9f01e6a78d24045553f3d8b648ca8a2f1bc952b668b5",explain_img:"assets/img/speakers/duck.jpg",recite_count:0,recite_wrong_times:0}]
 
   constructor(public events: Events,
               public nativeServic:NativeService,
@@ -58,19 +58,19 @@ export class DBHelper {
       .then( result => Promise.resolve(result) )
       .catch( error => Promise.resolve( [] ) );
     arrPromise.push(promise2);
-    let promise3 =    this.createTable("CREATE TABLE IF NOT EXISTS tb_lesson (id INTEGER PRIMARY KEY AUTOINCREMENT, lesson_id INTEGER,created_date DATETIME, lesson_name TEXT,teacher_id INTEGER,modified_date DATETIME,lesson_order INTEGER,book_id INTEGER,vocabulary VARCHAR(255))")
+    let promise3 =    this.createTable("CREATE TABLE IF NOT EXISTS tb_lesson (id INTEGER PRIMARY KEY AUTOINCREMENT, lesson_id INTEGER UNIQUE,created_date DATETIME, lesson_name TEXT,teacher_id INTEGER,modified_date DATETIME,lesson_order INTEGER,book_id INTEGER,vocabulary VARCHAR(255))")
       .then( result => Promise.resolve(result) )
       .catch( error => Promise.resolve( [] ) );
     arrPromise.push(promise3);
-    let promise4 =   this.createTable("CREATE TABLE IF NOT EXISTS tb_vocabulary (id INTEGER PRIMARY KEY AUTOINCREMENT, vocabulary_id INTEGER,word TEXT,mean TEXT, pronunciation TEXT,lesson_id INTEGER,explain TEXT,explain_img TEXT,audio TEXT,audio_url TEXT,recite_wrong_times INTEGER DEFAULT 0)")
+    let promise4 =   this.createTable("CREATE TABLE IF NOT EXISTS tb_vocabulary (id INTEGER PRIMARY KEY AUTOINCREMENT, vocabulary_id INTEGER UNIQUE,word TEXT,mean TEXT, pronunciation TEXT,lesson_id INTEGER,explain TEXT,explain_img TEXT,audio TEXT,audio_url TEXT,recite_wrong_times INTEGER DEFAULT 0)")
       .then( result => Promise.resolve(result) )
       .catch( error => Promise.resolve( [] ) );
     arrPromise.push(promise4);
-    let promise5 =   this.createTable("CREATE TABLE IF NOT EXISTS tb_book (id INTEGER PRIMARY KEY AUTOINCREMENT, book_id  INTEGER,book_name TEXT,book_profile TEXT, book_author TEXT,book_remark TEXT,timespan INTEGER,created_date DATETIME,modified_date DATETIME,intro_video TEXT)")
+    let promise5 =   this.createTable("CREATE TABLE IF NOT EXISTS tb_book (id INTEGER PRIMARY KEY AUTOINCREMENT, book_id  INTEGER UNIQUE,book_name TEXT,book_profile TEXT, book_author TEXT,book_remark TEXT,timespan INTEGER,created_date DATETIME,modified_date DATETIME,intro_video TEXT)")
       .then( result => Promise.resolve(result) )
       .catch( error => Promise.resolve( [] ) );
     arrPromise.push(promise5);
-    let promise6 =   this.createTable("CREATE TABLE IF NOT EXISTS tb_vocabulary_result (id INTEGER PRIMARY KEY AUTOINCREMENT, lesson_id  INTEGER,wrong_times INTEGER,created_date DATETIME)")
+    let promise6 =   this.createTable("CREATE TABLE IF NOT EXISTS tb_vocabulary_result (id INTEGER PRIMARY KEY AUTOINCREMENT, lesson_id  INTEGER UNIQUE,wrong_times INTEGER,created_date DATETIME)")
       .then( result => Promise.resolve(result) )
       .catch( error => Promise.resolve( [] ) );
     arrPromise.push(promise6);
@@ -121,23 +121,30 @@ export class DBHelper {
       }
 
       let query = "SELECT * FROM tb_vocabulary WHERE lesson_id = ?";
-      return this.db.executeSql(query, [lesson_id])
-        .then(function (res) {
-          let vocabulary = [];
-          if (res.rows.length > 0) {
-            for(var i = 0; i < res.rows.length; i++) {
-              vocabulary.push(res.rows.item(i));
+      return this.db.openDatabase({
+        name: "data.db",
+        location: "default"
+      }).then(() => {
+        return this.db.executeSql(query, [lesson_id])
+          .then(function (res) {
+            let vocabulary = [];
+            if (res.rows.length > 0) {
+              for (var i = 0; i < res.rows.length; i++) {
+                vocabulary.push(res.rows.item(i));
+              }
+              console.log("SELECTED -> " + res.rows);
+            } else {
+              console.log("No results found");
             }
-            console.log("SELECTED -> " + res.rows);
-          } else {
-            console.log("No results found");
-          }
 
-          return vocabulary;
-        }, function (err) {
-          // console.error(err);
-          throw err;
-        });
+            return vocabulary;
+          }, function (err) {
+            // console.error(err);
+            throw err;
+          });
+      }).catch(err => {
+        throw err;
+      })
     }).catch( err => {
       // console.error(err);
       throw err;
@@ -152,14 +159,18 @@ export class DBHelper {
       }
 
       let query = "SELECT * FROM tb_vocabulary WHERE lesson_id = ?";
+      return this.db.openDatabase({
+        name: "data.db",
+        location: "default"
+      }).then(() => {
         return this.db.executeSql(query, [lesson_id])
           .then(function (res) {
             let vocabulary = [];
             if (res.rows.length > 0) {
-              for(var i = 0; i < res.rows.length; i++) {
+              for (var i = 0; i < res.rows.length; i++) {
                 vocabulary.push(res.rows.item(i));
               }
-              console.log("SELECTED -> " + res.rows);
+              console.log("SELECTED -> " , vocabulary);
             } else {
               console.log("No results found");
             }
@@ -167,8 +178,12 @@ export class DBHelper {
             return vocabulary;
           }, function (err) {
             // console.error(err);
+
             throw err;
           });
+      }).catch(err => {
+        throw err;
+      })
     }).catch( err => {
       // console.error(err);
       throw err;
@@ -182,30 +197,44 @@ export class DBHelper {
         return [this.vacabularys[0],this.vacabularys[1],this.vacabularys[2],this.vacabularys[3]];
       }
 
-      let query = "SELECT *  FROM tb_vocabulary ORDER BY RAND() LIMIT 3 WHERE vocabulary_id != ?";
-      return this.db.executeSql(query, [vocabulary.vocabulary_id])
-        .then(function (res) {
-          let vocabularies = [];
-          if (res.rows.length > 0) {
-            for(var i = 0; i < res.rows.length; i++) {
-              vocabularies.push(res.rows.item(i));
+      let query = "SELECT *  FROM tb_vocabulary  WHERE vocabulary_id != ?  ORDER BY RANDOM() LIMIT 3";
+      return this.db.openDatabase({
+        name: "data.db",
+        location: "default"
+      }).then(() => {
+        let self = this;
+        return this.db.executeSql(query, [vocabulary.vocabulary_id])
+          .then(function (res) {
+            let vocabularies = [];
+            vocabularies.push(vocabulary);
+            if (res.rows.length > 0) {
+              for (var i = 0; i < res.rows.length; i++) {
+                vocabularies.push(res.rows.item(i));
+              }
+              console.log("getRandomRows SELECTED -> " ,vocabularies);
+            } else {
+              console.log("getRandomRows No results found");
             }
-            console.log("SELECTED -> " + vocabularies);
-          } else {
-            console.log("No results found");
-          }
 
-          return vocabularies;
-        }, function (err) {
-          // console.error(err);
-          // throw err;
-          let tmp =  [this.vacabularys[0],this.vacabularys[3],this.vacabularys[5],vocabulary]
-          return this.shuffle(tmp);
-        });
+            return self.shuffle(vocabularies);
+          }, function (err) {
+            // console.error(err);
+            // throw err;
+            let tmp = [this.vacabularys[0], this.vacabularys[3], this.vacabularys[5], vocabulary]
+            return self.shuffle(tmp);
+          });
+      }).catch( err => {
+        // console.error(err);
+        // throw err;
+        let tmp =  [this.vacabularys[0],this.vacabularys[3],this.vacabularys[5],vocabulary]
+        console.log("getRandomRows error occured then return default",err)
+        return this.shuffle(tmp);
+      })
     }).catch( err => {
       // console.error(err);
       // throw err;
       let tmp =  [this.vacabularys[0],this.vacabularys[3],this.vacabularys[5],vocabulary]
+      console.log("getRandomRows error occured then return default",err)
       return this.shuffle(tmp);
     })
   }
@@ -216,7 +245,11 @@ export class DBHelper {
       if(!this.nativeServic.isMobile()){
         return;
       }
-      let query = "SELECT * FROM tb_vocabulary WHERE vocabulary_id=$1";
+      let query = "SELECT * FROM tb_vocabulary WHERE vocabulary_id=?";
+      return this.db.openDatabase({
+        name: "data.db",
+        location: "default"
+      }).then(() => {
       return this.db.executeSql(query, [vocabulary_id])
         .then(function (res) {
           let vocabulary = {};
@@ -232,6 +265,10 @@ export class DBHelper {
           // console.error(err);
           throw err;
         });
+      }).catch( err => {
+        // console.error(err);
+        throw err;
+      })
     }).catch( err => {
       // console.error(err);
       throw err;
@@ -244,23 +281,31 @@ export class DBHelper {
       if(!this.nativeServic.isMobile()){
         return;
       }
-      let query = "SELECT * FROM tb_vocabulary_result  WHERE lesson_id=$1 ORDER BY created_date DESC";
-      return  this.db.executeSql( query, [lesson_id])
-        .then(function(res) {
-
-          let results = [];
-          if (res.rows.length > 0) {
-            for (var i = 0; i < res.rows.length; i++) {
-              results.push(res.rows.item(i));
+      let query = "SELECT * FROM tb_vocabulary_result  WHERE lesson_id=? ORDER BY created_date DESC";
+      return this.db.openDatabase({
+        name: "data.db",
+        location: "default"
+      }).then(() => {
+        return this.db.executeSql(query, [lesson_id])
+          .then(function (res) {
+            let results = [];
+            if (res.rows.length > 0) {
+              for (var i = 0; i < res.rows.length; i++) {
+                results.push(res.rows.item(i));
+              }
+            } else {
+              console.log("No results found");
             }
-          }else {
-            console.log("No results found");
-          }
-          return results;
-        }, function (err) {
-          // console.error(err);
-          throw err;
-        }).catch( err => {
+            return results;
+          }, function (err) {
+            // console.error(err);
+            throw err;
+          }).catch(err => {
+            console.error(err);
+            throw err;
+            // throw err;
+          })
+      }).catch( err => {
         console.error(err);
         throw err;
         // throw err;
@@ -294,25 +339,37 @@ export class DBHelper {
         if(!this.nativeServic.isMobile()){
           return;
         }
-      return this.getUserInfo(vocabulary.vocabulary_id)
+      return this.getVocabulary(vocabulary.vocabulary_id)
         .then( (vocabularyOld) => {
           let query = "";
-          if(Object.keys(vocabularyOld).length === 0 && vocabularyOld.constructor === Object){
-            query = "INSERT INTO tb_vocabulary (vocabulary_id, word,pronunciation,lesson_id,audio,explain,explain_img) VALUES ($1,$2,$3,$4,$5,$6,$7)";
-          }else {
-            query = "UPDATE tb_vocabulary SET vocabulary_id=$1,word=$2,pronunciation=$3,lesson_id=$4,audio=$5,explain=$6,explain_img=$7  where vocabulary_id=$1"
+          let parameters = [];
+          if (Object.keys(vocabularyOld).length === 0 && vocabularyOld.constructor === Object) {
+            query = "INSERT INTO tb_vocabulary (vocabulary_id, word,pronunciation,lesson_id,audio,explain,explain_img) VALUES (?,?,?,?,?,?,?) ";
+            parameters = [vocabulary.vocabulary_id, vocabulary.word, vocabulary.pronunciation, vocabulary.lesson_id, vocabulary.audio, vocabulary.explain, vocabulary.explain_img]
+          } else {
+            query = "UPDATE tb_vocabulary SET vocabulary_id=?,word=?,pronunciation=?,lesson_id=?,audio=?,explain=?,explain_img=?  where vocabulary_id=?"
+            parameters = [vocabulary.vocabulary_id, vocabulary.word, vocabulary.pronunciation, vocabulary.lesson_id, vocabulary.audio, vocabulary.explain, vocabulary.explain_img,vocabulary.vocabulary_id]
+
           }
+          return this.db.openDatabase({
+            name: "data.db",
+            location: "default"
+          }).then(() => {
+            this.db.executeSql(query,parameters )
+              .then(function (res) {
+                console.log("updateVocabulary", res.rows.item(0))
+                return true;
+              }, function (err) {
+                // console.error(err);
 
-          this.db.executeSql( query, [vocabulary.vocabulary_id,vocabulary.word,vocabulary.pronunciation,vocabulary.lesson_id,vocabulary.audio,vocabulary.explain,vocabulary.explain_img])
-            .then(function(res) {
+                console.error(err);
+              });
+          })
+        }).catch( err => {
+            console.error(err);
+            // throw err;
+          })
 
-              return true;
-            }, function (err) {
-              // console.error(err);
-
-              throw err;
-            });
-        })
     }).catch( err => {
       console.error(err);
       // throw err;
@@ -328,13 +385,16 @@ export class DBHelper {
      return this.getUserInfo(userInfo.user_id)
        .then( (userInfoOld) => {
         let query = "";
+        let parameters = [];
          if(Object.keys(userInfoOld).length === 0 && userInfoOld.constructor === Object){
-          query = "INSERT INTO tb_user (user_id, user_name,avatar,phone) VALUES ($1,$2,$3,$4)";
+          query = "INSERT INTO tb_user (user_id, user_name,avatar,phone) VALUES (?,?,?,?)";
+          parameters =  [userInfo.user_id,userInfo.user_name,userInfo.avatar,userInfo.phone]
         }else {
-          query = "UPDATE tb_user SET user_id=$1,user_name=$2,avatar=$3,phone=$4 where user_id=$1"
+          query = "UPDATE tb_user SET user_id=?,user_name=?,avatar=?,phone=? where user_id=?"
+           parameters =  [userInfo.user_id,userInfo.user_name,userInfo.avatar,userInfo.phone,userInfo.user_id]
         }
 
-        this.db.executeSql( query, [userInfo.user_id,userInfo.user_name,userInfo.avatar,userInfo.phone])
+        this.db.executeSql( query,parameters )
           .then(function(res) {
 
             return true;
@@ -388,13 +448,17 @@ export class DBHelper {
       return this.getLessonInfo(lessonInfo.lesson_id)
         .then( (lessonInfoOld) => {
           let query = "";
+          let parameters = [];
           if(Object.keys(lessonInfoOld).length === 0 && lessonInfoOld.constructor === Object){
-            query = "INSERT INTO tb_lesson(lesson_id,book_id,lesson_name,lesson_order,created_date) VALUES($1,$2,$3,$4,$5)";
+            query = "INSERT INTO tb_lesson(lesson_id,book_id,lesson_name,lesson_order,created_date) VALUES(?,?,?,?,?)";
+            parameters = [lessonInfo.lesson_id,lessonInfo.book_id,lessonInfo.lesson_name,lessonInfo.lesson_order,lessonInfo.date]
           }else {
-            query = "UPDATE tb_lesson SET lesson_id=$1,book_id=$2,lesson_name=$3,lesson_order=$4,modified_date=$5 where lesson_id=$1"
+            query = "UPDATE tb_lesson SET lesson_id=?,book_id=?,lesson_name=?,lesson_order=?,modified_date=? where lesson_id=?"
+            parameters = [lessonInfo.lesson_id,lessonInfo.book_id,lessonInfo.lesson_name,lessonInfo.lesson_order,lessonInfo.date,lessonInfo.lesson_id]
+
           }
           console.log("updateLesson,executeSql",query)
-          this.db.executeSql( query, [lessonInfo.lesson_id,lessonInfo.book_id,lessonInfo.lesson_name,lessonInfo.lesson_order,lessonInfo.date])
+          this.db.executeSql( query,parameters )
             .then(function(res) {
               console.log("updateLesson,executeSql",res)
               return true;
@@ -580,25 +644,33 @@ export class DBHelper {
   deleteItem(tableName,data: any) {
     return this.platform.ready().then(() => {
       let query = "";
-      if(tableName == "tb_book"){
-         query = "DELETE FROM " + tableName + " WHERE book_id = " + data.book_id;
-      }else if(tableName == "tb_lesson"){
+      if (tableName == "tb_book") {
+        query = "DELETE FROM " + tableName + " WHERE book_id = " + data.book_id;
+      } else if (tableName == "tb_lesson") {
         query = "DELETE FROM " + tableName + " WHERE lesson_id = " + data.lesson_id;
-      }else if(tableName == "tb_vocabulary"){
+      } else if (tableName == "tb_vocabulary") {
         query = "DELETE FROM " + tableName + " WHERE vocabulary_id = " + data.vocabulary_id;
-      }else {
+      } else {
         return;
       }
-      console.log("deleteItem",query)
-      return this.db.executeSql(query,[])
+      console.log("deleteItem", query)
+      return this.db.openDatabase({
+        name: "data.db",
+        location: "default"
+      }).then(() => {
+      return this.db.executeSql(query, [])
         .then(function (res) {
 
           return true;
         }, function (err) {
           // console.error(err);
-          console.error("deleteItem",err)
+          console.error("deleteItem", err)
           // throw err;
         });
+    }).catch( err => {
+      console.error(err);
+      // throw err;
+    })
     }).catch( err => {
       // console.error(err);
       console.error("deleteItem",err)

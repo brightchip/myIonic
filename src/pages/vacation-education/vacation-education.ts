@@ -21,7 +21,7 @@ export class VacationEducationPage {
     "assets/img/nonnonbiyori.jpg",
     "assets/img/nonobiyori.jpg"],
     introVideo: "assets/video/kmb.mp4",
-    content:"Wellcome to Vacationing Education! have  nice study days"};
+    content:"欢迎光临 度假游学"};
 
   VacaClasses :any[] = [{ id:0,title:"学前班",img: "assets/img/school.png",subtitle:""},
     { id:1,title:"中期班",img:"assets/img/school.png",subtitle:"（讲不听，打死！）"},
