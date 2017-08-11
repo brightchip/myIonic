@@ -1,0 +1,107 @@
+{
+  "_args": [
+    [
+      {
+        "raw": "cordova-plugin-video-editor",
+        "scope": null,
+        "escapedName": "cordova-plugin-video-editor",
+        "name": "cordova-plugin-video-editor",
+        "rawSpec": "",
+        "spec": "latest",
+        "type": "tag"
+      },
+      "E:\\Development\\Projects\\Cordova\\Ionic\\Myionicapp\\node_modules"
+    ]
+  ],
+  "_from": "cordova-plugin-video-editor@latest",
+  "_id": "cordova-plugin-video-editor@1.1.2",
+  "_inCache": true,
+  "_location": "/cordova-plugin-video-editor",
+  "_nodeVersion": "6.3.1",
+  "_npmOperationalInternal": {
+    "host": "packages-16-east.internal.npmjs.com",
+    "tmp": "tmp/cordova-plugin-video-editor-1.1.2.tgz_1473384975153_0.8127956802491099"
+  },
+  "_npmUser": {
+    "name": "rossmartin",
+    "email": "rmartin311@gmail.com"
+  },
+  "_npmVersion": "3.10.3",
+  "_phantomChildren": {},
+  "_requested": {
+    "raw": "cordova-plugin-video-editor",
+    "scope": null,
+    "escapedName": "cordova-plugin-video-editor",
+    "name": "cordova-plugin-video-editor",
+    "rawSpec": "",
+    "spec": "latest",
+    "type": "tag"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/cordova-plugin-video-editor/-/cordova-plugin-video-editor-1.1.2.tgz",
+  "_shasum": "557237b8d2b6353238ee9b6a9caecd2e040f5862",
+  "_shrinkwrap": null,
+  "_spec": "cordova-plugin-video-editor",
+  "_where": "E:\\Development\\Projects\\Cordova\\Ionic\\Myionicapp\\node_modules",
+  "author": {
+    "name": "Josh Bavari"
+  },
+  "bugs": {
+    "url": "https://github.com/jbavari/cordova-plugin-video-editor/issues"
+  },
+  "contributors": [
+    {
+      "name": "Josh Bavari",
+      "email": "jbavari@gmail.com",
+      "url": "https://twitter.com/jbavari"
+    },
+    {
+      "name": "Ross Martin",
+      "email": "rmartin311@gmail.com",
+      "url": "https://twitter.com/MountainDoofus"
+    }
+  ],
+  "cordova": {
+    "id": "cordova-plugin-video-editor",
+    "platforms": [
+      "android",
+      "ios"
+    ]
+  },
+  "dependencies": {},
+  "description": "Cordova Video Editor Plugin",
+  "devDependencies": {},
+  "directories": {},
+  "dist": {
+    "shasum": "557237b8d2b6353238ee9b6a9caecd2e040f5862",
+    "tarball": "https://registry.npmjs.org/cordova-plugin-video-editor/-/cordova-plugin-video-editor-1.1.2.tgz"
+  },
+  "gitHead": "30f46d203a34a72f7b4d15d48f455ca0d46ecad3",
+  "homepage": "https://github.com/jbavari/cordova-plugin-video-editor#readme",
+  "keywords": [],
+  "license": "MIT",
+  "maintainers": [
+    {
+      "name": "jbavari",
+      "email": "jbavari@gmail.com"
+    },
+    {
+      "name": "rossmartin",
+      "email": "rmartin311@gmail.com"
+    }
+  ],
+  "name": "cordova-plugin-video-editor",
+  "optionalDependencies": {},
+  "readme": "ERROR: No README data found!",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jbavari/cordova-plugin-video-editor.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "version": "1.1.2"
+}

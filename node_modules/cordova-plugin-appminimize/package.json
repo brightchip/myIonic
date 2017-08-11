@@ -1,0 +1,95 @@
+{
+  "_args": [
+    [
+      {
+        "raw": "cordova-plugin-appminimize",
+        "scope": null,
+        "escapedName": "cordova-plugin-appminimize",
+        "name": "cordova-plugin-appminimize",
+        "rawSpec": "",
+        "spec": "latest",
+        "type": "tag"
+      },
+      "E:\\Development\\Projects\\Cordova\\Ionic\\Myionicapp\\node_modules"
+    ]
+  ],
+  "_from": "cordova-plugin-appminimize@latest",
+  "_id": "cordova-plugin-appminimize@1.0.0",
+  "_inCache": true,
+  "_location": "/cordova-plugin-appminimize",
+  "_nodeVersion": "6.10.1",
+  "_npmOperationalInternal": {
+    "host": "packages-18-east.internal.npmjs.com",
+    "tmp": "tmp/cordova-plugin-appminimize-1.0.0.tgz_1494657913726_0.42381041776388884"
+  },
+  "_npmUser": {
+    "name": "tomloprod",
+    "email": "tomloprod@gmail.com"
+  },
+  "_npmVersion": "3.10.10",
+  "_phantomChildren": {},
+  "_requested": {
+    "raw": "cordova-plugin-appminimize",
+    "scope": null,
+    "escapedName": "cordova-plugin-appminimize",
+    "name": "cordova-plugin-appminimize",
+    "rawSpec": "",
+    "spec": "latest",
+    "type": "tag"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/cordova-plugin-appminimize/-/cordova-plugin-appminimize-1.0.0.tgz",
+  "_shasum": "004fe03e8ed4c5a46131f2038a16e567babdcf6f",
+  "_shrinkwrap": null,
+  "_spec": "cordova-plugin-appminimize",
+  "_where": "E:\\Development\\Projects\\Cordova\\Ionic\\Myionicapp\\node_modules",
+  "author": {
+    "name": "tomloprod"
+  },
+  "bugs": {
+    "url": "https://github.com/tomloprod/cordova-plugin-appminimize/issues"
+  },
+  "cordova": {
+    "id": "cordova-plugin-appminimize",
+    "platforms": [
+      "android"
+    ]
+  },
+  "dependencies": {},
+  "description": "This is a cordova plugin to minimizes the application in android devices.",
+  "devDependencies": {},
+  "directories": {},
+  "dist": {
+    "shasum": "004fe03e8ed4c5a46131f2038a16e567babdcf6f",
+    "tarball": "https://registry.npmjs.org/cordova-plugin-appminimize/-/cordova-plugin-appminimize-1.0.0.tgz"
+  },
+  "gitHead": "6a4b0f84e6ada76384ea7f3a996b8ff288d5ef2a",
+  "homepage": "https://github.com/tomloprod/cordova-plugin-appminimize#readme",
+  "keywords": [
+    "cordova",
+    "ionic",
+    "minimize",
+    "android"
+  ],
+  "license": "MIT",
+  "maintainers": [
+    {
+      "name": "tomloprod",
+      "email": "tomloprod@gmail.com"
+    }
+  ],
+  "name": "cordova-plugin-appminimize",
+  "optionalDependencies": {},
+  "readme": "ERROR: No README data found!",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tomloprod/cordova-plugin-appminimize.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "version": "1.0.0"
+}
