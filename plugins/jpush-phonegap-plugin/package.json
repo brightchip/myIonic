@@ -1,0 +1,78 @@
+{
+  "_args": [
+    [
+      {
+        "raw": "E:\\Development\\Projects\\Cordova\\Ionic\\Myionicapp\\jpush-phonegap-plugin",
+        "scope": null,
+        "escapedName": null,
+        "name": null,
+        "rawSpec": "E:\\Development\\Projects\\Cordova\\Ionic\\Myionicapp\\jpush-phonegap-plugin",
+        "spec": "E:\\Development\\Projects\\Cordova\\Ionic\\Myionicapp\\jpush-phonegap-plugin",
+        "type": "directory"
+      },
+      "E:\\Development\\Projects\\Cordova\\Ionic\\Myionicapp\\node_modules"
+    ]
+  ],
+  "_from": "jpush-phonegap-plugin",
+  "_id": "jpush-phonegap-plugin@3.2.2",
+  "_inCache": true,
+  "_location": "/jpush-phonegap-plugin",
+  "_phantomChildren": {},
+  "_requested": {
+    "raw": "E:\\Development\\Projects\\Cordova\\Ionic\\Myionicapp\\jpush-phonegap-plugin",
+    "scope": null,
+    "escapedName": null,
+    "name": null,
+    "rawSpec": "E:\\Development\\Projects\\Cordova\\Ionic\\Myionicapp\\jpush-phonegap-plugin",
+    "spec": "E:\\Development\\Projects\\Cordova\\Ionic\\Myionicapp\\jpush-phonegap-plugin",
+    "type": "directory"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "file:jpush-phonegap-plugin",
+  "_shasum": "70e5918e58e51b86c5476108eacb6488030b82d7",
+  "_shrinkwrap": null,
+  "_spec": "E:\\Development\\Projects\\Cordova\\Ionic\\Myionicapp\\jpush-phonegap-plugin",
+  "_where": "E:\\Development\\Projects\\Cordova\\Ionic\\Myionicapp\\node_modules",
+  "author": {
+    "name": "JiGuang"
+  },
+  "bugs": {
+    "url": "https://github.com/jpush/jpush-phonegap-plugin/issues"
+  },
+  "cordova": {
+    "id": "jpush-phonegap-plugin",
+    "platforms": [
+      "ios",
+      "android"
+    ]
+  },
+  "dependencies": {},
+  "description": "JPush for cordova plugin",
+  "devDependencies": {
+    "cordova-plugin-device": "*",
+    "cordova-plugin-jcore": "*"
+  },
+  "gitHead": "04fae7d538905ffb1f478bc70a0d23a6599415a0",
+  "homepage": "https://github.com/jpush/jpush-phonegap-plugin#readme",
+  "keywords": [
+    "JPush",
+    "push",
+    "Push",
+    "ecosystem:cordova",
+    "cordova-ios",
+    "cordova-android"
+  ],
+  "license": "MIT",
+  "name": "jpush-phonegap-plugin",
+  "optionalDependencies": {},
+  "readme": "# JPush PhoneGap / Cordova Plugin\r\n\r\n[![Build Status](https://travis-ci.org/jpush/jpush-phonegap-plugin.svg?branch=master)](https://travis-ci.org/jpush/jpush-phonegap-plugin)\r\n[![release](https://img.shields.io/badge/release-3.2.2-blue.svg)](https://github.com/jpush/jpush-phonegap-plugin/releases)\r\n[![platforms](https://img.shields.io/badge/platforms-iOS%7CAndroid-lightgrey.svg)](https://github.com/jpush/jpush-phonegap-plugin)\r\n[![weibo](https://img.shields.io/badge/weibo-JPush-blue.svg)](http://weibo.com/jpush?refer_flag=1001030101_&is_all=1)\r\n\r\n支持 iOS, Android 的 Cordova 推送插件。\r\n> 如需要 IM 功能的插件，可关注 [JMessage Cordova Plugin](https://github.com/jpush/jmessage-phonegap-plugin)。\r\n> 如需要短信验证码功能的插件，可关注 [JSMS Cordova Plugin](https://github.com/jpush/cordova-plugin-jsms)。\r\n\r\n## Install\r\n\r\n- 通过 Cordova Plugins 安装，要求 Cordova CLI 5.0+：\r\n\r\n\t```\r\n\tcordova plugin add jpush-phonegap-plugin --variable APP_KEY=your_jpush_appkey\r\n\t```\r\n\r\n- 或直接通过 url 安装：\r\n\r\n\t```\r\n\tcordova plugin add https://github.com/jpush/jpush-phonegap-plugin.git --variable APP_KEY=your_jpush_appkey  \r\n\t```\r\n\r\n- 或下载到本地安装：\r\n\r\n\t```\r\n\tcordova plugin add Your_Plugin_Path  --variable APP_KEY=your_jpush_appkey\r\n\t```\r\n\r\n> 在使用 Xcode 8 调试 iOS 项目时，需要先在项目配置界面的 Capabilities 中打开 Push Notifications 开关。\r\n\r\n## Usage\r\n### API\r\n- [Common](/doc/Common_detail_api.md)\r\n- [iOS](/doc/iOS_API.md)\r\n- [Android](/doc/Android_detail_api.md)\r\n\r\n### Demo\r\n插件项目中包含一个简单的 Demo。若想参考，可以在 */example* 文件夹内找到并拷贝以下文件:\r\n\r\n\texample/index.html -> www/index.html\r\n\texample/css/* -> www/css\r\n\texample/js/* -> www/js\r\n\r\n### 关于 PhoneGap build 云服务\r\n该项目基于 Cordova 实现，目前无法使用 PhoneGap build 云服务进行打包，建议使用本地环境进行打包。\r\n\r\n## FAQ\r\n> 如果遇到了疑问，请优先参考 Demo 和 API 文档。若还无法解决，可到 [Issues](https://github.com/jpush/jpush-phonegap-plugin/issues) 提问。\r\n\r\n### Android\r\n#### 在 Eclipse 中 import 工程之后出现：*Type CallbackContext cannot be resolved to a type*\r\n右键单击工程名 -> Build Path -> Config Build Path -> Projects -> 选中工程名称 -> CordovaLib -> 点击 add。\r\n\r\n#### 如何自定义通知声音？\r\nAndroid 因为各 Rom 的高度定制化，不像 iOS 一样能有一个统一的管理，如果在 Android 中想自定义通知铃声，推荐通过 JPush 推送自定义\r\n消息，之后在 `jpush.receiveMessage` 事件监听中通过 [Cordova Local-Notification Plugin]() 触发通知，再配合 [Cordova Background Plugin](https://github.com/katzer/cordova-plugin-background-mode) 插件保证应用的后台运行。\r\n\r\n#### 关闭 App 后收不到通知\r\nAndroid 的推送通过长连接的方式实现，只有在连接保持的情况下才能收到通知。而有的第三方 ROM 会限制一般应用服务的自启动，也就是\r\n在退出应用后，应用的所有服务均被杀死，且无法自启动，所以就会收不到通知。\r\n\r\n目前 JPush 是做了应用互相拉起机制的，也就是当用户打开其他集成了 JPush 的应用时，你的应用也能同时收到推送消息。\r\n\r\n如果你的应用希望随时都能收到推送，官方推荐是通过文案的方式引导用户在设置中允许你的应用能够自启动，常见机型的设置方法可以参考[这里](https://docs.jiguang.cn/jpush/client/Android/android_faq/#_2)。\r\n\r\n或者自己实现应用保活，网上有很多相关文章（不推荐）。\r\n\r\n> 为什么 QQ、微信之类的应用退出后还能够收到通知？因为这些大厂应用，手机厂商默认都会加入自启动白名单中，也不会在应用退出后杀死它们的相关服务。\r\n> 如果你多加留意，就会发现非大厂的应用如果你一段时间不用都是收不到推送的。\r\n\r\n### iOS\r\n\r\n#### 打包时遇到 i386 打包失败怎么办？\r\n\r\n```\r\ncordova platform update ios\r\n```\r\n\r\n#### ionic 2 如何调用 API？\r\n\r\n[issue 179](https://github.com/jpush/jpush-phonegap-plugin/issues/179)\r\n\r\n#### PushConfig.plist 文件中的字段都是什么意思？\r\n\r\n- Appkey：应用标识。\r\n- Channel：渠道标识。\r\n- IsProduction：是否生产环境。\r\n- IsIDFA：是否使用 IDFA 启动 SDK。\r\n\r\n#### 刚集成完插件收不到推送怎么办？\r\n请首先按照正确方式再次配置证书、描述文件，具体可参考 [iOS 证书设置指南](https://docs.jiguang.cn/jpush/client/iOS/ios_cer_guide/)。\r\n\r\n#### iOS 集成插件白屏、或无法启动插件、或打包报错无法找到需要引入的文件怎么办?\r\n按照以下步骤逐个尝试：\r\n\r\n- 升级至 Xcode 8\r\n- 先删除插件、再重装插件（先使用 `cordova platform add ios`，后使用 `cordova plugin add`）\r\n\r\n## Support\r\n- QQ 群：413602425 / 524248013\r\n- [JPush 官网文档](https://docs.jiguang.cn/jpush/guideline/intro/)\r\n- [极光社区](http://community.jiguang.cn/)\r\n\r\n## Contribute\r\nPlease contribute! [Look at the issues](https://github.com/jpush/jpush-phonegap-plugin/issues).\r\n\r\n## License\r\nMIT © [JiGuang](/license)\r\n",
+  "readmeFilename": "README.md",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jpush/jpush-phonegap-plugin.git"
+  },
+  "version": "3.2.2"
+}
